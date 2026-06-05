@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Any
 from uuid import UUID
 
-from fastapi import FastAPI, HTTPException
+from fastapi import BackgroundTasks, FastAPI, HTTPException
 from pydantic import BaseModel, Field
 import psycopg
 
@@ -15,6 +15,16 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT / "scripts") not in sys.path:
     sys.path.insert(0, str(ROOT / "scripts"))
 
+from backend_ingest import (  # noqa: E402
+    DEFAULT_LOCK_OWNER,
+    DEFAULT_LOCK_TTL_MINUTES,
+    DEFAULT_OPENAI_MODEL,
+    NODE_GENERATION_VERSION,
+    ingest_sql,
+    job_statement,
+    psql_execute,
+    statement,
+)
 from feed_next import load_graph_from_database, resolve_next  # noqa: E402
 
 
@@ -29,6 +39,8 @@ class FeedNextRequest(BaseModel):
     frontierLimit: int = Field(default=2, ge=0, le=20)
     prefetchLimit: int = Field(default=3, ge=0, le=20)
     allowPrototypeContent: bool = True
+    liveGenerationEnabled: bool = True
+    liveGenerationLimit: int = Field(default=1, ge=0, le=5)
 
 
 class ExplorationEventRequest(BaseModel):
@@ -55,6 +67,71 @@ def database_url() -> str:
     if not value:
         raise HTTPException(status_code=503, detail="DATABASE_URL is not configured")
     return value
+
+
+def live_generation_enabled(request: FeedNextRequest) -> bool:
+    if not request.liveGenerationEnabled or request.liveGenerationLimit <= 0:
+        return False
+    return os.environ.get("WIKIS_LIVE_GENERATION_ENABLED", "1").lower() not in {"0", "false", "no"}
+
+
+def live_generation_condenser() -> str:
+    configured = os.environ.get("WIKIS_LIVE_GENERATION_CONDENSER")
+    if configured in {"local", "openai"}:
+        return configured
+    return "openai" if os.environ.get("OPENAI_API_KEY") else "local"
+
+
+def ingest_background_candidates(candidates: list[dict[str, Any]], limit: int) -> None:
+    db_url = os.environ.get("DATABASE_URL")
+    if not db_url:
+        return
+
+    condenser = live_generation_condenser()
+    model = os.environ.get("WIKIS_OPENAI_MODEL", DEFAULT_OPENAI_MODEL)
+    lock_owner = os.environ.get("WIKIS_INGEST_LOCK_OWNER", DEFAULT_LOCK_OWNER)
+    cards_out = Path(os.environ.get("WIKIS_LIVE_CARDS_OUT", str(ROOT / "data" / "cards")))
+    sql_blocks: list[str] = []
+
+    for candidate in candidates[:limit]:
+        title = str(candidate.get("title") or candidate.get("id") or "").strip()
+        if not title:
+            continue
+        try:
+            _, sql = ingest_sql(
+                title,
+                "background_expansion",
+                cards_out,
+                condenser,
+                model,
+                lock_owner,
+                int(os.environ.get("WIKIS_INGEST_LOCK_TTL_MINUTES", DEFAULT_LOCK_TTL_MINUTES)),
+            )
+            sql_blocks.append(sql)
+        except Exception as exc:  # noqa: BLE001 - background ingestion should be observable, not fatal.
+            sql_blocks.append(
+                statement(
+                    [
+                        "begin;",
+                        job_statement(
+                            title,
+                            "background_expansion",
+                            "failed",
+                            error=str(exc),
+                            generation_version=NODE_GENERATION_VERSION,
+                            frontier_depth=1,
+                            frontier_limit=limit,
+                        ),
+                        "commit;",
+                    ]
+                )
+            )
+
+    if sql_blocks:
+        try:
+            psql_execute(db_url, "\n".join(sql_blocks))
+        except Exception as exc:  # noqa: BLE001 - never let live generation break feed serving.
+            print(f"live background ingestion failed: {exc}", file=sys.stderr)
 
 
 def execute_one(sql: str, params: tuple[Any, ...]) -> Any:
@@ -84,10 +161,25 @@ def health() -> dict[str, str]:
 
 
 @app.post("/v1/feed/next")
-def feed_next(request: FeedNextRequest) -> dict[str, Any]:
+def feed_next(request: FeedNextRequest, background_tasks: BackgroundTasks) -> dict[str, Any]:
     try:
         graph = load_graph_from_database(database_url())
-        return resolve_next(graph, request.model_dump())
+        response = resolve_next(graph, request.model_dump())
+        background_candidates = response.get("backgroundIngestionTopics", [])
+        if live_generation_enabled(request) and background_candidates:
+            background_tasks.add_task(
+                ingest_background_candidates,
+                background_candidates,
+                request.liveGenerationLimit,
+            )
+            response["liveGeneration"] = {
+                "status": "scheduled",
+                "limit": request.liveGenerationLimit,
+                "candidateTitles": [candidate.get("title") for candidate in background_candidates[: request.liveGenerationLimit]],
+            }
+        else:
+            response["liveGeneration"] = {"status": "idle", "limit": 0, "candidateTitles": []}
+        return response
     except HTTPException:
         raise
     except Exception as exc:  # noqa: BLE001 - keep API errors bounded.

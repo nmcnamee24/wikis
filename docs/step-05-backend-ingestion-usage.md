@@ -95,6 +95,93 @@ python3 scripts/backend_ingest.py ingest \
 
 Use `--execute` with `DATABASE_URL` to apply the generated SQL. Failures are recorded as failed `ingestion_jobs` statements in the SQL output so they are observable and retryable.
 
+## Procedural Expansion From A Seed
+
+Use `scripts/procedural_expand.py` when you want the Wikipedia Map style workflow:
+
+```text
+seed topic -> first N Wikipedia links -> generated cards -> Supabase draft rows
+```
+
+Generate a bounded local test from Black hole without using OpenAI or touching Supabase:
+
+```bash
+python3 scripts/procedural_expand.py "Black hole" \
+  --condenser local \
+  --links-per-topic 5 \
+  --max-depth 1 \
+  --max-topics 6 \
+  --cards-out /tmp/wikis_procedural_cards \
+  --sql-out /tmp/wikis_black_hole_expansion.sql \
+  --manifest-out /tmp/wikis_black_hole_expansion.json
+```
+
+Generate OpenAI-condensed draft content and apply it to Supabase:
+
+```bash
+python3 scripts/procedural_expand.py "Black hole" \
+  --condenser openai \
+  --links-per-topic 5 \
+  --max-depth 1 \
+  --max-topics 6 \
+  --execute
+```
+
+For a larger surrounding cloud, increase the distance and cap together:
+
+```bash
+python3 scripts/procedural_expand.py "Black hole" \
+  --condenser openai \
+  --links-per-topic 5 \
+  --max-depth 2 \
+  --max-topics 31 \
+  --execute
+```
+
+Keep the caps conservative at first. `--links-per-topic 5 --max-depth 2` can generate up to 31 topics before duplicate filtering. Generated topics stay review-gated as draft/provisional rows until they are approved.
+
+## Live Mobile Frontier Generation
+
+The feed API can schedule procedural generation while the user swipes:
+
+```http
+POST /v1/feed/next
+```
+
+Request fields:
+
+```json
+{
+  "currentTopicId": "black-hole",
+  "gesture": "down",
+  "exploredTopicIds": ["black-hole"],
+  "frontierLimit": 2,
+  "prefetchLimit": 3,
+  "allowPrototypeContent": true,
+  "liveGenerationEnabled": true,
+  "liveGenerationLimit": 1
+}
+```
+
+Behavior:
+
+- The API returns the next cached/provisional topic immediately.
+- It includes `backgroundIngestionTopics`, which are first-link Wikipedia candidates from the current frontier.
+- If live generation is enabled, the API schedules up to `liveGenerationLimit` background candidate generations after the response is sent.
+- Generated topics are stored as `needs_review` and `provisional`, but the resolver can include them when `allowPrototypeContent` is true.
+- Repeated swipes grow the graph around the user's actual path instead of recursively generating a large tree from one gesture.
+
+Production environment switches:
+
+```bash
+WIKIS_LIVE_GENERATION_ENABLED=1
+WIKIS_LIVE_GENERATION_CONDENSER=openai
+WIKIS_OPENAI_MODEL=gpt-5-mini
+WIKIS_LIVE_CARDS_OUT=data/cards
+```
+
+Set `WIKIS_LIVE_GENERATION_ENABLED=0` to keep the endpoint traversal-only while still returning `backgroundIngestionTopics` for a separate worker.
+
 ## Queue Background Frontier Expansion
 
 Queue candidate topics from approved, ready topics without recursively expanding the graph:

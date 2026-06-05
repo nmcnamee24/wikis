@@ -115,7 +115,8 @@ with topic_rows as (
   ) s on true
   left join topic_assets a on a.id = t.image_asset_id
   left join image_candidates ic on ic.id = a.image_candidate_id
-  where t.quality_status in ('approved', 'prototype_pass')
+  where t.quality_status in ('approved', 'prototype_pass', 'needs_review')
+    and t.generation_status <> 'failed'
 ),
 edge_rows as (
   select jsonb_build_object(
@@ -134,7 +135,8 @@ edge_rows as (
   from topic_edges e
   join topics t on t.id = e.to_topic_id
   where e.status = 'approved'
-    and t.quality_status in ('approved', 'prototype_pass')
+    and t.quality_status in ('approved', 'prototype_pass', 'needs_review')
+    and t.generation_status <> 'failed'
 ),
 candidate_rows as (
   select jsonb_build_object(
@@ -198,7 +200,7 @@ def topic_by_id(graph: dict[str, Any]) -> dict[str, dict[str, Any]]:
 
 def is_visible(topic: dict[str, Any], allow_prototype: bool) -> bool:
     return topic.get("qualityStatus") == "approved" or (
-        allow_prototype and topic.get("qualityStatus") == "prototype_pass"
+        allow_prototype and topic.get("qualityStatus") in {"prototype_pass", "needs_review"}
     )
 
 

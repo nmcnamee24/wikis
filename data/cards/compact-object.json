@@ -1,35 +1,55 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-05T06:54:08+00:00",
+  "generatedAt": "2026-06-05T20:55:50+00:00",
+  "generation": {
+    "provider": "openai",
+    "model": "gpt-5-mini",
+    "promptVersion": "wikis-topic-page-v1"
+  },
   "source": {
     "requestedTitle": "Compact object",
     "wikipediaTitle": "Compact object",
     "pageId": 207820,
     "revisionId": 1346019256,
-    "fetchedAt": "2026-06-05T06:54:08+00:00",
+    "fetchedAt": "2026-06-05T20:55:36+00:00",
     "extract": "In astronomy, the term compact object (or compact star) refers collectively to white dwarfs, neutron stars, and black holes. It could also include exotic stars if such hypothetical, dense bodies are confirmed to exist. All compact objects have a high mass relative to their radius, giving them a very high density compared to ordinary atomic matter. The term is used as a generalization for cases where the exact nature of a significant gravitational effect isolated to a small radius is not known. Since most compact object types represent endpoints of stellar evolution, they are also called stellar remnants, and accordingly may be called dead stars in popular media reports. The state and type of a stellar remnant depends primarily on the mass of its progenitor star. A compact object that is not a black hole may be called a degenerate star. In June 2020, astronomers reported narrowing down the source of fast radio bursts (FRBs), which may now plausibly include \"compact-object mergers and magnetars arising from normal core collapse supernovae\".",
-    "firstParagraph": "In astronomy, the term compact object (or compact star) refers collectively to white dwarfs, neutron stars, and black holes. It could also include exotic stars if such hypothetical, dense bodies are confirmed to exist. All compact objects have a high mass relative to their radius, giving them a very high density compared to ordinary atomic matter."
+    "firstParagraph": "In astronomy, the term compact object (or compact star) refers collectively to white dwarfs, neutron stars, and black holes. It could also include exotic stars if such hypothetical, dense bodies are confirmed to exist. All compact objects have a high mass relative to their radius, giving them a very high density compared to ordinary atomic matter.",
+    "leadHtml": "<div class=\"mw-content-ltr mw-parser-output\" lang=\"en\" dir=\"ltr\"><div class=\"shortdescription nomobile noexcerpt noprint searchaux\" style=\"display:none\">Classification in astronomy</div>\n<style data-mw-deduplicate=\"TemplateStyles:r1353705441\">.mw-parser-output .hatnote{font-style:italic}.mw-parser-output div.hatnote{padding-left:1.6em;margin-bottom:0.5em}.mw-parser-output .hatnote i{font-style:normal}.mw-parser-output .hatnote+span.mw-empty-elt+.hatnote,.mw-parser-output .hatnote+link+.hatnote{margin-top:-0.5em}@media print{body.ns-0 .mw-parser-output .hatnote{display:none!important}}</style><div role=\"note\" class=\"hatnote navigation-not-searchable\"><span>For the categorical notion in mathematics, see <a href=\"/wiki/Compact_object_(mathematics)\" title=\"Compact object (mathematics)\">Compact object (mathematics)</a>.</span> <span>Not to be confused with <a href=\"/wiki/Dwarf_star\" title=\"Dwarf star\">dwarf star</a> or <a href=\"/wiki/Central_compact_object\" title=\"Central compact object\">central compact object</a>.</span></div>\n<p>In <a href=\"/wiki/Astronomy\" title=\"Astronomy\">astronomy</a>, the term <b>compact object</b> (or <b>compact star</b>) refers collectively to <a href=\"/wiki/White_dwarf\" title=\"White dwarf\">white dwarfs</a>, <a href=\"/wiki/Neutron_star\" title=\"Neutron star\">neutron stars</a>, and <a href=\"/wiki/Black_hole\" title=\"Black hole\">black holes</a>. It could also include <a href=\"/wiki/Exotic_star\" title=\"Exotic star\">exotic stars</a> if such hypothetical, dense bodies are confirmed to exist. All compact objects have a high <a href=\"/wiki/Mass\" title=\"Mass\">mass</a> relative to their <a href=\"/wiki/Radius\" title=\"Radius\">radius</a>, giving them a very high <a href=\"/wiki/Density\" title=\"Density\">density</a> compared to ordinary <a href=\"/wiki/Atom\" title=\"Atom\">atomic</a> <a href=\"/wiki/Matter\" title=\"Matter\">matter</a>. The term is used as a generalization for cases where the exact nature of a significant gravitational effect isolated to a small radius is not known.\n</p><p>Since most compact object types represent endpoints of <a href=\"/wiki/Stellar_evolution\" title=\"Stellar evolution\">stellar evolution</a>, they are also called <b>stellar remnants</b>, and accordingly may be called <b>dead stars</b> in popular media reports. The state and type of a stellar remnant depends primarily on the mass of its progenitor star. A compact object that is not a black hole may be called a <b>degenerate star</b>.\n</p><p>In June 2020, astronomers reported narrowing down the source of <a href=\"/wiki/Fast_radio_burst\" title=\"Fast radio burst\">fast radio bursts</a> (FRBs), which may now plausibly include \"compact-object mergers and <a href=\"/wiki/Magnetar\" title=\"Magnetar\">magnetars</a> arising from normal core collapse <a href=\"/wiki/Supernova\" title=\"Supernova\">supernovae</a>\".<sup id=\"cite&#95;ref-SA-20200601&#95;1-0\" class=\"reference\"><a href=\"#cite_note-SA-20200601-1\"><span class=\"cite-bracket\">&#91;</span>1<span class=\"cite-bracket\">&#93;</span></a></sup><sup id=\"cite&#95;ref-AJL-20200601&#95;2-0\" class=\"reference\"><a href=\"#cite_note-AJL-20200601-2\"><span class=\"cite-bracket\">&#91;</span>2<span class=\"cite-bracket\">&#93;</span></a></sup>\n</p>\n<div class=\"mw-references-wrap\"><ol class=\"references\">\n<li id=\"cite&#95;note-SA-20200601-1\"><span class=\"mw-cite-backlink\"><b><a href=\"#cite_ref-SA-20200601_1-0\">^</a></b></span> <span class=\"reference-text\"><style data-mw-deduplicate=\"TemplateStyles:r1333433106\">.mw-parser-output cite.citation{font-style:inherit;word-wrap:break-word}.mw-parser-output .citation q{quotes:\"\\\"\"\"\\\"\"\"'\"\"'\"}.mw-parser-output .citation:target{background-color:rgba(0,127,255,0.133)}.mw-parser-output .id-lock-free.id-lock-free a{background:url(\"//upload.wikimedia.org/wikipedia/commons/6/65/Lock-green.svg\")right 0.1em center/9px no-repeat}.mw-parser-output .id-lock-limited.id-lock-limited a,.mw-parser-output .id-lock-registration.id-lock-registration a{background:url(\"//upload.wikimedia.org/wikipedia/commons/d/d6/Lock-gray-alt-2.svg\")right 0.1em center/9px no-repeat}.mw-parser-output .id-lock-subscription.id-lock-subscription a{background:url(\"//upload.wikimedia.org/wikipedia/commons/a/aa/Lock-red-alt-2.svg\")right 0.1em center/9px no-repeat}.mw-parser-output .cs1-ws-icon a{background:url(\"//upload.wikimedia.org/wikipedia/commons/4/4c/Wikisource-logo.svg\")right 0.1em center/12px no-repeat}body:not(.skin-timeless):not(.skin-minerva) .mw-parser-output .id-lock-free a,body:not(.skin-timeless):not(.skin-minerva) .mw-parser-output .id-lock-limited a,body:not(.skin-timeless):not(.skin-minerva) .mw-parser-output .id-lock-registration a,body:not(.skin-timeless):not(.skin-minerva) .mw-parser-output .id-lock-subscription a,body:not(.skin-timeless):not(.skin-minerva) .mw-parser-output .cs1-ws-icon a{background-size:contain;padding:0 1em 0 0}.mw-parser-output .cs1-code{color:inherit;background:inherit;border:none;padding:inherit}.mw-parser-output .cs1-hidden-error{display:none;color:var(--color-error,#bf3c2c)}.mw-parser-output .cs1-visible-error{color:var(--color-error,#bf3c2c)}.mw-parser-output .cs1-maint{display:none;color:#085;margin-left:0.3em}.mw-parser-output .cs1-kern-left{padding-left:0.2em}.mw-parser-output .cs1-kern-right{padding-right:0.2em}.mw-parser-output .citation .mw-selflink{font-weight:inherit}@media screen{.mw-parser-output .cs1-format{font-size:95%}html.skin-theme-clientpref-night .mw-parser-output .cs1-maint{color:#18911f}}@media screen and (prefers-color-scheme:dark){html.skin-theme-clientpref-os .mw-parser-output .cs1-maint{color:#18911f}}</style><cite id=\"CITEREFStarr2020\" class=\"citation news cs1\">Starr, Michelle (1 June 2020). <a rel=\"nofollow\" class=\"external text\" href=\"https://www.sciencealert.com/we-re-starting-to-figure-out-where-fast-radio-bursts-come-from\">\"Astronomers Just Narrowed Down The Source of Those Powerful Radio Signals From Space\"</a>. <i>ScienceAlert.com</i><span class=\"reference-accessdate\">. Retrieved <span class=\"nowrap\">2 June</span> 2020</span>.</cite><span title=\"ctx&#95;ver=Z39.88-2004&amp;rft&#95;val&#95;fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.jtitle=ScienceAlert.com&amp;rft.atitle=Astronomers+Just+Narrowed+Down+The+Source+of+Those+Powerful+Radio+Signals+From+Space&amp;rft.date=2020-06-01&amp;rft.aulast=Starr&amp;rft.aufirst=Michelle&amp;rft&#95;id=https%3A%2F%2Fwww.sciencealert.com%2Fwe-re-starting-to-figure-out-where-fast-radio-bursts-come-from&amp;rfr&#95;id=info%3Asid%2Fen.wikipedia.org%3ACompact+object\" class=\"Z3988\"></span></span>\n</li>\n<li id=\"cite&#95;note-AJL-20200601-2\"><span class=\"mw-cite-backlink\"><b><a href=\"#cite_ref-AJL-20200601_2-0\">^</a></b></span> <span class=\"reference-text\"><link rel=\"mw-deduplicated-inline-style\" href=\"mw-data:TemplateStyles:r1333433106\" /><cite id=\"CITEREFBhandan,&#95;Shivani2020\" class=\"citation journal cs1\">Bhandan, Shivani (1 June 2020). <a rel=\"nofollow\" class=\"external text\" href=\"https://doi.org/10.3847%2F2041-8213%2Fab672e\">\"The Host Galaxies and Progenitors of Fast Radio Bursts Localized with the Australian Square Kilometre Array Pathfinder\"</a>. <i><a href=\"/wiki/The_Astrophysical_Journal_Letters\" class=\"mw-redirect\" title=\"The Astrophysical Journal Letters\">The Astrophysical Journal Letters</a></i>. <b>895</b> (2): L37. <a href=\"/wiki/ArXiv_(identifier)\" class=\"mw-redirect\" title=\"ArXiv (identifier)\">arXiv</a>:<span class=\"id-lock-free\" title=\"Freely accessible\"><a rel=\"nofollow\" class=\"external text\" href=\"https://arxiv.org/abs/2005.13160\">2005.13160</a></span>. <a href=\"/wiki/Bibcode_(identifier)\" class=\"mw-redirect\" title=\"Bibcode (identifier)\">Bibcode</a>:<a rel=\"nofollow\" class=\"external text\" href=\"https://ui.adsabs.harvard.edu/abs/2020ApJ...895L..37B\">2020ApJ...895L..37B</a>. <a href=\"/wiki/Doi_(identifier)\" class=\"mw-redirect\" title=\"Doi (identifier)\">doi</a>:<span class=\"id-lock-free\" title=\"Freely accessible\"><a rel=\"nofollow\" class=\"external text\" href=\"https://doi.org/10.3847%2F2041-8213%2Fab672e\">10.3847/2041-8213/ab672e</a></span>. <a href=\"/wiki/S2CID_(identifier)\" class=\"mw-redirect\" title=\"S2CID (identifier)\">S2CID</a>&#160;<a rel=\"nofollow\" class=\"external text\" href=\"https://api.semanticscholar.org/CorpusID:218900539\">218900539</a>.</cite><span title=\"ctx&#95;ver=Z39.88-2004&amp;rft&#95;val&#95;fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.jtitle=The+Astrophysical+Journal+Letters&amp;rft.atitle=The+Host+Galaxies+and+Progenitors+of+Fast+Radio+Bursts+Localized+with+the+Australian+Square+Kilometre+Array+Pathfinder&amp;rft.volume=895&amp;rft.issue=2&amp;rft.pages=L37&amp;rft.date=2020-06-01&amp;rft&#95;id=info%3Aarxiv%2F2005.13160&amp;rft&#95;id=https%3A%2F%2Fapi.semanticscholar.org%2FCorpusID%3A218900539%23id-name%3DS2CID&amp;rft&#95;id=info%3Adoi%2F10.3847%2F2041-8213%2Fab672e&amp;rft&#95;id=info%3Abibcode%2F2020ApJ...895L..37B&amp;rft.au=Bhandan%2C+Shivani&amp;rft&#95;id=https%3A%2F%2Fdoi.org%2F10.3847%252F2041-8213%252Fab672e&amp;rfr&#95;id=info%3Asid%2Fen.wikipedia.org%3ACompact+object\" class=\"Z3988\"></span></span>\n</li>\n</ol></div>\n<!-- \nNewPP limit report\nParsed by mw‐api‐ext.eqiad.main‐7675448b98‐rmtcs\nCached time: 20260605205536\nCache expiry: 2592000\nCache expiry source: Module:Citation/CS1 (os.date(%Y))\nReduced expiry: false\nComplications: [vary‐revision‐sha1, vary‐revision‐exists]\nCPU time usage: 0.216 seconds\nReal time usage: 0.317 seconds\nPreprocessor visited node count: 233/1000000\nRevision size: 2073/2097152 bytes\nPost‐expand include size: 7218/2097152 bytes\nTemplate argument size: 352/2097152 bytes\nHighest expansion depth: 8/100\nExpensive parser function count: 4/500\nUnstrip recursion depth: 0/20\nUnstrip post‐expand size: 5238/5000000 bytes\nLua time usage: 0.152/10.000 seconds\nLua memory usage: 4055001/52428800 bytes\nNumber of Wikibase entities loaded: 0/500\n-->\n<!--\nTransclusion expansion time report (%,ms,calls,template)\n100.00%  304.380      1 -total\n 39.54%  120.366      1 Template:Cite_news\n 33.47%  101.887      1 Template:Short_description\n 22.12%   67.332      1 Template:Hatnote_group\n 18.08%   55.017      2 Template:Pagetype\n 11.29%   34.364      1 Template:For\n  9.63%   29.322      2 Template:Main_other\n  8.73%   26.569      1 Template:SDcat\n  5.79%   17.638      1 Template:Distinguish\n  2.81%    8.540      1 Template:Cite_journal\n-->\n\n<!-- Render ID e68c55f2-6120-11f1-a956-358eec283391 -->\n</div>"
   },
   "card": {
     "title": "Compact object",
     "pillar": "science",
-    "explanation": "In astronomy, the term compact object (or compact star) refers collectively to white dwarfs, neutron stars, and black holes. It could also include exotic stars if such hypothetical, dense bodies are confirmed to exist. All compact objects have a high mass relative to their radius, giving them a very high density compared to ordinary atomic matter. The term is used as a generalization for cases where the exact nature of a significant gravitational effect isolated to a small radius is not known.",
+    "explanation": "A compact object in astronomy is a very dense stellar remnant such as a white dwarf, neutron star, or black hole; hypothetical exotic stars could also count. These objects pack a lot of mass into a small radius, so their density is far higher than ordinary matter. The term is used when a strong gravitational effect is found in a small region but the object's exact nature is unclear.\n\nMost compact objects are endpoints of stellar evolution, often called stellar remnants or “dead stars”; which type forms depends mainly on the progenitor star's mass. Compact objects that aren't black holes are often called degenerate stars. Some energetic phenomena—like certain fast radio bursts—may arise from compact-object mergers or from magnetars, a kind of neutron star.",
     "hookType": "why_it_matters",
-    "hook": "It connects quickly to Astronomy, which is why one topic can open into a much larger rabbit hole.",
+    "hook": "A related physical property (mass relative to radius) that explains why compact objects have such extreme gravity and different behavior from ordinary matter.",
     "relatedCandidates": [
+      "Neutron star",
+      "Density",
       "Astronomy",
       "White dwarf",
-      "Neutron star",
       "Black hole",
       "Exotic star",
       "Mass",
-      "Radius",
-      "Density"
+      "Radius"
     ],
-    "readingSeconds": 26,
+    "navigationNodes": {
+      "deeper": {
+        "name": "Neutron star",
+        "connection": "A specific type of compact object: an extremely dense stellar remnant formed from a massive progenitor, often cited as an example of compact-object behavior."
+      },
+      "adjacent": {
+        "name": "Density",
+        "connection": "A related physical property (mass relative to radius) that explains why compact objects have such extreme gravity and different behavior from ordinary matter."
+      }
+    },
+    "readingSeconds": 33,
     "confidenceNotes": [
-      "Generated by deterministic local condenser from Wikipedia extract."
-    ]
+      "Generated with OpenAI Responses API model gpt-5-mini.",
+      "Prompt version: wikis-topic-page-v1."
+    ],
+    "generationProvider": "openai",
+    "generationModel": "gpt-5-mini",
+    "promptVersion": "wikis-topic-page-v1"
   },
   "mapping": {
     "linkStrategy": "first_paragraph",
@@ -118,19 +138,20 @@
       }
     ],
     "relatedTopicCandidates": [
+      "Neutron star",
+      "Density",
       "Astronomy",
       "White dwarf",
-      "Neutron star",
       "Black hole",
       "Exotic star",
       "Mass",
-      "Radius",
-      "Density"
+      "Radius"
     ]
   },
   "image": {
     "strategy": "pillar_background",
     "selected": null,
+    "candidates": [],
     "fallbackPillar": "science",
     "reason": "no_suitable_wikipedia_image"
   },
