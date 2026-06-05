@@ -12,8 +12,11 @@ final class FeedStore: ObservableObject {
     @Published private(set) var savedTopicIds: Set<String> = []
     @Published var lastGestureLabel: String?
     @Published var loadingError: String?
+    @Published private(set) var liveGenerationStatus: String?
 
     private var navigator: GraphNavigator?
+    private let apiBaseURL = URL(string: "https://wikis-api-production.up.railway.app")!
+    private let useLiveAPI = true
 
     init() {
         loadGraph()
@@ -39,6 +42,20 @@ final class FeedStore: ObservableObject {
         guard let currentTopic else {
             return false
         }
+        let exploredIds = exploredTopics.map(\.id)
+        let savedIds = savedTopicIds
+        Task {
+            await navigateUsingLiveAPI(
+                from: currentTopic,
+                gesture: gesture,
+                exploredTopicIds: exploredIds,
+                savedTopicIds: savedIds
+            )
+        }
+        return true
+    }
+
+    private func localDecision(from currentTopic: Topic, gesture: NavigationGesture) -> TraversalDecision? {
         let context = TraversalContext(
             exploredTopicIds: exploredTopics.map(\.id),
             savedTopicIds: savedTopicIds,
@@ -46,15 +63,89 @@ final class FeedStore: ObservableObject {
             frontierLimit: 2,
             prefetchLimit: 3
         )
-        guard let decision = navigator?.decision(from: currentTopic.id, gesture: gesture, context: context) else {
-            return false
-        }
+        return navigator?.decision(from: currentTopic.id, gesture: gesture, context: context)
+    }
+
+    private func apply(topic: Topic, gesture: NavigationGesture, liveGeneration: LiveGenerationStatus? = nil) {
         withAnimation(.spring(response: 0.42, dampingFraction: 0.86)) {
-            self.currentTopic = decision.nextTopic
-            self.exploredTopics.append(decision.nextTopic)
+            self.currentTopic = topic
+            self.exploredTopics.append(topic)
             self.lastGestureLabel = gesture.label
         }
-        return true
+        if let liveGeneration {
+            switch liveGeneration.status {
+            case "scheduled":
+                let titleList = liveGeneration.candidateTitles.compactMap { $0 }.joined(separator: ", ")
+                liveGenerationStatus = titleList.isEmpty ? "Live expansion scheduled" : "Live expansion scheduled: \(titleList)"
+            default:
+                liveGenerationStatus = nil
+            }
+        }
+    }
+
+    private func navigateUsingLiveAPI(
+        from currentTopic: Topic,
+        gesture: NavigationGesture,
+        exploredTopicIds: [String],
+        savedTopicIds: Set<String>
+    ) async {
+        guard useLiveAPI else {
+            if let decision = localDecision(from: currentTopic, gesture: gesture) {
+                apply(topic: decision.nextTopic, gesture: gesture)
+            }
+            return
+        }
+
+        do {
+            let response = try await requestNextTopic(
+                currentTopicId: currentTopic.id,
+                gesture: gesture,
+                exploredTopicIds: exploredTopicIds,
+                savedTopicIds: Array(savedTopicIds)
+            )
+            apply(topic: response.nextTopic, gesture: gesture, liveGeneration: response.liveGeneration)
+            loadingError = nil
+        } catch {
+            if let decision = localDecision(from: currentTopic, gesture: gesture) {
+                apply(topic: decision.nextTopic, gesture: gesture)
+                loadingError = "Using offline graph. Live API unavailable."
+            } else {
+                loadingError = "Could not load the next topic."
+            }
+        }
+    }
+
+    private func requestNextTopic(
+        currentTopicId: String,
+        gesture: NavigationGesture,
+        exploredTopicIds: [String],
+        savedTopicIds: [String]
+    ) async throws -> FeedNextResponse {
+        var request = URLRequest(url: apiBaseURL.appending(path: "/v1/feed/next"))
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.timeoutInterval = 12
+        request.httpBody = try JSONEncoder().encode(
+            FeedNextAPIRequest(
+                currentTopicId: currentTopicId,
+                gesture: gesture.apiValue,
+                exploredTopicIds: exploredTopicIds,
+                savedTopicIds: savedTopicIds,
+                frontierLimit: 2,
+                prefetchLimit: 3,
+                allowPrototypeContent: true,
+                liveGenerationEnabled: true,
+                liveGenerationLimit: 1
+            )
+        )
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse,
+              (200..<300).contains(httpResponse.statusCode)
+        else {
+            throw URLError(.badServerResponse)
+        }
+        return try JSONDecoder().decode(FeedNextResponse.self, from: data)
     }
 
     @discardableResult
@@ -90,4 +181,38 @@ extension NavigationGesture {
         case .left: "Teleport"
         }
     }
+
+    var apiValue: String {
+        switch self {
+        case .down: "down"
+        case .right: "right"
+        case .left: "left"
+        }
+    }
+}
+
+private struct FeedNextAPIRequest: Encodable {
+    let currentTopicId: String
+    let gesture: String
+    let exploredTopicIds: [String]
+    let savedTopicIds: [String]
+    let frontierLimit: Int
+    let prefetchLimit: Int
+    let allowPrototypeContent: Bool
+    let liveGenerationEnabled: Bool
+    let liveGenerationLimit: Int
+}
+
+private struct FeedNextResponse: Decodable {
+    let nextTopicId: String
+    let nextTopic: Topic
+    let reasonCode: String
+    let gesture: String
+    let liveGeneration: LiveGenerationStatus?
+}
+
+private struct LiveGenerationStatus: Decodable {
+    let status: String
+    let limit: Int
+    let candidateTitles: [String?]
 }
