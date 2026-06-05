@@ -8,6 +8,10 @@ enum SmokeFailure: Error, CustomStringConvertible {
     case missingGestureTargets(String)
     case missingBlackHolePath
     case teleportStayedInScience
+    case unexpectedReasonCode(String)
+    case missingPrefetchCandidates
+    case frontierCapFailed(Int)
+    case repeatedRecentTopic(String)
 
     var description: String {
         switch self {
@@ -23,6 +27,14 @@ enum SmokeFailure: Error, CustomStringConvertible {
             "Could not resolve black-hole down/right/left paths"
         case .teleportStayedInScience:
             "Black-hole teleport should leave Science"
+        case .unexpectedReasonCode(let reasonCode):
+            "Unexpected traversal reason code: \(reasonCode)"
+        case .missingPrefetchCandidates:
+            "Traversal decision did not include prefetch candidates"
+        case .frontierCapFailed(let count):
+            "Background frontier exceeded cap: \(count)"
+        case .repeatedRecentTopic(let topicId):
+            "Traversal repeated a recent topic: \(topicId)"
         }
     }
 }
@@ -53,14 +65,57 @@ func run() throws {
     }
 
     let navigator = GraphNavigator(graph: graph)
-    guard let down = navigator.nextTopic(from: "black-hole", gesture: .down),
-          let right = navigator.nextTopic(from: "black-hole", gesture: .right),
-          let left = navigator.nextTopic(from: "black-hole", gesture: .left)
+    let context = TraversalContext(
+        exploredTopicIds: ["black-hole"],
+        savedTopicIds: [],
+        allowPrototypeContent: true,
+        frontierLimit: 2,
+        prefetchLimit: 3
+    )
+    guard let downDecision = navigator.decision(from: "black-hole", gesture: .down, context: context),
+          let rightDecision = navigator.decision(from: "black-hole", gesture: .right, context: context),
+          let leftDecision = navigator.decision(from: "black-hole", gesture: .left, context: context)
     else {
         throw SmokeFailure.missingBlackHolePath
     }
+    let down = downDecision.nextTopic
+    let right = rightDecision.nextTopic
+    let left = leftDecision.nextTopic
+
     guard left.pillar != .science else {
         throw SmokeFailure.teleportStayedInScience
+    }
+    guard downDecision.reasonCode == .bestDeeperEdge else {
+        throw SmokeFailure.unexpectedReasonCode(downDecision.reasonCode.rawValue)
+    }
+    guard rightDecision.reasonCode == .bestNeighborEdge else {
+        throw SmokeFailure.unexpectedReasonCode(rightDecision.reasonCode.rawValue)
+    }
+    guard leftDecision.reasonCode == .bestTeleportEdge else {
+        throw SmokeFailure.unexpectedReasonCode(leftDecision.reasonCode.rawValue)
+    }
+    guard !downDecision.prefetchTopicIds.isEmpty else {
+        throw SmokeFailure.missingPrefetchCandidates
+    }
+    guard downDecision.backgroundIngestionTopics.count <= 2 else {
+        throw SmokeFailure.frontierCapFailed(downDecision.backgroundIngestionTopics.count)
+    }
+    guard let frontierDecision = navigator.decision(from: "general-relativity", gesture: .right, context: context),
+          !frontierDecision.backgroundIngestionTopics.isEmpty
+    else {
+        throw SmokeFailure.missingPrefetchCandidates
+    }
+    guard frontierDecision.backgroundIngestionTopics.count <= 2 else {
+        throw SmokeFailure.frontierCapFailed(frontierDecision.backgroundIngestionTopics.count)
+    }
+
+    let repeatContext = TraversalContext(
+        exploredTopicIds: ["black-hole", down.id, right.id],
+        allowPrototypeContent: true
+    )
+    if let repeatedDecision = navigator.decision(from: "black-hole", gesture: .right, context: repeatContext),
+       [down.id, right.id].contains(repeatedDecision.nextTopic.id) {
+        throw SmokeFailure.repeatedRecentTopic(repeatedDecision.nextTopic.id)
     }
 
     print("WikisCore smoke test passed")
@@ -68,6 +123,9 @@ func run() throws {
     print("black-hole down: \(down.title)")
     print("black-hole right: \(right.title)")
     print("black-hole left: \(left.title)")
+    print("down reason: \(downDecision.reasonCode.rawValue)")
+    print("prefetch: \(downDecision.prefetchTopicIds.joined(separator: ", "))")
+    print("background frontier: \(downDecision.backgroundIngestionTopics.map(\.title).joined(separator: ", "))")
 }
 
 do {
@@ -76,4 +134,3 @@ do {
     fputs("ERROR: \(error)\n", stderr)
     exit(1)
 }
-

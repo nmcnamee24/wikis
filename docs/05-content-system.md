@@ -104,6 +104,23 @@ Wikipedia title
 
 The LLM should not invent the card from memory. It should condense the fetched Wikipedia source packet.
 
+## Provisional Cards
+
+Provisional cards are allowed when navigation needs to stay responsive before full LLM condensation is ready.
+
+A provisional card is not a loading disguise. It may be simpler than a polished card, but it still has to be acceptable as the user-facing product experience.
+
+Provisional cards should:
+
+- come from deterministic Wikipedia summary and lead-link parsing
+- use the same topic-card shape as ready content
+- avoid unsupported hooks or clever phrasing
+- clearly preserve source grounding
+- expose enough edge candidates for the next visible hops
+- be replaced only on the next visit or after explicit refresh
+
+Reject provisional cards that feel like raw Wikipedia paste, empty scaffolding, or a temporary placeholder.
+
 ## LLM Condensation Contract
 
 Input:

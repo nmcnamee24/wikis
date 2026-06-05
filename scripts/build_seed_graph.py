@@ -98,6 +98,7 @@ MANUAL_EDGES: dict[str, dict[str, list[str]]] = {
 TELEPORT_BY_PILLAR = {
     "science": ["silk-road", "epic-of-gilgamesh", "democracy"],
     "literature": ["black-hole", "ancient-rome", "cognitive-bias"],
+    "culture": ["black-hole", "ancient-rome", "cognitive-bias"],
     "society": ["saturn", "homer", "ancient-rome"],
     "history": ["black-hole", "octopus", "game-theory"],
 }

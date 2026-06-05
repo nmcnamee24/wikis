@@ -17,6 +17,7 @@ extension Pillar {
         switch self {
         case .science: .wikisGold
         case .literature: .wikisViolet
+        case .culture: .wikisViolet
         case .society: .wikisCoral
         case .history: .wikisBlue
         }
@@ -26,6 +27,7 @@ extension Pillar {
         switch self {
         case .science: "atom"
         case .literature: "book.closed"
+        case .culture: "sparkles"
         case .society: "person.2"
         case .history: "building.columns"
         }
@@ -36,6 +38,8 @@ extension Pillar {
         case .science:
             LinearGradient(colors: [.wikisInk, Color(red: 0.05, green: 0.08, blue: 0.13), .black], startPoint: .topLeading, endPoint: .bottomTrailing)
         case .literature:
+            LinearGradient(colors: [.wikisInk, Color(red: 0.10, green: 0.06, blue: 0.15), .black], startPoint: .topLeading, endPoint: .bottomTrailing)
+        case .culture:
             LinearGradient(colors: [.wikisInk, Color(red: 0.10, green: 0.06, blue: 0.15), .black], startPoint: .topLeading, endPoint: .bottomTrailing)
         case .society:
             LinearGradient(colors: [.wikisInk, Color(red: 0.13, green: 0.05, blue: 0.06), .black], startPoint: .topLeading, endPoint: .bottomTrailing)

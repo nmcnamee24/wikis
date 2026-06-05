@@ -25141,7 +25141,7 @@ insert into candidate_edges (
   0.39,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -25162,7 +25162,7 @@ insert into candidate_edges (
   0.39,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -25183,7 +25183,7 @@ insert into candidate_edges (
   0.39,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -25204,7 +25204,7 @@ insert into candidate_edges (
   0.39,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -25225,7 +25225,7 @@ insert into candidate_edges (
   0.36,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -25246,7 +25246,7 @@ insert into candidate_edges (
   0.36,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -25267,7 +25267,7 @@ insert into candidate_edges (
   0.36,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -25288,7 +25288,7 @@ insert into candidate_edges (
   0.36,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -25309,7 +25309,7 @@ insert into candidate_edges (
   0.36,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -25330,7 +25330,7 @@ insert into candidate_edges (
   0.33,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -25351,7 +25351,7 @@ insert into candidate_edges (
   0.33,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -25372,7 +25372,7 @@ insert into candidate_edges (
   0.33,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -25393,7 +25393,7 @@ insert into candidate_edges (
   0.32,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -25414,7 +25414,7 @@ insert into candidate_edges (
   0.32,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -25435,7 +25435,7 @@ insert into candidate_edges (
   0.32,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -25456,7 +25456,7 @@ insert into candidate_edges (
   0.3,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -25477,7 +25477,7 @@ insert into candidate_edges (
   0.3,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -25498,7 +25498,7 @@ insert into candidate_edges (
   0.3,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -25519,7 +25519,7 @@ insert into candidate_edges (
   0.3,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -25540,7 +25540,7 @@ insert into candidate_edges (
   0.3,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -25561,7 +25561,7 @@ insert into candidate_edges (
   0.3,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -25582,7 +25582,7 @@ insert into candidate_edges (
   0.26,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -25603,7 +25603,7 @@ insert into candidate_edges (
   0.26,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -25624,7 +25624,7 @@ insert into candidate_edges (
   0.26,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -25645,7 +25645,7 @@ insert into candidate_edges (
   0.26,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -25666,7 +25666,7 @@ insert into candidate_edges (
   0.26,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -25687,7 +25687,7 @@ insert into candidate_edges (
   0.26,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -25708,7 +25708,7 @@ insert into candidate_edges (
   0.24,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -25729,7 +25729,7 @@ insert into candidate_edges (
   0.24,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -25750,7 +25750,7 @@ insert into candidate_edges (
   0.24,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -25771,7 +25771,7 @@ insert into candidate_edges (
   0.24,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -25792,7 +25792,7 @@ insert into candidate_edges (
   0.24,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -25813,7 +25813,7 @@ insert into candidate_edges (
   0.23,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -25834,7 +25834,7 @@ insert into candidate_edges (
   0.23,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -25855,7 +25855,7 @@ insert into candidate_edges (
   0.23,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -25876,7 +25876,7 @@ insert into candidate_edges (
   0.23,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -25897,7 +25897,7 @@ insert into candidate_edges (
   0.23,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -25918,7 +25918,7 @@ insert into candidate_edges (
   0.23,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -25939,7 +25939,7 @@ insert into candidate_edges (
   0.23,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -25960,7 +25960,7 @@ insert into candidate_edges (
   0.21,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -25981,7 +25981,7 @@ insert into candidate_edges (
   0.21,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26002,7 +26002,7 @@ insert into candidate_edges (
   0.21,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26023,7 +26023,7 @@ insert into candidate_edges (
   0.21,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26044,7 +26044,7 @@ insert into candidate_edges (
   0.21,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26065,7 +26065,7 @@ insert into candidate_edges (
   0.21,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26086,7 +26086,7 @@ insert into candidate_edges (
   0.21,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26107,7 +26107,7 @@ insert into candidate_edges (
   0.21,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26128,7 +26128,7 @@ insert into candidate_edges (
   0.21,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26149,7 +26149,7 @@ insert into candidate_edges (
   0.21,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26170,7 +26170,7 @@ insert into candidate_edges (
   0.21,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26191,7 +26191,7 @@ insert into candidate_edges (
   0.21,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26212,7 +26212,7 @@ insert into candidate_edges (
   0.2,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26233,7 +26233,7 @@ insert into candidate_edges (
   0.2,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26254,7 +26254,7 @@ insert into candidate_edges (
   0.2,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26275,7 +26275,7 @@ insert into candidate_edges (
   0.2,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26296,7 +26296,7 @@ insert into candidate_edges (
   0.2,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26317,7 +26317,7 @@ insert into candidate_edges (
   0.2,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26338,7 +26338,7 @@ insert into candidate_edges (
   0.2,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26359,7 +26359,7 @@ insert into candidate_edges (
   0.2,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26380,7 +26380,7 @@ insert into candidate_edges (
   0.19,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26401,7 +26401,7 @@ insert into candidate_edges (
   0.19,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26422,7 +26422,7 @@ insert into candidate_edges (
   0.19,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26443,7 +26443,7 @@ insert into candidate_edges (
   0.19,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26464,7 +26464,7 @@ insert into candidate_edges (
   0.19,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26485,7 +26485,7 @@ insert into candidate_edges (
   0.19,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26506,7 +26506,7 @@ insert into candidate_edges (
   0.19,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26527,7 +26527,7 @@ insert into candidate_edges (
   0.19,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26548,7 +26548,7 @@ insert into candidate_edges (
   0.19,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26569,7 +26569,7 @@ insert into candidate_edges (
   0.19,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26590,7 +26590,7 @@ insert into candidate_edges (
   0.19,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26611,7 +26611,7 @@ insert into candidate_edges (
   0.18,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26632,7 +26632,7 @@ insert into candidate_edges (
   0.18,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26653,7 +26653,7 @@ insert into candidate_edges (
   0.18,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26674,7 +26674,7 @@ insert into candidate_edges (
   0.18,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26695,7 +26695,7 @@ insert into candidate_edges (
   0.18,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26716,7 +26716,7 @@ insert into candidate_edges (
   0.18,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26737,7 +26737,7 @@ insert into candidate_edges (
   0.18,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26758,7 +26758,7 @@ insert into candidate_edges (
   0.18,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26779,7 +26779,7 @@ insert into candidate_edges (
   0.18,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26800,7 +26800,7 @@ insert into candidate_edges (
   0.18,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26821,7 +26821,7 @@ insert into candidate_edges (
   0.18,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26842,7 +26842,7 @@ insert into candidate_edges (
   0.18,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26863,7 +26863,7 @@ insert into candidate_edges (
   0.18,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26884,7 +26884,7 @@ insert into candidate_edges (
   0.17,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26905,7 +26905,7 @@ insert into candidate_edges (
   0.17,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26926,7 +26926,7 @@ insert into candidate_edges (
   0.17,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26947,7 +26947,7 @@ insert into candidate_edges (
   0.17,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26968,7 +26968,7 @@ insert into candidate_edges (
   0.17,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -26989,7 +26989,7 @@ insert into candidate_edges (
   0.17,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27010,7 +27010,7 @@ insert into candidate_edges (
   0.16,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27031,7 +27031,7 @@ insert into candidate_edges (
   0.16,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27052,7 +27052,7 @@ insert into candidate_edges (
   0.16,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27073,7 +27073,7 @@ insert into candidate_edges (
   0.16,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27094,7 +27094,7 @@ insert into candidate_edges (
   0.16,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27115,7 +27115,7 @@ insert into candidate_edges (
   0.16,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27136,7 +27136,7 @@ insert into candidate_edges (
   0.16,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27157,7 +27157,7 @@ insert into candidate_edges (
   0.16,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27178,7 +27178,7 @@ insert into candidate_edges (
   0.16,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27199,7 +27199,7 @@ insert into candidate_edges (
   0.16,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27220,7 +27220,7 @@ insert into candidate_edges (
   0.15,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27241,7 +27241,7 @@ insert into candidate_edges (
   0.15,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27262,7 +27262,7 @@ insert into candidate_edges (
   0.15,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27283,7 +27283,7 @@ insert into candidate_edges (
   0.15,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27304,7 +27304,7 @@ insert into candidate_edges (
   0.15,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27325,7 +27325,7 @@ insert into candidate_edges (
   0.15,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27346,7 +27346,7 @@ insert into candidate_edges (
   0.15,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27367,7 +27367,7 @@ insert into candidate_edges (
   0.15,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27388,7 +27388,7 @@ insert into candidate_edges (
   0.15,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27409,7 +27409,7 @@ insert into candidate_edges (
   0.15,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27430,7 +27430,7 @@ insert into candidate_edges (
   0.15,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27451,7 +27451,7 @@ insert into candidate_edges (
   0.15,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27472,7 +27472,7 @@ insert into candidate_edges (
   0.15,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27493,7 +27493,7 @@ insert into candidate_edges (
   0.15,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27514,7 +27514,7 @@ insert into candidate_edges (
   0.14,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27535,7 +27535,7 @@ insert into candidate_edges (
   0.14,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27556,7 +27556,7 @@ insert into candidate_edges (
   0.14,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27577,7 +27577,7 @@ insert into candidate_edges (
   0.14,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27598,7 +27598,7 @@ insert into candidate_edges (
   0.14,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27619,7 +27619,7 @@ insert into candidate_edges (
   0.14,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27640,7 +27640,7 @@ insert into candidate_edges (
   0.14,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27661,7 +27661,7 @@ insert into candidate_edges (
   0.14,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27682,7 +27682,7 @@ insert into candidate_edges (
   0.14,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27703,7 +27703,7 @@ insert into candidate_edges (
   0.14,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27724,7 +27724,7 @@ insert into candidate_edges (
   0.14,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27745,7 +27745,7 @@ insert into candidate_edges (
   0.14,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27766,7 +27766,7 @@ insert into candidate_edges (
   0.14,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27787,7 +27787,7 @@ insert into candidate_edges (
   0.14,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27808,7 +27808,7 @@ insert into candidate_edges (
   0.14,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27829,7 +27829,7 @@ insert into candidate_edges (
   0.14,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27850,7 +27850,7 @@ insert into candidate_edges (
   0.13,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27871,7 +27871,7 @@ insert into candidate_edges (
   0.13,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27892,7 +27892,7 @@ insert into candidate_edges (
   0.13,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27913,7 +27913,7 @@ insert into candidate_edges (
   0.13,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27934,7 +27934,7 @@ insert into candidate_edges (
   0.13,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27955,7 +27955,7 @@ insert into candidate_edges (
   0.13,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27976,7 +27976,7 @@ insert into candidate_edges (
   0.13,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -27997,7 +27997,7 @@ insert into candidate_edges (
   0.13,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28018,7 +28018,7 @@ insert into candidate_edges (
   0.13,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28039,7 +28039,7 @@ insert into candidate_edges (
   0.13,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28060,7 +28060,7 @@ insert into candidate_edges (
   0.13,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28081,7 +28081,7 @@ insert into candidate_edges (
   0.13,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28102,7 +28102,7 @@ insert into candidate_edges (
   0.13,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28123,7 +28123,7 @@ insert into candidate_edges (
   0.13,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28144,7 +28144,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28165,7 +28165,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28186,7 +28186,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28207,7 +28207,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28228,7 +28228,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28249,7 +28249,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28270,7 +28270,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28291,7 +28291,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28312,7 +28312,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28333,7 +28333,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28354,7 +28354,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28375,7 +28375,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28396,7 +28396,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28417,7 +28417,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28438,7 +28438,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28459,7 +28459,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28480,7 +28480,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28501,7 +28501,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28522,7 +28522,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28543,7 +28543,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28564,7 +28564,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28585,7 +28585,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28606,7 +28606,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28627,7 +28627,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28648,7 +28648,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28669,7 +28669,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28690,7 +28690,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28711,7 +28711,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28732,7 +28732,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28753,7 +28753,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28774,7 +28774,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28795,7 +28795,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28816,7 +28816,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28837,7 +28837,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28858,7 +28858,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28879,7 +28879,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28900,7 +28900,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28921,7 +28921,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28942,7 +28942,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28963,7 +28963,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,
@@ -28984,7 +28984,7 @@ insert into candidate_edges (
   0.12,
   'neighbor',
   'pending'
-) on conflict (source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method) do update set
+) on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set
   to_topic_id = excluded.to_topic_id,
   to_title = excluded.to_title,
   candidate_strength = excluded.candidate_strength,

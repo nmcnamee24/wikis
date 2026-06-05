@@ -13,6 +13,8 @@ In V1, the engine is powered primarily by Wikipedia:
 - Wikipedia images provide topic media when they are visually suitable.
 - LLM-condensed summaries turn raw encyclopedia material into 30-second curiosity cards.
 
+The engine should feel instant even when the graph is incomplete. First render must not depend on full LLM generation. A ready topic should be returned immediately; a missing topic can be represented by an acceptable provisional card while full node and edge generation runs in the background.
+
 ## Inputs
 
 The engine receives:
@@ -59,6 +61,23 @@ Wikipedia page
   -> accept into Wikis traversal graph
 ```
 
+## Progressive Generation Behavior
+
+The traversal engine should distinguish node availability from edge availability.
+
+Nodes control what the user reads. Edges control where the world can go next. Both need their own state, rank, confidence, and generation version.
+
+Traversal rules:
+
+- Prefer ready nodes with ready edges.
+- Use provisional nodes only when they meet the minimum content standard.
+- Generate visible next hops before broader candidate expansion.
+- Keep background expansion to the immediate frontier.
+- Store refined node and edge chunks without changing the current visible page mid-read.
+- Apply polished replacements on next visit or after explicit refresh.
+
+For cost control, "generate frontier" should usually mean the current node, at most two visible neighbors, and metadata for other candidates. It should not mean recursively generating every plausible neighbor.
+
 ## Outputs
 
 The engine returns:
@@ -79,6 +98,42 @@ Example:
   "fallbackTopicIds": ["spacetime", "general_relativity"],
   "prefetchTopicIds": ["hawking_radiation", "neutron_stars", "the_silk_road"]
 }
+```
+
+## Current V1 Implementation
+
+`Sources/WikisCore/GraphNavigator.swift` implements the V1 traversal engine as a deterministic rules scorer over the seed graph.
+
+It returns:
+
+- selected next topic
+- reason code
+- selected edge when one was used
+- fallback topic IDs
+- prefetch topic IDs
+- capped background-ingestion candidate topics
+- fallback-used flag
+- debug summary
+
+The same model can back a future `POST /v1/feed/next` endpoint. For now, `FeedStore` calls it locally with explored topic IDs and saved topic IDs so the prototype benefits from repeat penalties without requiring a network service.
+
+For backend dry runs, use:
+
+```bash
+python3 scripts/feed_next.py \
+  --current-topic black-hole \
+  --gesture down \
+  --explored-topic-ids black-hole
+```
+
+After the Supabase migrations and seed data are applied, run the same resolver against Postgres:
+
+```bash
+python3 scripts/feed_next.py \
+  --use-database \
+  --current-topic black-hole \
+  --gesture down \
+  --explored-topic-ids black-hole
 ```
 
 ## Gesture Resolution
@@ -189,6 +244,7 @@ Never return a topic if:
 - image is broken and no fallback exists
 - topic is high-risk and unreviewed
 - topic has no valid outgoing candidates unless explicitly allowed
+- provisional content is too rough to stand as the product experience
 
 ## V1 Implementation Strategy
 

@@ -4,7 +4,7 @@
 
 Build the server-side logic that turns gestures into excellent next-topic choices.
 
-The traversal engine should prefer approved cached topics. If it discovers a promising missing topic, it should enqueue ingestion for later rather than making the user wait.
+The traversal engine should prefer approved cached topics. If it discovers a promising missing topic, it should use only acceptable provisional content, enqueue generation for later, and keep the feed responsive.
 
 ## Build
 
@@ -18,20 +18,36 @@ It receives current topic, gesture, and user/session context. It returns the nex
 
 ## Tasks
 
-1. Implement edge lookup by current topic.
-2. Implement gesture-specific candidate pools.
-3. Score down gestures for depth and prerequisites.
-4. Score right gestures for neighborhood relevance.
-5. Score left gestures for novelty and pillar jump.
-6. Add repetition penalties.
-7. Add source-confidence and quality filters.
-8. Add sensitivity filters.
-9. Add fallback logic.
-10. Return reason codes for debugging.
-11. Add prefetch candidates.
-12. Write tests for each gesture.
-13. Enqueue unmapped candidate topics for background ingestion.
-14. Track when a fallback was used because a better candidate was not cached yet.
+1. Implement edge lookup by current topic. Done in `GraphNavigator`.
+2. Implement gesture-specific candidate pools. Done for down/right/left edge families.
+3. Score down gestures for depth and prerequisites. Done.
+4. Score right gestures for neighborhood relevance. Done.
+5. Score left gestures for novelty and pillar jump. Done.
+6. Add repetition penalties. Done using recent exploration history.
+7. Add source-confidence and quality filters. Done.
+8. Add sensitivity filters. Done with a small V1 penalty list.
+9. Add fallback logic. Done.
+10. Return reason codes for debugging. Done via `TraversalDecision.reasonCode`.
+11. Add prefetch candidates. Done.
+12. Write tests for each gesture. Done in `WikisCoreSmokeTests`.
+13. Enqueue unmapped candidate topics for background ingestion. Done as capped `backgroundIngestionTopics`.
+14. Track when a fallback was used because a better candidate was not cached yet. Done via `fallbackWasUsed`.
+15. Generate visible next-hop edges before broader expansion. Represented by prefetch first, background candidates second.
+16. Rank and validate edges independently from topic card text. Done through edge scoring and optional edge generation fields.
+17. Prevent refined content from mutating the current visible page mid-read. Current engine returns an immutable decision snapshot.
+18. Enforce frontier caps, such as two visible neighbors plus metadata-only candidates. Done via `TraversalContext.frontierLimit`.
+
+## Current Implementation
+
+Implemented:
+
+- `Sources/WikisCore/GraphNavigator.swift`
+- `Sources/WikisCore/WikisGraph.swift`
+- `Sources/WikisCoreSmokeTests/main.swift`
+- `App/Wikis/Sources/FeedStore.swift`
+- `scripts/feed_next.py`
+
+The current engine is a deterministic rules scorer that can later sit behind `POST /v1/feed/next`. It returns the selected topic, reason code, selected edge, fallback candidates, prefetch candidates, capped background-ingestion candidates, and a debug summary. The existing app still uses the local graph, but navigation now passes exploration history so recent repeats are penalized. `scripts/feed_next.py` provides the same backend-shaped request/response contract before a hosted server exists.
 
 ## Acceptance Criteria
 
@@ -43,6 +59,9 @@ It receives current topic, gesture, and user/session context. It returns the nex
 - Engine has graceful fallback when a topic has weak edges.
 - Reason codes make decisions debuggable.
 - Missing topics are queued for ingestion without blocking feed interaction.
+- Provisional topics never feel like raw loading placeholders.
+- Edge ranking can improve without rewriting topic card content.
+- Popular hubs do not trigger unbounded background generation.
 
 ## Do Not Build Yet
 
@@ -51,3 +70,4 @@ It receives current topic, gesture, and user/session context. It returns the nex
 - Social signals
 - Ad targeting
 - User-facing community mapping
+- Recursive candidate expansion

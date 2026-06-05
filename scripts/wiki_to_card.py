@@ -15,6 +15,7 @@ import argparse
 import datetime as dt
 import html
 import json
+import os
 import re
 import sys
 import textwrap
@@ -28,7 +29,11 @@ from typing import Any
 
 
 API_URL = "https://en.wikipedia.org/w/api.php"
+OPENAI_RESPONSES_URL = "https://api.openai.com/v1/responses"
 USER_AGENT = "WikisStep01Prototype/0.1 (local development)"
+DEFAULT_OPENAI_MODEL = "gpt-5-mini"
+OPENAI_PROMPT_VERSION = "wikis-topic-page-v1"
+VALID_PILLARS = {"science", "history", "society", "culture"}
 
 PILLAR_KEYWORDS = {
     "science": [
@@ -46,7 +51,7 @@ PILLAR_KEYWORDS = {
         "computer",
         "theory",
     ],
-    "literature": [
+    "culture": [
         "book",
         "novel",
         "poem",
@@ -58,6 +63,10 @@ PILLAR_KEYWORDS = {
         "writer",
         "author",
         "epic",
+        "art",
+        "music",
+        "film",
+        "genre",
     ],
     "society": [
         "politics",
@@ -84,6 +93,67 @@ PILLAR_KEYWORDS = {
         "dynasty",
         "revolution",
     ],
+}
+
+WIKIS_CONTENT_SYSTEM_PROMPT = """You are the content-generation engine for Wikis, an app that lets users explore knowledge by moving deeper into a topic or branching into an adjacent idea.
+
+You will receive a Wikipedia article for the current topic and a list of possible connected nodes.
+
+Your task is to generate the exact content needed for one Wikis topic page.
+
+Return:
+The text displayed on the topic page.
+The single pillar the topic belongs under.
+One node that goes deeper into the current topic.
+One node that branches to an adjacent topic.
+
+Page Text:
+Write 90-130 words explaining the topic.
+The explanation should be understandable to a curious general reader, explain what the topic is and why it matters, include at least one important mechanism, cause, consequence, example, or surprising detail, provide more depth than a basic definition, avoid unnecessary names, dates, statistics, and technical terms, use short paragraphs suitable for a mobile screen, sound natural and engaging without sounding like social-media bait, use only facts supported by the supplied Wikipedia article, and select the most important ideas needed to understand the topic.
+
+Pillar Classification:
+Assign exactly one pillar: science, history, society, or culture.
+Choose the pillar that best represents the topic's primary meaning.
+
+Node Selection:
+Select exactly two nodes from candidate_nodes.
+The deeper node should explain a component, mechanism, subtopic, or more specific idea within the current topic.
+The adjacent node should be closely related but not merely a component; it should move sideways into a new but meaningfully connected idea.
+Do not classify a direct subcomponent as adjacent. Do not classify a broad parent category as deeper.
+
+Quality checks before output:
+The page text is between 90 and 130 words.
+The explanation teaches more than a surface-level definition.
+The deeper and adjacent nodes are different.
+Every factual statement is supported by the supplied article or node context.
+Return only valid JSON matching the schema."""
+
+WIKIS_CONTENT_SCHEMA: dict[str, Any] = {
+    "type": "object",
+    "additionalProperties": False,
+    "required": ["page_text", "pillar", "deeper_node", "adjacent_node"],
+    "properties": {
+        "page_text": {"type": "string"},
+        "pillar": {"type": "string", "enum": ["science", "history", "society", "culture"]},
+        "deeper_node": {
+            "type": "object",
+            "additionalProperties": False,
+            "required": ["name", "connection"],
+            "properties": {
+                "name": {"type": "string"},
+                "connection": {"type": "string"},
+            },
+        },
+        "adjacent_node": {
+            "type": "object",
+            "additionalProperties": False,
+            "required": ["name", "connection"],
+            "properties": {
+                "name": {"type": "string"},
+                "connection": {"type": "string"},
+            },
+        },
+    },
 }
 
 BAD_IMAGE_PATTERNS = re.compile(
@@ -333,7 +403,61 @@ def image_candidates_from_page(page: dict[str, Any]) -> list[dict[str, Any]]:
                 "rejectionReasons": rejection_reasons,
             }
         )
+    return enrich_image_metadata(candidates)
+
+
+def enrich_image_metadata(candidates: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    titles = [
+        f"File:{candidate['title']}"
+        for candidate in candidates
+        if candidate.get("title")
+    ]
+    if not titles:
+        return candidates
+
+    try:
+        metadata = wiki_api(
+            {
+                "action": "query",
+                "titles": "|".join(titles),
+                "prop": "imageinfo",
+                "iiprop": "extmetadata|url|mime|size",
+            }
+        )
+    except Exception:  # noqa: BLE001 - license enrichment should not block ingestion.
+        return candidates
+
+    by_title = {
+        normalize_file_title(page.get("title", "").removeprefix("File:")): page
+        for page in metadata.get("query", {}).get("pages", [])
+    }
+    for candidate in candidates:
+        page = by_title.get(normalize_file_title(candidate.get("title", "")))
+        imageinfo = (page or {}).get("imageinfo") or []
+        extmetadata = imageinfo[0].get("extmetadata", {}) if imageinfo else {}
+        candidate["license"] = metadata_value(extmetadata, "LicenseShortName") or metadata_value(extmetadata, "UsageTerms")
+        candidate["attribution"] = clean_text(
+            metadata_value(extmetadata, "Artist")
+            or metadata_value(extmetadata, "Credit")
+            or metadata_value(extmetadata, "ObjectName")
+            or candidate.get("title")
+            or ""
+        )
+        candidate["licenseUrl"] = metadata_value(extmetadata, "LicenseUrl")
+        candidate["descriptionUrl"] = metadata_value(extmetadata, "DescriptionUrl")
+        candidate["mime"] = imageinfo[0].get("mime") if imageinfo else None
     return candidates
+
+
+def metadata_value(extmetadata: dict[str, Any], key: str) -> str | None:
+    value = extmetadata.get(key, {}).get("value")
+    if not value:
+        return None
+    return clean_text(re.sub(r"<[^>]+>", "", str(value)))
+
+
+def normalize_file_title(value: str) -> str:
+    return value.replace(" ", "_")
 
 
 def score_image(name: str, width: int | None, height: int | None) -> list[str]:
@@ -351,11 +475,13 @@ def select_image(packet: SourcePacket, pillar: str) -> dict[str, Any]:
             return {
                 "strategy": "wikipedia_image",
                 "selected": candidate,
+                "candidates": packet.image_candidates,
                 "fallbackPillar": None,
             }
     return {
         "strategy": "pillar_background",
         "selected": None,
+        "candidates": packet.image_candidates,
         "fallbackPillar": pillar,
         "reason": "no_suitable_wikipedia_image",
     }
@@ -419,12 +545,135 @@ def condense_with_heuristic(packet: SourcePacket, pillar: str) -> dict[str, Any]
     }
 
 
+def condense_with_openai(packet: SourcePacket, model: str | None = None) -> dict[str, Any]:
+    api_key = os.environ.get("OPENAI_API_KEY")
+    if not api_key:
+        raise RuntimeError("OPENAI_API_KEY is required for --condenser openai")
+
+    candidate_nodes = [
+        {"name": link["title"], "context": link.get("label", "")}
+        for link in packet.links[:16]
+    ]
+    if len(candidate_nodes) < 2:
+        raise RuntimeError("OpenAI condenser requires at least two candidate nodes")
+
+    request_payload = {
+        "model": model or os.environ.get("WIKIS_OPENAI_MODEL") or DEFAULT_OPENAI_MODEL,
+        "input": [
+            {
+                "role": "system",
+                "content": WIKIS_CONTENT_SYSTEM_PROMPT,
+            },
+            {
+                "role": "user",
+                "content": json.dumps(
+                    {
+                        "topic": packet.normalized_title,
+                        "wikipedia_article": packet.extract,
+                        "candidate_nodes": candidate_nodes,
+                    },
+                    ensure_ascii=False,
+                ),
+            },
+        ],
+        "text": {
+            "format": {
+                "type": "json_schema",
+                "name": "wikis_topic_page",
+                "strict": True,
+                "schema": WIKIS_CONTENT_SCHEMA,
+            }
+        },
+    }
+    request = urllib.request.Request(
+        OPENAI_RESPONSES_URL,
+        data=json.dumps(request_payload).encode("utf-8"),
+        headers={
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json",
+        },
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(request, timeout=90) as response:
+            response_payload = json.loads(response.read().decode("utf-8"))
+    except urllib.error.HTTPError as exc:
+        body = exc.read().decode("utf-8", errors="replace")
+        raise RuntimeError(f"OpenAI Responses API failed: HTTP {exc.code}: {body}") from exc
+
+    content = extract_response_text(response_payload)
+    generated = json.loads(content)
+    validation_issues = validate_llm_topic_page(generated, candidate_nodes)
+    if validation_issues:
+        raise RuntimeError(f"OpenAI condenser returned invalid topic page: {', '.join(validation_issues)}")
+
+    deeper = generated["deeper_node"]
+    adjacent = generated["adjacent_node"]
+    return {
+        "title": packet.normalized_title,
+        "pillar": generated["pillar"],
+        "explanation": generated["page_text"],
+        "hookType": "why_it_matters",
+        "hook": adjacent["connection"],
+        "relatedCandidates": [deeper["name"], adjacent["name"]],
+        "navigationNodes": {
+            "deeper": deeper,
+            "adjacent": adjacent,
+        },
+        "readingSeconds": estimate_reading_seconds(generated["page_text"]),
+        "confidenceNotes": [
+            f"Generated with OpenAI Responses API model {request_payload['model']}.",
+            f"Prompt version: {OPENAI_PROMPT_VERSION}.",
+        ],
+        "generationProvider": "openai",
+        "generationModel": request_payload["model"],
+        "promptVersion": OPENAI_PROMPT_VERSION,
+    }
+
+
+def extract_response_text(response_payload: dict[str, Any]) -> str:
+    if response_payload.get("output_text"):
+        return str(response_payload["output_text"])
+    chunks: list[str] = []
+    for item in response_payload.get("output", []):
+        for content in item.get("content", []):
+            if content.get("type") in {"output_text", "text"} and content.get("text"):
+                chunks.append(str(content["text"]))
+    if not chunks:
+        raise RuntimeError("OpenAI response did not contain output text")
+    return "".join(chunks)
+
+
+def validate_llm_topic_page(page: dict[str, Any], candidate_nodes: list[dict[str, str]]) -> list[str]:
+    issues: list[str] = []
+    page_text = page.get("page_text", "")
+    word_count = len(page_text.split())
+    if word_count < 90:
+        issues.append("page_text_too_short")
+    if word_count > 130:
+        issues.append("page_text_too_long")
+    if page.get("pillar") not in VALID_PILLARS:
+        issues.append("invalid_pillar")
+    candidate_names = {candidate["name"] for candidate in candidate_nodes}
+    deeper_name = page.get("deeper_node", {}).get("name")
+    adjacent_name = page.get("adjacent_node", {}).get("name")
+    if deeper_name not in candidate_names:
+        issues.append("deeper_node_not_in_candidates")
+    if adjacent_name not in candidate_names:
+        issues.append("adjacent_node_not_in_candidates")
+    if deeper_name == adjacent_name:
+        issues.append("duplicate_navigation_nodes")
+    return issues
+
+
 def validate_card(card: dict[str, Any], packet: SourcePacket, image_decision: dict[str, Any]) -> list[str]:
     issues: list[str] = []
     if not card["explanation"] or len(card["explanation"].split()) < 35:
         issues.append("explanation_too_short")
     if len(card["explanation"].split()) > 140:
         issues.append("explanation_too_long")
+    if card["pillar"] not in VALID_PILLARS:
+        issues.append("invalid_pillar")
     if card["hookType"] not in {
         "the_weird_part",
         "why_it_matters",
@@ -441,19 +690,37 @@ def validate_card(card: dict[str, Any], packet: SourcePacket, image_decision: di
         selected = image_decision["selected"]
         if selected and selected.get("rejectionReasons"):
             issues.append("selected_image_has_rejection_reasons")
+    if card.get("generationProvider") == "openai":
+        word_count = len(card["explanation"].split())
+        if word_count < 90:
+            issues.append("llm_page_text_too_short")
+        if word_count > 130:
+            issues.append("llm_page_text_too_long")
+        navigation_nodes = card.get("navigationNodes", {})
+        if not navigation_nodes.get("deeper") or not navigation_nodes.get("adjacent"):
+            issues.append("missing_navigation_nodes")
     return issues
 
 
-def build_card_output(title: str) -> dict[str, Any]:
+def build_card_output(title: str, condenser: str = "local", model: str | None = None) -> dict[str, Any]:
     packet = fetch_source_packet(title)
     pillar = classify_pillar(packet.normalized_title, packet.extract, packet.links)
-    card = condense_with_heuristic(packet, pillar)
+    if condenser == "openai":
+        card = condense_with_openai(packet, model)
+        pillar = card["pillar"]
+    else:
+        card = condense_with_heuristic(packet, pillar)
     image_decision = select_image(packet, pillar)
     validation_issues = validate_card(card, packet, image_decision)
 
     return {
         "schemaVersion": 1,
         "generatedAt": dt.datetime.now(dt.UTC).replace(microsecond=0).isoformat(),
+        "generation": {
+            "provider": card.get("generationProvider", "local"),
+            "model": card.get("generationModel", "deterministic-wikipedia-condenser"),
+            "promptVersion": card.get("promptVersion", "step-01-local-v1"),
+        },
         "source": {
             "requestedTitle": packet.requested_title,
             "wikipediaTitle": packet.normalized_title,
@@ -462,6 +729,7 @@ def build_card_output(title: str) -> dict[str, Any]:
             "fetchedAt": packet.fetched_at,
             "extract": packet.extract,
             "firstParagraph": packet.first_paragraph,
+            "leadHtml": packet.lead_html,
         },
         "card": card,
         "mapping": {
@@ -511,6 +779,17 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Skip titles whose output JSON already exists.",
     )
+    parser.add_argument(
+        "--condenser",
+        choices=["local", "openai"],
+        default="local",
+        help="Use the deterministic local condenser or the OpenAI structured-output condenser.",
+    )
+    parser.add_argument(
+        "--openai-model",
+        default=os.environ.get("WIKIS_OPENAI_MODEL", DEFAULT_OPENAI_MODEL),
+        help="OpenAI model to use when --condenser openai.",
+    )
     return parser.parse_args()
 
 
@@ -535,7 +814,7 @@ def main() -> int:
             print(f"{title} -> {output_path} (skipped)")
             continue
         try:
-            card_output = build_card_output(title)
+            card_output = build_card_output(title, condenser=args.condenser, model=args.openai_model)
             path = write_card(args.out, card_output)
             status = card_output["quality"]["status"]
             print(f"{title} -> {path} ({status})")

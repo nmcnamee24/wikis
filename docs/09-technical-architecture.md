@@ -86,8 +86,21 @@ Fields:
 - risk_level
 - image_strategy
 - image_asset_id
+- generation_status
+- generation_version
+- generation_hash
 - created_at
 - updated_at
+
+Topic generation statuses:
+
+- missing
+- provisional
+- generating
+- ready
+- failed
+
+`quality_status` controls editorial visibility. `generation_status` controls pipeline state. A topic can be provisionally available for navigation before it is ready as polished content.
 
 ### Topic Source Snapshot
 
@@ -140,8 +153,23 @@ Fields:
 - edge_type
 - strength
 - reason
+- rank
+- confidence
+- generation_status
+- generation_version
+- generation_hash
 - created_at
 - updated_at
+
+Edge generation statuses:
+
+- missing
+- provisional
+- generating
+- ready
+- failed
+
+Edges should be treated as first-class generated assets, not incidental fields on a topic. This allows navigation ranking, edge validation, A/B testing, and versioning to improve independently from the page text.
 
 ### Candidate Edge
 
@@ -217,6 +245,118 @@ Fields:
 - rejection_reason
 - selected
 - created_at
+
+## Progressive Topic Graph Generation
+
+Wikis should behave like procedural generation, but the durable product asset is a progressively generated, versioned topic graph.
+
+The feed must separate navigation responsiveness from semantic polish:
+
+- Ready nodes are served immediately.
+- Missing nodes can receive a deterministic provisional version from Wikipedia summary and lead-link parsing.
+- Full LLM condensation happens in the background.
+- Visible next hops are generated before invisible expansion.
+- Candidate/radius expansion stays narrow and non-recursive.
+
+### Node Chunks
+
+A node chunk represents the topic card content.
+
+Example:
+
+```text
+Black hole
+- summary/page text
+- pillar
+- status
+- version
+```
+
+Node generation owns:
+
+- source snapshot
+- provisional explanation
+- polished explanation
+- hook text
+- pillar classification
+- image strategy
+- quality and review state
+- generation version/hash
+
+### Edge Chunks
+
+An edge chunk represents a navigable relationship between two topics.
+
+Example:
+
+```text
+Black hole -> Event horizon
+- edge_type: deeper
+- rationale
+- rank
+- confidence
+- version
+```
+
+Edge generation owns:
+
+- edge type
+- rationale
+- rank
+- confidence
+- source evidence
+- validation status
+- generation version/hash
+
+This distinction matters because bad edges make the world feel random even when page prose is good. Navigation quality should be improved by re-ranking, validating, or regenerating edges without rewriting the current topic card.
+
+### Runtime Policy
+
+On traversal:
+
+```text
+feed asks for next topic
+  -> serve ready topic if available
+  -> otherwise serve acceptable provisional topic if allowed
+  -> enqueue polished node generation in background
+  -> enqueue edge generation for visible next hops
+  -> cap expansion to the immediate frontier
+```
+
+The current visible page should not mutate while someone is reading. Store refined node and edge results, but apply them on the next visit or after an explicit refresh.
+
+### Idempotency And Locks
+
+Generation idempotency is required from day one.
+
+Each node and edge generation job should include:
+
+- stable node or edge identity
+- source snapshot hash
+- prompt version
+- model/provider version
+- generation version
+- generation hash
+- status
+- lock owner
+- started_at
+- finished_at
+- failure reason
+
+Repeated jobs must not duplicate chunks, corrupt ready content, or overwrite a newer reviewed version with older output.
+
+### Frontier Cost Policy
+
+Background expansion must have hard limits.
+
+For a missing or newly visited topic, generate:
+
+- the current node
+- at most two visible neighbor node chunks
+- edge chunks for the visible next hops
+- metadata-only candidate records for the remaining plausible links
+
+Do not recursively generate every related topic. Popular hubs such as "Physics," "United States," and "World War II" should not fan out into unbounded content jobs.
 
 ## API Endpoints
 

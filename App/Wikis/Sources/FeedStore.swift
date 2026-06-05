@@ -36,12 +36,22 @@ final class FeedStore: ObservableObject {
 
     @discardableResult
     func navigate(_ gesture: NavigationGesture) -> Bool {
-        guard let currentTopic, let nextTopic = navigator?.nextTopic(from: currentTopic.id, gesture: gesture) else {
+        guard let currentTopic else {
+            return false
+        }
+        let context = TraversalContext(
+            exploredTopicIds: exploredTopics.map(\.id),
+            savedTopicIds: savedTopicIds,
+            allowPrototypeContent: true,
+            frontierLimit: 2,
+            prefetchLimit: 3
+        )
+        guard let decision = navigator?.decision(from: currentTopic.id, gesture: gesture, context: context) else {
             return false
         }
         withAnimation(.spring(response: 0.42, dampingFraction: 0.86)) {
-            self.currentTopic = nextTopic
-            self.exploredTopics.append(nextTopic)
+            self.currentTopic = decision.nextTopic
+            self.exploredTopics.append(decision.nextTopic)
             self.lastGestureLabel = gesture.label
         }
         return true

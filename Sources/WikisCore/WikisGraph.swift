@@ -31,11 +31,25 @@ public struct Topic: Codable, Identifiable, Equatable, Sendable {
     public let qualityStatus: String
     public let wikipedia: WikipediaSource
     public let image: ImageDecision
+
+    public var isProductionVisible: Bool {
+        qualityStatus == "approved" || qualityStatus == "prototype_pass"
+    }
+
+    public var visualStrength: Double {
+        switch image.strategy {
+        case .wikipediaImage:
+            image.selected?.qualityScore ?? 0.75
+        case .pillarBackground:
+            0.48
+        }
+    }
 }
 
 public enum Pillar: String, Codable, CaseIterable, Sendable {
     case science
     case literature
+    case culture
     case society
     case history
 
@@ -98,6 +112,59 @@ public struct TopicEdge: Codable, Identifiable, Equatable, Sendable {
     public let type: EdgeType
     public let strength: Double
     public let reason: String
+    public let rank: Int?
+    public let confidence: Double?
+    public let generationStatus: GenerationStatus?
+    public let generationVersion: String?
+    public let generationHash: String?
+
+    public init(
+        id: String,
+        from: String,
+        to: String,
+        type: EdgeType,
+        strength: Double,
+        reason: String,
+        rank: Int? = nil,
+        confidence: Double? = nil,
+        generationStatus: GenerationStatus? = nil,
+        generationVersion: String? = nil,
+        generationHash: String? = nil
+    ) {
+        self.id = id
+        self.from = from
+        self.to = to
+        self.type = type
+        self.strength = strength
+        self.reason = reason
+        self.rank = rank
+        self.confidence = confidence
+        self.generationStatus = generationStatus
+        self.generationVersion = generationVersion
+        self.generationHash = generationHash
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case from
+        case to
+        case type
+        case strength
+        case reason
+        case rank
+        case confidence
+        case generationStatus
+        case generationVersion
+        case generationHash
+    }
+}
+
+public enum GenerationStatus: String, Codable, Sendable {
+    case missing
+    case provisional
+    case generating
+    case ready
+    case failed
 }
 
 public enum EdgeType: String, Codable, Sendable {
@@ -124,7 +191,7 @@ public struct GestureTargets: Codable, Equatable, Sendable {
     }
 }
 
-public enum NavigationGesture: Sendable {
+public enum NavigationGesture: Sendable, Equatable, Codable {
     case down
     case right
     case left
@@ -145,4 +212,3 @@ public struct GraphStats: Codable, Equatable, Sendable {
     public let pillarCounts: [String: Int]
     public let validationIssues: [String]
 }
-
