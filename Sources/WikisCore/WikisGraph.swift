@@ -59,7 +59,6 @@ public enum Pillar: String, Codable, CaseIterable, Sendable {
 }
 
 public enum HookType: String, Codable, Sendable {
-    case theWeirdPart = "the_weird_part"
     case whyItMatters = "why_it_matters"
     case scientistsStillDontKnow = "scientists_still_dont_know"
     case theTwist = "the_twist"
@@ -67,7 +66,6 @@ public enum HookType: String, Codable, Sendable {
 
     public var displayPrefix: String {
         switch self {
-        case .theWeirdPart: "The weird part:"
         case .whyItMatters: "Why it matters:"
         case .scientistsStillDontKnow: "Scientists still don't know:"
         case .theTwist: "The twist:"

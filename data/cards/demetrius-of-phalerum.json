@@ -1,35 +1,55 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-05T08:54:40+00:00",
+  "generatedAt": "2026-06-05T20:28:43+00:00",
+  "generation": {
+    "provider": "openai",
+    "model": "gpt-5-mini",
+    "promptVersion": "wikis-topic-page-v1"
+  },
   "source": {
     "requestedTitle": "Demetrius of Phalerum",
     "wikipediaTitle": "Demetrius of Phalerum",
     "pageId": 260858,
     "revisionId": 1352716961,
-    "fetchedAt": "2026-06-05T08:54:40+00:00",
+    "fetchedAt": "2026-06-05T20:28:28+00:00",
     "extract": "Demetrius of Phalerum (also Demetrius of Phaleron or Demetrius Phalereus; Ancient Greek: Δημήτριος ὁ Φαληρεύς; c. 350 – c. 280 BC) was an Athenian orator originally from Phalerum, an ancient port of Athens. A student of Theophrastus, and perhaps of Aristotle, he was one of the first members of the Peripatetic school of philosophy. Demetrius had been a distinguished statesman who was appointed by Cassander, the King of Macedon, to govern Athens, where Demetrius ruled as sole ruler for ten years. During this time, he introduced important reforms of the legal system, while also maintaining pro-Cassander oligarchic rule. Demetrius was exiled by his enemies in 307 BC. He first went to Thebes, and then, after 297 BC, went to the court of Alexandria. He wrote extensively on the subjects of history, rhetoric, and literary criticism. He is not to be confused with his grandson, also called Demetrius of Phaleron, who probably served as regent of Athens between 262 and 255, on behalf of the Macedonian King Antigonos Gonatas.",
-    "firstParagraph": "Demetrius of Phalerum (also Demetrius of Phaleron or Demetrius Phalereus; Ancient Greek: Δημήτριος ὁ Φαληρεύς; c. 350 – c. 280 BC) was an Athenian orator originally from Phalerum, an ancient port of Athens."
+    "firstParagraph": "Demetrius of Phalerum (also Demetrius of Phaleron or Demetrius Phalereus; Ancient Greek: Δημήτριος ὁ Φαληρεύς; c. 350 – c. 280 BC) was an Athenian orator originally from Phalerum, an ancient port of Athens.",
+    "leadHtml": "<div class=\"mw-content-ltr mw-parser-output\" lang=\"en\" dir=\"ltr\"><div class=\"shortdescription nomobile noexcerpt noprint searchaux\" style=\"display:none\">Greek statesman and philosopher (c.350–c.280 BC)</div>\n<style data-mw-deduplicate=\"TemplateStyles:r1305433154\">.mw-parser-output .ambox{border:1px solid #a2a9b1;border-left:10px solid #36c;background-color:#fbfbfb;box-sizing:border-box}.mw-parser-output .ambox+link+.ambox,.mw-parser-output .ambox+link+style+.ambox,.mw-parser-output .ambox+link+link+.ambox,.mw-parser-output .ambox+.mw-empty-elt+link+.ambox,.mw-parser-output .ambox+.mw-empty-elt+link+style+.ambox,.mw-parser-output .ambox+.mw-empty-elt+link+link+.ambox{margin-top:-1px}html body.mediawiki .mw-parser-output .ambox.mbox-small-left{margin:4px 1em 4px 0;overflow:hidden;width:238px;border-collapse:collapse;font-size:88%;line-height:1.25em}.mw-parser-output .ambox-speedy{border-left:10px solid #b32424;background-color:#fee7e6}.mw-parser-output .ambox-delete{border-left:10px solid #b32424}.mw-parser-output .ambox-content{border-left:10px solid #f28500}.mw-parser-output .ambox-style{border-left:10px solid #fc3}.mw-parser-output .ambox-move{border-left:10px solid #9932cc}.mw-parser-output .ambox-protection{border-left:10px solid #a2a9b1}.mw-parser-output .ambox .mbox-text{border:none;padding:0.25em 0.5em;width:100%}.mw-parser-output .ambox .mbox-image{border:none;padding:2px 0 2px 0.5em;text-align:center}.mw-parser-output .ambox .mbox-imageright{border:none;padding:2px 0.5em 2px 0;text-align:center}.mw-parser-output .ambox .mbox-empty-cell{border:none;padding:0;width:1px}.mw-parser-output .ambox .mbox-image-div{width:52px}@media(min-width:720px){.mw-parser-output .ambox{margin:0 10%}}@media print{body.ns-0 .mw-parser-output .ambox{display:none!important}}</style><table class=\"box-Primary&#95;sources plainlinks metadata ambox ambox-content ambox-Primary&#95;sources\" role=\"presentation\"><tbody><tr><td class=\"mbox-image\"><div class=\"mbox-image-div\"><span typeof=\"mw:File\"><a href=\"/wiki/File:Question_book-new.svg\" class=\"mw-file-description\"><img alt=\"icon\" src=\"//upload.wikimedia.org/wikipedia/en/thumb/9/99/Question_book-new.svg/60px-Question_book-new.svg.png\" decoding=\"async\" width=\"50\" height=\"39\" class=\"mw-file-element\" srcset=\"//upload.wikimedia.org/wikipedia/en/thumb/9/99/Question_book-new.svg/120px-Question_book-new.svg.png 2x\" data-file-width=\"512\" data-file-height=\"399\" /></a></span></div></td><td class=\"mbox-text\"><div class=\"mbox-text-span\">This article <b>relies excessively on <a href=\"/wiki/Wikipedia:Verifiability\" title=\"Wikipedia:Verifiability\">references</a> to <a href=\"/wiki/Wikipedia:No_original_research#Primary,_secondary_and_tertiary_sources\" title=\"Wikipedia:No original research\">primary sources</a></b>.<span class=\"hide-when-compact\"> Please improve this article by adding <a href=\"/wiki/Wikipedia:No_original_research#Primary,_secondary_and_tertiary_sources\" title=\"Wikipedia:No original research\">secondary or tertiary sources</a>. <br /><small><span class=\"plainlinks\"><i>Find sources:</i>&#160;<a rel=\"nofollow\" class=\"external text\" href=\"https://www.google.com/search?as_eq=wikipedia&amp;q=%22Demetrius+of+Phalerum%22\">\"Demetrius of Phalerum\"</a>&#160;–&#160;<a rel=\"nofollow\" class=\"external text\" href=\"https://www.google.com/search?tbm=nws&amp;q=%22Demetrius+of+Phalerum%22+-wikipedia&amp;tbs=ar:1\">news</a>&#160;<b>·</b> <a rel=\"nofollow\" class=\"external text\" href=\"https://www.google.com/search?&amp;q=%22Demetrius+of+Phalerum%22&amp;tbs=bkt:s&amp;tbm=bks\">newspapers</a>&#160;<b>·</b> <a rel=\"nofollow\" class=\"external text\" href=\"https://www.google.com/search?tbs=bks:1&amp;q=%22Demetrius+of+Phalerum%22+-wikipedia\">books</a>&#160;<b>·</b> <a rel=\"nofollow\" class=\"external text\" href=\"https://scholar.google.com/scholar?q=%22Demetrius+of+Phalerum%22\">scholar</a>&#160;<b>·</b> <a rel=\"nofollow\" class=\"external text\" href=\"https://www.jstor.org/action/doBasicSearch?Query=%22Demetrius+of+Phalerum%22&amp;acc=on&amp;wc=on\">JSTOR</a></span></small></span>  <span class=\"date-container\"><i>(<span class=\"date\">May 2025</span>)</i></span><span class=\"hide-when-compact\"><i> (<small><a href=\"/wiki/Help:Maintenance_template_removal\" title=\"Help:Maintenance template removal\">Learn how and when to remove this message</a></small>)</i></span></div></td></tr></tbody></table>\n<figure typeof=\"mw:File/Thumb\"><a href=\"/wiki/File:Bust_of_Demetrius_Phalereus_at_Kunsthistorisches_Museum.jpg\" class=\"mw-file-description\"><img src=\"//upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Bust_of_Demetrius_Phalereus_at_Kunsthistorisches_Museum.jpg/250px-Bust_of_Demetrius_Phalereus_at_Kunsthistorisches_Museum.jpg\" decoding=\"async\" width=\"200\" height=\"247\" class=\"mw-file-element\" srcset=\"//upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Bust_of_Demetrius_Phalereus_at_Kunsthistorisches_Museum.jpg/500px-Bust_of_Demetrius_Phalereus_at_Kunsthistorisches_Museum.jpg 2x\" data-file-width=\"1038\" data-file-height=\"1280\" /></a><figcaption>Roman bust of Demetrius, <abbr title=\"circa\">c.</abbr> 1st century BC, after a Greek original</figcaption></figure>\n<p><b>Demetrius of Phalerum</b> (also <b>Demetrius of Phaleron</b> or <b>Demetrius Phalereus</b>; <a href=\"/wiki/Ancient_Greek_language\" class=\"mw-redirect\" title=\"Ancient Greek language\">Ancient Greek</a>: <span lang=\"grc\">Δημήτριος ὁ Φαληρεύς</span>; c. 350 – c. 280 BC<sup id=\"cite&#95;ref-FOOTNOTEDorandi199949–50&#95;1-0\" class=\"reference\"><a href=\"#cite_note-FOOTNOTEDorandi199949–50-1\"><span class=\"cite-bracket\">&#91;</span>1<span class=\"cite-bracket\">&#93;</span></a></sup>) was an <a href=\"/wiki/Athens\" title=\"Athens\">Athenian</a> orator originally from <a href=\"/wiki/Phalerum\" title=\"Phalerum\">Phalerum</a>, an ancient port of <a href=\"/wiki/Athens\" title=\"Athens\">Athens</a>. A student of <a href=\"/wiki/Theophrastus\" title=\"Theophrastus\">Theophrastus</a>, and perhaps of <a href=\"/wiki/Aristotle\" title=\"Aristotle\">Aristotle</a>, he was one of the first members of the <a href=\"/wiki/Peripatetic_school\" title=\"Peripatetic school\">Peripatetic school of philosophy</a>. Demetrius had been a distinguished statesman who was appointed by <a href=\"/wiki/Cassander\" title=\"Cassander\">Cassander</a>, the King of Macedon, to govern <a href=\"/wiki/Athens\" title=\"Athens\">Athens</a>, where Demetrius ruled as sole ruler for ten years. During this time, he introduced important reforms of the <a href=\"/wiki/Legal\" class=\"mw-redirect\" title=\"Legal\">legal</a> system, while also maintaining pro-Cassander <a href=\"/wiki/Oligarchy\" title=\"Oligarchy\">oligarchic</a> rule.\n</p><p>Demetrius was exiled by his enemies in 307 BC. He first went to <a href=\"/wiki/Thebes,_Greece\" title=\"Thebes, Greece\">Thebes</a>, and then, after 297 BC, went to the court of <a href=\"/wiki/Alexandria\" title=\"Alexandria\">Alexandria</a>. He wrote extensively on the subjects of <a href=\"/wiki/History\" title=\"History\">history</a>, <a href=\"/wiki/Rhetoric\" title=\"Rhetoric\">rhetoric</a>, and <a href=\"/wiki/Literary_criticism\" title=\"Literary criticism\">literary criticism</a>. He is not to be confused with his grandson, also called Demetrius of Phaleron, who probably served as regent of Athens between 262 and 255, on behalf of the Macedonian King <a href=\"/wiki/Antigonos_Gonatas\" class=\"mw-redirect\" title=\"Antigonos Gonatas\">Antigonos Gonatas</a>.<sup id=\"cite&#95;ref-2\" class=\"reference\"><a href=\"#cite_note-2\"><span class=\"cite-bracket\">&#91;</span>2<span class=\"cite-bracket\">&#93;</span></a></sup>\n</p>\n<div class=\"mw-references-wrap\"><ol class=\"references\">\n<li id=\"cite&#95;note-FOOTNOTEDorandi199949–50-1\"><span class=\"mw-cite-backlink\"><b><a href=\"#cite_ref-FOOTNOTEDorandi199949–50_1-0\">^</a></b></span> <span class=\"reference-text\"><a href=\"#CITEREFDorandi1999\">Dorandi 1999</a>, pp.&#160;49–50.</span>\n</li>\n<li id=\"cite&#95;note-2\"><span class=\"mw-cite-backlink\"><b><a href=\"#cite_ref-2\">^</a></b></span> <span class=\"reference-text\">C. Habicht, <i>Athens from Alexander to Anthony</i> (London, 1997), 151-154.</span>\n</li>\n</ol></div>\n<!-- \nNewPP limit report\nParsed by mw‐api‐ext.eqiad.main‐7675448b98‐gg5xn\nCached time: 20260605202827\nCache expiry: 2592000\nReduced expiry: false\nComplications: [vary‐revision‐sha1, prevent‐selective‐update]\nCPU time usage: 0.224 seconds\nReal time usage: 0.304 seconds\nPreprocessor visited node count: 335/1000000\nRevision size: 1550/2097152 bytes\nPost‐expand include size: 11569/2097152 bytes\nTemplate argument size: 715/2097152 bytes\nHighest expansion depth: 9/100\nExpensive parser function count: 1/500\nUnstrip recursion depth: 0/20\nUnstrip post‐expand size: 2001/5000000 bytes\nLua time usage: 0.177/10.000 seconds\nLua memory usage: 16081252/52428800 bytes\nNumber of Wikibase entities loaded: 0/500\n-->\n<!--\nTransclusion expansion time report (%,ms,calls,template)\n100.00%  282.123      1 -total\n 38.47%  108.534      1 Template:Langx\n 20.27%   57.196      1 Template:Short_description\n 20.16%   56.875      1 Template:Primary\n 19.90%   56.154      1 Template:Sfn\n 18.01%   50.823      1 Template:Ambox\n 11.85%   33.438      2 Template:Pagetype\n  5.08%   14.319      4 Template:Main_other\n  4.36%   12.310      1 Template:SDcat\n  3.91%   11.020      1 Template:Find_sources_mainspace\n-->\n\n<!-- Render ID 1c2f4172-611d-11f1-9f10-ad2ab8b85a42 -->\n</div>"
   },
   "card": {
     "title": "Demetrius of Phalerum",
-    "pillar": "literature",
-    "explanation": "Demetrius of Phalerum (also Demetrius of Phaleron or Demetrius Phalereus; Ancient Greek: Δημήτριος ὁ Φαληρεύς; c. 350 – c. 280 BC) was an Athenian orator originally from Phalerum, an ancient port of Athens. A student of Theophrastus, and perhaps of Aristotle, he was one of the first members of the Peripatetic school of philosophy.",
-    "hookType": "the_weird_part",
-    "hook": "It connects quickly to Ancient Greek language, which is why one topic can open into a much larger rabbit hole.",
+    "pillar": "history",
+    "explanation": "Demetrius of Phalerum was an Athenian orator and statesman who governed Athens as a sole ruler for about ten years after being appointed by the Macedonian king Cassander. He mattered because he combined practical politics with philosophical learning: a student of Theophrastus and perhaps Aristotle, he was among the first members of the Peripatetic school and used that background to shape policy.\n\nAs governor he introduced important legal reforms but kept an oligarchic, pro‑Cassander regime, which made enemies and led to his exile in 307 BC. He then went first to Thebes and later to the court of Alexandria, where he wrote widely on history, rhetoric, and literary criticism.",
+    "hookType": "why_it_matters",
+    "hook": "Cassander, the Macedonian king, appointed Demetrius to govern Athens and backed the oligarchic rule he maintained.",
     "relatedCandidates": [
+      "Peripatetic school",
+      "Cassander",
       "Ancient Greek language",
       "Athens",
       "Phalerum",
       "Theophrastus",
       "Aristotle",
-      "Peripatetic school",
-      "Cassander",
       "Legal"
     ],
-    "readingSeconds": 19,
+    "navigationNodes": {
+      "deeper": {
+        "name": "Peripatetic school",
+        "connection": "Demetrius was one of the first members of the Peripatetic school of philosophy, which shaped his intellectual approach to governance."
+      },
+      "adjacent": {
+        "name": "Cassander",
+        "connection": "Cassander, the Macedonian king, appointed Demetrius to govern Athens and backed the oligarchic rule he maintained."
+      }
+    },
+    "readingSeconds": 29,
     "confidenceNotes": [
-      "Generated by deterministic local condenser from Wikipedia extract."
-    ]
+      "Generated with OpenAI Responses API model gpt-5-mini.",
+      "Prompt version: wikis-topic-page-v1."
+    ],
+    "generationProvider": "openai",
+    "generationModel": "gpt-5-mini",
+    "promptVersion": "wikis-topic-page-v1"
   },
   "mapping": {
     "linkStrategy": "first_paragraph",
@@ -110,13 +130,13 @@
       }
     ],
     "relatedTopicCandidates": [
+      "Peripatetic school",
+      "Cassander",
       "Ancient Greek language",
       "Athens",
       "Phalerum",
       "Theophrastus",
       "Aristotle",
-      "Peripatetic school",
-      "Cassander",
       "Legal"
     ]
   },
@@ -130,8 +150,30 @@
       "width": 1038,
       "height": 1280,
       "qualityScore": 0.82,
-      "rejectionReasons": []
+      "rejectionReasons": [],
+      "license": "CC BY-SA 4.0",
+      "attribution": "Yair Haklai",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "descriptionUrl": null,
+      "mime": "image/jpeg"
     },
+    "candidates": [
+      {
+        "source": "wikipedia_pageimage",
+        "title": "Bust_of_Demetrius_Phalereus_at_Kunsthistorisches_Museum.jpg",
+        "url": "https://upload.wikimedia.org/wikipedia/commons/6/6c/Bust_of_Demetrius_Phalereus_at_Kunsthistorisches_Museum.jpg",
+        "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/6/6c/Bust_of_Demetrius_Phalereus_at_Kunsthistorisches_Museum.jpg",
+        "width": 1038,
+        "height": 1280,
+        "qualityScore": 0.82,
+        "rejectionReasons": [],
+        "license": "CC BY-SA 4.0",
+        "attribution": "Yair Haklai",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "descriptionUrl": null,
+        "mime": "image/jpeg"
+      }
+    ],
     "fallbackPillar": null
   },
   "quality": {

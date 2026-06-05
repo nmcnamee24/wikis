@@ -38,8 +38,8 @@ Expected result:
 WikisCore smoke test passed
 topics: 100
 black-hole down: Event horizon
-black-hole right: Neutron star
-black-hole left: Silk Road
+black-hole right: Saturn
+black-hole left: Epic of Gilgamesh
 ```
 
 ## Xcode Note

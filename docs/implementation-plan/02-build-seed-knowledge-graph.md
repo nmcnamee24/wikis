@@ -102,6 +102,8 @@ Current edge types:
 
 The current graph satisfies the lower bound of the Step 02 production target and gives every topic a down, right, and left path without live generation.
 
+`scripts/validate_seed_graph.py` verifies the acceptance criteria directly, including the 100-topic lower bound, starter-pool size, pillar balance, image/fallback availability, per-topic gesture coverage, and 10-card rabbit-hole paths.
+
 ## Next Expansion Target
 
 Before the iOS prototype is polished, consider expanding from 100 toward 300 topics by ingesting the highest-priority entries from `candidateQueue`.

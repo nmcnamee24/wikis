@@ -79,8 +79,8 @@ Result:
 WikisCore smoke test passed
 topics: 100
 black-hole down: Event horizon
-black-hole right: Neutron star
-black-hole left: Silk Road
+black-hole right: Saturn
+black-hole left: Epic of Gilgamesh
 ```
 
 The local machine does not currently have full Xcode selected, so an iOS simulator run was not possible in this environment.

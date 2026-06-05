@@ -115,7 +115,13 @@ It returns:
 - fallback-used flag
 - debug summary
 
-The same model can back a future `POST /v1/feed/next` endpoint. For now, `FeedStore` calls it locally with explored topic IDs and saved topic IDs so the prototype benefits from repeat penalties without requiring a network service.
+The same model is now available through the hosted FastAPI backend:
+
+```text
+https://wikis-api-production.up.railway.app/v1/feed/next
+```
+
+`FeedStore` still calls the local Swift engine for the prototype, with explored topic IDs and saved topic IDs so the prototype benefits from repeat penalties without requiring a network service. The Railway API loads the graph from Supabase and returns the same backend-shaped traversal response.
 
 For backend dry runs, use:
 
@@ -134,6 +140,14 @@ python3 scripts/feed_next.py \
   --current-topic black-hole \
   --gesture down \
   --explored-topic-ids black-hole
+```
+
+Hosted API check:
+
+```bash
+curl -sS -X POST https://wikis-api-production.up.railway.app/v1/feed/next \
+  -H 'Content-Type: application/json' \
+  -d '{"currentTopicId":"black-hole","gesture":"down","exploredTopicIds":["black-hole"],"frontierLimit":2,"prefetchLimit":3}'
 ```
 
 ## Gesture Resolution

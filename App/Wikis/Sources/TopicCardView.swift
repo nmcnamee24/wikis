@@ -70,9 +70,6 @@ struct TopicCardView: View {
                             .multilineTextAlignment(.leading)
                             .foregroundStyle(Color.white.opacity(0.92))
                             .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.bottom, 24)
-
-                        hookCard
                             .padding(.bottom, 42)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -128,26 +125,6 @@ struct TopicCardView: View {
 
     private var bodySize: CGFloat {
         topic.explanation.count > 430 ? 18 : 20
-    }
-
-    private var hookCard: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(topic.hookType.displayPrefix)
-                .font(.system(size: 15, weight: .bold))
-                .foregroundStyle(topic.pillar.accentColor)
-                .textCase(.uppercase)
-                .frame(maxWidth: .infinity, alignment: .leading)
-
-            Text(topic.hook)
-                .font(.system(size: 19, weight: .medium))
-                .lineSpacing(6)
-                .multilineTextAlignment(.leading)
-                .foregroundStyle(Color.wikisCream)
-                .frame(maxWidth: .infinity, alignment: .leading)
-        }
-        .padding(18)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(.ultraThinMaterial.opacity(0.55), in: RoundedRectangle(cornerRadius: 8))
     }
 
     private var header: some View {

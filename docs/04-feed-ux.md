@@ -63,24 +63,9 @@ Voice:
 - non-childish
 - no generic "in today's world" filler
 
-### Curiosity Hook
+### Reading Block
 
-Always end with one of:
-
-- The weird part:
-- Why it matters:
-- Scientists still don't know:
-- The twist:
-- The surprising part:
-
-The hook exists to make the next swipe feel earned.
-
-Example:
-
-```text
-The weird part:
-Near a black hole, time itself stretches, so two people can disagree about how much time has passed and both be right.
-```
+For now, each card should be one clean block of explanatory text. Keep hook-like material inside the paragraph only when it reads naturally.
 
 ## Gestures
 
@@ -170,4 +155,3 @@ If image loading fails:
 
 - use pillar background
 - do not show empty frames or broken images
-

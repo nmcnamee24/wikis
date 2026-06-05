@@ -1,35 +1,55 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-05T07:00:02+00:00",
+  "generatedAt": "2026-06-05T20:29:55+00:00",
+  "generation": {
+    "provider": "openai",
+    "model": "gpt-5-mini",
+    "promptVersion": "wikis-topic-page-v1"
+  },
   "source": {
-    "requestedTitle": "Order (biology)",
+    "requestedTitle": "Order (taxonomy)",
     "wikipediaTitle": "Order (taxonomy)",
     "pageId": 61763,
     "revisionId": 1355971228,
-    "fetchedAt": "2026-06-05T07:00:02+00:00",
+    "fetchedAt": "2026-06-05T20:29:32+00:00",
     "extract": "Order (Latin: ordo) is one of the eight major hierarchical taxonomic ranks in Linnaean taxonomy. It is classified between family and class. Like the other ranks, orders reflect shared ancestry; for example, all owls belong to the order Strigiformes. In biological classification systems, orders and their usage are defined by nomenclature codes. An immediately higher rank, superorder, is sometimes added directly above order, with suborder directly beneath order. What does and does not belong to each order is determined by a taxonomist, as is whether a particular order should be recognized at all. Often there is no exact agreement, with different taxonomists each taking a different position. There are no hard rules that a taxonomist needs to follow in describing or recognizing an order. Some taxa are accepted almost universally, while others are recognized only rarely. The name of an order is usually written with a capital letter. For some groups of organisms, their orders may follow consistent naming schemes. Orders of plants, fungi, and algae use the suffix -ales (e.g. Dictyotales). Orders of birds and fishes use the Latin suffix -iformes meaning 'having the form of' (e.g. Passeriformes), most orders of insects use the suffix -ptera meaning 'wing', but orders of mammals, reptiles, amphibians and invertebrates are not so consistent (e.g. Artiodactyla, Anura, Crocodylia, Actiniaria, Primates).",
-    "firstParagraph": "Order (Latin: ordo) is one of the eight major hierarchical taxonomic ranks in Linnaean taxonomy. It is classified between family and class. Like the other ranks, orders reflect shared ancestry; for example, all owls belong to the order Strigiformes."
+    "firstParagraph": "Order (Latin: ordo) is one of the eight major hierarchical taxonomic ranks in Linnaean taxonomy. It is classified between family and class. Like the other ranks, orders reflect shared ancestry; for example, all owls belong to the order Strigiformes.",
+    "leadHtml": "<div class=\"mw-content-ltr mw-parser-output\" lang=\"en\" dir=\"ltr\"><div class=\"shortdescription nomobile noexcerpt noprint searchaux\" style=\"display:none\">Taxonomic rank between class and family</div>\n<style data-mw-deduplicate=\"TemplateStyles:r1353705441\">.mw-parser-output .hatnote{font-style:italic}.mw-parser-output div.hatnote{padding-left:1.6em;margin-bottom:0.5em}.mw-parser-output .hatnote i{font-style:normal}.mw-parser-output .hatnote+span.mw-empty-elt+.hatnote,.mw-parser-output .hatnote+link+.hatnote{margin-top:-0.5em}@media print{body.ns-0 .mw-parser-output .hatnote{display:none!important}}</style><div role=\"note\" class=\"hatnote navigation-not-searchable\">This article is about the taxonomic rank. For other uses, see <a href=\"/wiki/Order_(disambiguation)\" class=\"mw-redirect mw-disambig\" title=\"Order (disambiguation)\">Order</a>.</div>\n<figure class=\"mw-halign-right noresize\" typeof=\"mw:File/Thumb\"><a href=\"/wiki/File:Biological_classification_L_Pengo_vflip.svg\" title=\"File:Biological classification L Pengo vflip.svg\"><img src=\"//upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Biological_classification_L_Pengo_vflip.svg/250px-Biological_classification_L_Pengo_vflip.svg.png\" decoding=\"async\" width=\"150\" height=\"375\" class=\"mw-file-element\" srcset=\"//upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Biological_classification_L_Pengo_vflip.svg/330px-Biological_classification_L_Pengo_vflip.svg.png 2x\" data-file-width=\"240\" data-file-height=\"600\" usemap=\"#ImageMap_1f0f5aceb8b7906b\" resource=\"/wiki/File:Biological_classification_L_Pengo_vflip.svg\" /></a><map name=\"ImageMap_1f0f5aceb8b7906b\"><area href=\"/wiki/Life\" coords=\"63,9,141,36\" alt=\"Life\" title=\"Life\" /><area href=\"/wiki/Domain_(taxonomy)\" coords=\"63,49,141,75\" alt=\"Domain\" title=\"Domain\" /><area href=\"/wiki/Kingdom_(taxonomy)\" coords=\"63,89,141,115\" alt=\"Kingdom\" title=\"Kingdom\" /><area href=\"/wiki/Phylum\" coords=\"63,128,141,154\" alt=\"Phylum\" title=\"Phylum\" /><area href=\"/wiki/Class_(taxonomy)\" coords=\"63,168,141,194\" alt=\"Class\" title=\"Class\" /><area href=\"/wiki/Order_(taxonomy)\" coords=\"63,208,141,234\" alt=\"Order\" title=\"Order\" /><area href=\"/wiki/Family_(taxonomy)\" coords=\"63,247,141,273\" alt=\"Family\" title=\"Family\" /><area href=\"/wiki/Genus\" coords=\"63,287,141,313\" alt=\"Genus\" title=\"Genus\" /><area href=\"/wiki/Species\" coords=\"63,326,141,353\" alt=\"Species\" title=\"Species\" /></map><figcaption>The hierarchy of <a href=\"/wiki/Taxonomy_(biology)\" title=\"Taxonomy (biology)\">biological classification</a>'s eight major <a href=\"/wiki/Taxonomic_rank\" title=\"Taxonomic rank\">taxonomic ranks</a>.  Intermediate minor rankings are not shown.</figcaption></figure>\n<p>\n<b>Order</b> (<a href=\"/wiki/Latin_language\" class=\"mw-redirect\" title=\"Latin language\">Latin</a>: <i lang=\"la\"><a href=\"https://en.wiktionary.org/wiki/ordo#Latin\" class=\"extiw\" title=\"wikt:ordo\">ordo</a></i>) is one of the eight major hierarchical <a href=\"/wiki/Taxonomic_rank\" title=\"Taxonomic rank\">taxonomic ranks</a> in <a href=\"/wiki/Linnaean_taxonomy\" title=\"Linnaean taxonomy\">Linnaean taxonomy</a>. It is classified between <a href=\"/wiki/Family_(taxonomy)\" title=\"Family (taxonomy)\">family</a> and <a href=\"/wiki/Class_(biology)\" class=\"mw-redirect\" title=\"Class (biology)\"> class</a>. Like the other ranks, orders reflect <a href=\"/wiki/Shared_ancestry\" class=\"mw-redirect\" title=\"Shared ancestry\">shared ancestry</a>; for example, all <a href=\"/wiki/Owl\" title=\"Owl\">owls</a> belong to the order Strigiformes. In <a href=\"/wiki/Biological_classification\" class=\"mw-redirect\" title=\"Biological classification\">biological classification</a> systems, orders and their usage are defined by <a href=\"/wiki/Nomenclature_codes\" title=\"Nomenclature codes\">nomenclature codes</a>. An immediately higher rank, <b>superorder</b>, is sometimes added directly above order, with <b>suborder</b> directly beneath order. \n</p><p>What does and does not belong to each order is determined by a <a href=\"/wiki/Taxonomist\" class=\"mw-redirect\" title=\"Taxonomist\">taxonomist</a>, as is whether a particular order should be recognized at all. Often there is no exact agreement, with different taxonomists each taking a different position. There are no hard rules that a taxonomist needs to follow in describing or recognizing an order. Some taxa are accepted almost universally, while others are recognized only rarely.<sup id=\"cite&#95;ref-1\" class=\"reference\"><a href=\"#cite_note-1\"><span class=\"cite-bracket\">&#91;</span>1<span class=\"cite-bracket\">&#93;</span></a></sup>\n</p><p>The name of an order is usually written with a capital letter.<sup id=\"cite&#95;ref-2\" class=\"reference\"><a href=\"#cite_note-2\"><span class=\"cite-bracket\">&#91;</span>2<span class=\"cite-bracket\">&#93;</span></a></sup> For some groups of organisms, their orders may follow consistent naming <a href=\"/wiki/Classification_scheme_(information_science)\" title=\"Classification scheme (information science)\">schemes</a>. Orders of <a href=\"/wiki/Plant\" title=\"Plant\">plants</a>, <a href=\"/wiki/Fungi\" class=\"mw-redirect\" title=\"Fungi\">fungi</a>, and <a href=\"/wiki/Alga\" class=\"mw-redirect\" title=\"Alga\">algae</a> use the suffix <span title=\"Latin-language text\"><i lang=\"la\">-ales</i></span> (e.g. <a href=\"/wiki/Dictyotales\" class=\"mw-redirect\" title=\"Dictyotales\">Dictyotales</a>).<sup id=\"cite&#95;ref-3\" class=\"reference\"><a href=\"#cite_note-3\"><span class=\"cite-bracket\">&#91;</span>3<span class=\"cite-bracket\">&#93;</span></a></sup> Orders of <a href=\"/wiki/Bird\" title=\"Bird\">birds</a> and <a href=\"/wiki/Fish\" title=\"Fish\">fishes</a><sup id=\"cite&#95;ref-Berg1940&#95;4-0\" class=\"reference\"><a href=\"#cite_note-Berg1940-4\"><span class=\"cite-bracket\">&#91;</span>4<span class=\"cite-bracket\">&#93;</span></a></sup> use the Latin suffix <span title=\"Latin-language text\"><i lang=\"la\">-iformes</i></span> meaning 'having the form of' (e.g. <a href=\"/wiki/Passeriformes\" class=\"mw-redirect\" title=\"Passeriformes\">Passeriformes</a>), most orders of <a href=\"/wiki/Insect\" title=\"Insect\">insects</a> use the suffix <span title=\"Ancient Greek (to 1453)-language text\"><i lang=\"grc\">-ptera</i></span> meaning 'wing', but orders of <a href=\"/wiki/Mammal\" title=\"Mammal\">mammals</a>, <a href=\"/wiki/Reptile\" title=\"Reptile\">reptiles</a>, <a href=\"/wiki/Amphibia\" class=\"mw-redirect\" title=\"Amphibia\">amphibians</a> and <a href=\"/wiki/Invertebrate\" title=\"Invertebrate\">invertebrates</a> are not so consistent (e.g. <a href=\"/wiki/Artiodactyla\" title=\"Artiodactyla\">Artiodactyla</a>, <a href=\"/wiki/Frog\" title=\"Frog\">Anura</a>, <a href=\"/wiki/Crocodylia\" class=\"mw-redirect\" title=\"Crocodylia\">Crocodylia</a>, <a href=\"/wiki/Actiniaria\" class=\"mw-redirect\" title=\"Actiniaria\">Actiniaria</a>, <a href=\"/wiki/Primates\" class=\"mw-redirect\" title=\"Primates\">Primates</a>).\n</p>\n<div class=\"mw-references-wrap\"><ol class=\"references\">\n<li id=\"cite&#95;note-1\"><span class=\"mw-cite-backlink\"><b><a href=\"#cite_ref-1\">^</a></b></span> <span class=\"reference-text\"><style data-mw-deduplicate=\"TemplateStyles:r1333433106\">.mw-parser-output cite.citation{font-style:inherit;word-wrap:break-word}.mw-parser-output .citation q{quotes:\"\\\"\"\"\\\"\"\"'\"\"'\"}.mw-parser-output .citation:target{background-color:rgba(0,127,255,0.133)}.mw-parser-output .id-lock-free.id-lock-free a{background:url(\"//upload.wikimedia.org/wikipedia/commons/6/65/Lock-green.svg\")right 0.1em center/9px no-repeat}.mw-parser-output .id-lock-limited.id-lock-limited a,.mw-parser-output .id-lock-registration.id-lock-registration a{background:url(\"//upload.wikimedia.org/wikipedia/commons/d/d6/Lock-gray-alt-2.svg\")right 0.1em center/9px no-repeat}.mw-parser-output .id-lock-subscription.id-lock-subscription a{background:url(\"//upload.wikimedia.org/wikipedia/commons/a/aa/Lock-red-alt-2.svg\")right 0.1em center/9px no-repeat}.mw-parser-output .cs1-ws-icon a{background:url(\"//upload.wikimedia.org/wikipedia/commons/4/4c/Wikisource-logo.svg\")right 0.1em center/12px no-repeat}body:not(.skin-timeless):not(.skin-minerva) .mw-parser-output .id-lock-free a,body:not(.skin-timeless):not(.skin-minerva) .mw-parser-output .id-lock-limited a,body:not(.skin-timeless):not(.skin-minerva) .mw-parser-output .id-lock-registration a,body:not(.skin-timeless):not(.skin-minerva) .mw-parser-output .id-lock-subscription a,body:not(.skin-timeless):not(.skin-minerva) .mw-parser-output .cs1-ws-icon a{background-size:contain;padding:0 1em 0 0}.mw-parser-output .cs1-code{color:inherit;background:inherit;border:none;padding:inherit}.mw-parser-output .cs1-hidden-error{display:none;color:var(--color-error,#bf3c2c)}.mw-parser-output .cs1-visible-error{color:var(--color-error,#bf3c2c)}.mw-parser-output .cs1-maint{display:none;color:#085;margin-left:0.3em}.mw-parser-output .cs1-kern-left{padding-left:0.2em}.mw-parser-output .cs1-kern-right{padding-right:0.2em}.mw-parser-output .citation .mw-selflink{font-weight:inherit}@media screen{.mw-parser-output .cs1-format{font-size:95%}html.skin-theme-clientpref-night .mw-parser-output .cs1-maint{color:#18911f}}@media screen and (prefers-color-scheme:dark){html.skin-theme-clientpref-os .mw-parser-output .cs1-maint{color:#18911f}}</style><cite id=\"CITEREFTobinDusheck2005\" class=\"citation book cs1\">Tobin, Allan J.; Dusheck, Jennie (2005). <a rel=\"nofollow\" class=\"external text\" href=\"https://books.google.com/books?id=cjgdW4SjoJcC\"><i>Asking About Life</i></a>. Boston: Cengage Learning. pp.&#160;<span class=\"nowrap\">403–</span>408. <a href=\"/wiki/ISBN_(identifier)\" class=\"mw-redirect\" title=\"ISBN (identifier)\">ISBN</a>&#160;<a href=\"/wiki/Special:BookSources/978-0-030-27044-4\" title=\"Special:BookSources/978-0-030-27044-4\"><bdi>978-0-030-27044-4</bdi></a>.</cite><span title=\"ctx&#95;ver=Z39.88-2004&amp;rft&#95;val&#95;fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Abook&amp;rft.genre=book&amp;rft.btitle=Asking+About+Life&amp;rft.place=Boston&amp;rft.pages=403-408&amp;rft.pub=Cengage+Learning&amp;rft.date=2005&amp;rft.isbn=978-0-030-27044-4&amp;rft.aulast=Tobin&amp;rft.aufirst=Allan+J.&amp;rft.au=Dusheck%2C+Jennie&amp;rft&#95;id=https%3A%2F%2Fbooks.google.com%2Fbooks%3Fid%3DcjgdW4SjoJcC&amp;rfr&#95;id=info%3Asid%2Fen.wikipedia.org%3AOrder+%28taxonomy%29\" class=\"Z3988\"></span></span>\n</li>\n<li id=\"cite&#95;note-2\"><span class=\"mw-cite-backlink\"><b><a href=\"#cite_ref-2\">^</a></b></span> <span class=\"reference-text\"><link rel=\"mw-deduplicated-inline-style\" href=\"mw-data:TemplateStyles:r1333433106\" /><cite id=\"CITEREFTranslation&#95;Bureau2015\" class=\"citation web cs1\"><a href=\"/wiki/Translation_Bureau\" title=\"Translation Bureau\">Translation Bureau</a> (15 October 2015). <a rel=\"nofollow\" class=\"external text\" href=\"https://www.btb.termiumplus.gc.ca/tpv2guides/guides/wrtps/index-eng.html?lang=eng&amp;lettr=indx_catlog_c&amp;page=9sjs7LoC_fRo.html\">\"Capitalization: Biological Terms\"</a>. <i>Writing Tips, TERMIUM Plus®</i>. Public Services &amp; Procurement Canada<span class=\"reference-accessdate\">. Retrieved <span class=\"nowrap\">19 June</span> 2020</span>.</cite><span title=\"ctx&#95;ver=Z39.88-2004&amp;rft&#95;val&#95;fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=unknown&amp;rft.jtitle=Writing+Tips%2C+TERMIUM+Plus%C2%AE&amp;rft.atitle=Capitalization%3A+Biological+Terms&amp;rft.date=2015-10-15&amp;rft.au=Translation+Bureau&amp;rft&#95;id=https%3A%2F%2Fwww.btb.termiumplus.gc.ca%2Ftpv2guides%2Fguides%2Fwrtps%2Findex-eng.html%3Flang%3Deng%26lettr%3Dindx&#95;catlog&#95;c%26page%3D9sjs7LoC&#95;fRo.html&amp;rfr&#95;id=info%3Asid%2Fen.wikipedia.org%3AOrder+%28taxonomy%29\" class=\"Z3988\"></span></span>\n</li>\n<li id=\"cite&#95;note-3\"><span class=\"mw-cite-backlink\"><b><a href=\"#cite_ref-3\">^</a></b></span> <span class=\"reference-text\"><a href=\"#McNeill\">McNeill et al. 2012 &amp; Article 17.1</a></span>\n</li>\n<li id=\"cite&#95;note-Berg1940-4\"><span class=\"mw-cite-backlink\"><b><a href=\"#cite_ref-Berg1940_4-0\">^</a></b></span> <span class=\"reference-text\"><link rel=\"mw-deduplicated-inline-style\" href=\"mw-data:TemplateStyles:r1333433106\" /><cite id=\"CITEREFLeo&#95;S.&#95;Berg1940\" class=\"citation book cs1 cs1-prop-foreign-lang-source\"><a href=\"/wiki/Lev_Berg\" title=\"Lev Berg\">Leo S. Berg</a> (1940). <a rel=\"nofollow\" class=\"external text\" href=\"https://ia601404.us.archive.org/25/items/in.ernet.dli.2015.19051/2015.19051.Classification-Of-Fishes-Both-Recent-And-Fossil_text.pdf\"><i>Classification of fishes, both recent and fossil</i></a> <span class=\"cs1-format\">(PDF)</span> (in Russian and English). Ann Arbor Michigan: J. N. Edwards.</cite><span title=\"ctx&#95;ver=Z39.88-2004&amp;rft&#95;val&#95;fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Abook&amp;rft.genre=book&amp;rft.btitle=Classification+of+fishes%2C+both+recent+and+fossil&amp;rft.place=Ann+Arbor+Michigan&amp;rft.pub=J.+N.+Edwards&amp;rft.date=1940&amp;rft.au=Leo+S.+Berg&amp;rft&#95;id=https%3A%2F%2Fia601404.us.archive.org%2F25%2Fitems%2Fin.ernet.dli.2015.19051%2F2015.19051.Classification-Of-Fishes-Both-Recent-And-Fossil&#95;text.pdf&amp;rfr&#95;id=info%3Asid%2Fen.wikipedia.org%3AOrder+%28taxonomy%29\" class=\"Z3988\"></span></span>\n</li>\n</ol></div>\n<!-- \nNewPP limit report\nParsed by mw‐api‐ext.eqiad.canary‐98df46cfc‐xb94h\nCached time: 20260605202932\nCache expiry: 2592000\nCache expiry source: Module:Citation/CS1 (os.date(%Y))\nReduced expiry: false\nComplications: [vary‐revision‐sha1, vary‐revision‐exists]\nCPU time usage: 0.282 seconds\nReal time usage: 0.451 seconds\nPreprocessor visited node count: 429/1000000\nRevision size: 2922/2097152 bytes\nPost‐expand include size: 8995/2097152 bytes\nTemplate argument size: 675/2097152 bytes\nHighest expansion depth: 12/100\nExpensive parser function count: 3/500\nUnstrip recursion depth: 0/20\nUnstrip post‐expand size: 9545/5000000 bytes\nLua time usage: 0.206/10.000 seconds\nLua memory usage: 20759660/52428800 bytes\nNumber of Wikibase entities loaded: 0/500\n-->\n<!--\nTransclusion expansion time report (%,ms,calls,template)\n100.00%  423.265      1 -total\n 26.97%  114.173      1 Template:Langx\n 21.81%   92.298      2 Template:Cite_book\n 17.76%   75.178      1 Template:Short_description\n 10.60%   44.854      1 Template:Harvnb\n 10.22%   43.251      2 Template:Pagetype\n  6.01%   25.440      1 Template:About\n  5.99%   25.357      1 Template:Biological_classification\n  4.75%   20.101      1 Template:Use_dmy_dates\n  4.10%   17.336      3 Template:Main_other\n-->\n\n<!-- Render ID 4254ef1e-611d-11f1-9040-75b64f11053a -->\n</div>"
   },
   "card": {
     "title": "Order (taxonomy)",
     "pillar": "science",
-    "explanation": "Order (Latin: ordo) is one of the eight major hierarchical taxonomic ranks in Linnaean taxonomy. It is classified between family and class. Like the other ranks, orders reflect shared ancestry; for example, all owls belong to the order Strigiformes. In biological classification systems, orders and their usage are defined by nomenclature codes.",
-    "hookType": "the_weird_part",
-    "hook": "It connects quickly to Latin language, which is why one topic can open into a much larger rabbit hole.",
+    "explanation": "An order (Latin: ordo) is one of the eight major hierarchical ranks in Linnaean taxonomy, placed between family and class. Orders group organisms that share ancestry; for example, all owls belong to the order Strigiformes. A superorder may be placed above an order and a suborder directly beneath it.\n\nWhich organisms belong in an order is decided by taxonomists, and there are no hard rules, so experts often disagree and some orders are recognized more widely than others. Order names are usually capitalized and follow naming patterns in some groups: plants, fungi and algae end in -ales; birds and fishes in -iformes; many insects in -ptera, while other groups are less consistent.",
+    "hookType": "why_it_matters",
+    "hook": "the set of rules and conventions that define how orders and other ranks are named and used in biological classification systems.",
     "relatedCandidates": [
+      "Family (taxonomy)",
+      "Nomenclature codes",
       "Latin language",
       "Taxonomic rank",
       "Linnaean taxonomy",
-      "Family (taxonomy)",
       "Class (biology)",
       "Shared ancestry",
-      "Owl",
-      "Biological classification"
+      "Owl"
     ],
-    "readingSeconds": 19,
+    "navigationNodes": {
+      "deeper": {
+        "name": "Family (taxonomy)",
+        "connection": "the taxonomic rank immediately below order; orders are subdivided into families that group more closely related organisms."
+      },
+      "adjacent": {
+        "name": "Nomenclature codes",
+        "connection": "the set of rules and conventions that define how orders and other ranks are named and used in biological classification systems."
+      }
+    },
+    "readingSeconds": 29,
     "confidenceNotes": [
-      "Generated by deterministic local condenser from Wikipedia extract."
-    ]
+      "Generated with OpenAI Responses API model gpt-5-mini.",
+      "Prompt version: wikis-topic-page-v1."
+    ],
+    "generationProvider": "openai",
+    "generationModel": "gpt-5-mini",
+    "promptVersion": "wikis-topic-page-v1"
   },
   "mapping": {
     "linkStrategy": "first_paragraph",
@@ -110,19 +130,38 @@
       }
     ],
     "relatedTopicCandidates": [
+      "Family (taxonomy)",
+      "Nomenclature codes",
       "Latin language",
       "Taxonomic rank",
       "Linnaean taxonomy",
-      "Family (taxonomy)",
       "Class (biology)",
       "Shared ancestry",
-      "Owl",
-      "Biological classification"
+      "Owl"
     ]
   },
   "image": {
     "strategy": "pillar_background",
     "selected": null,
+    "candidates": [
+      {
+        "source": "wikipedia_pageimage",
+        "title": "Biological_classification_L_Pengo_vflip.svg",
+        "url": "https://upload.wikimedia.org/wikipedia/commons/a/a5/Biological_classification_L_Pengo_vflip.svg",
+        "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Biological_classification_L_Pengo_vflip.svg/1920px-Biological_classification_L_Pengo_vflip.svg.png",
+        "width": 240,
+        "height": 600,
+        "qualityScore": 0.25,
+        "rejectionReasons": [
+          "low_resolution"
+        ],
+        "license": "Public domain",
+        "attribution": "Peter Halasz. (User:Pengo)",
+        "licenseUrl": null,
+        "descriptionUrl": null,
+        "mime": "image/svg+xml"
+      }
+    ],
     "fallbackPillar": "science",
     "reason": "no_suitable_wikipedia_image"
   },

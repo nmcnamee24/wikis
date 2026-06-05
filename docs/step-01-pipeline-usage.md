@@ -32,9 +32,12 @@ python3 scripts/wiki_to_card.py --titles-file data/seed_topics.txt --delay 3 --s
 
 ## Current Condenser
 
-The current condenser is deterministic and local. It exists so the full pipeline can run without API keys.
+The pipeline supports two condenser modes:
 
-Production should replace it with a source-grounded LLM call that receives:
+- local deterministic fallback, which lets the full pipeline run without API keys
+- OpenAI structured output, which condenses the source packet into the same card JSON contract
+
+The LLM receives:
 
 - Wikipedia title
 - page ID and revision ID
@@ -44,6 +47,20 @@ Production should replace it with a source-grounded LLM call that receives:
 - pillar classification
 
 The LLM must condense the fetched source packet, not answer from memory.
+
+## Validate Cards
+
+```bash
+python3 scripts/validate_cards.py --min-cards 100
+```
+
+Current result:
+
+```text
+cards: 100
+passing: 100
+issues: 0
+```
 
 ## JSON Shape
 

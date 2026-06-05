@@ -537,7 +537,7 @@ def condense_with_heuristic(packet: SourcePacket, pillar: str) -> dict[str, Any]
         "title": title,
         "pillar": pillar,
         "explanation": explanation,
-        "hookType": "the_weird_part",
+        "hookType": "why_it_matters",
         "hook": hook,
         "relatedCandidates": links,
         "readingSeconds": estimate_reading_seconds(f"{explanation} {hook}"),
@@ -609,13 +609,17 @@ def condense_with_openai(packet: SourcePacket, model: str | None = None) -> dict
 
     deeper = generated["deeper_node"]
     adjacent = generated["adjacent_node"]
+    related_candidates: list[str] = []
+    for name in [deeper["name"], adjacent["name"], *[candidate["name"] for candidate in candidate_nodes]]:
+        if name not in related_candidates:
+            related_candidates.append(name)
     return {
         "title": packet.normalized_title,
         "pillar": generated["pillar"],
         "explanation": generated["page_text"],
         "hookType": "why_it_matters",
         "hook": adjacent["connection"],
-        "relatedCandidates": [deeper["name"], adjacent["name"]],
+        "relatedCandidates": related_candidates[:8],
         "navigationNodes": {
             "deeper": deeper,
             "adjacent": adjacent,
@@ -675,7 +679,6 @@ def validate_card(card: dict[str, Any], packet: SourcePacket, image_decision: di
     if card["pillar"] not in VALID_PILLARS:
         issues.append("invalid_pillar")
     if card["hookType"] not in {
-        "the_weird_part",
         "why_it_matters",
         "scientists_still_dont_know",
         "the_twist",

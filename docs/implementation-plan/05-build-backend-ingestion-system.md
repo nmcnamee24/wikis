@@ -73,6 +73,13 @@ Implemented:
 
 The implementation is intentionally script/SQL based. It supports manual ingestion, batch ingestion, review-gated publication, retryable failure records, idempotent upserts, lock ownership, node/edge generation state, and capped frontier queueing. It does not require live generation on every swipe.
 
+Live Supabase verification:
+
+- Step 02 seed data is loaded into production tables.
+- Ada Lovelace has been ingested through the OpenAI condenser path.
+- Ada Lovelace has source snapshot, LLM generation, image candidate, candidate edges, ingestion job, review record, and approved ready topic status.
+- The pipeline supports the full flow from Wikipedia fetch through approval/rejection without requiring UI.
+
 ## Acceptance Criteria
 
 - Backend can ingest one topic end-to-end.

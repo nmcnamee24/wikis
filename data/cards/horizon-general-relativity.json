@@ -14,7 +14,7 @@
     "title": "Horizon (general relativity)",
     "pillar": "science",
     "explanation": "A horizon is a boundary in spacetime satisfying prescribed conditions. There are several types of horizons that play a role in Albert Einstein's theory of general relativity: Absolute horizon, a boundary in spacetime in general relativity inside of which events cannot affect an external observer Event horizon, a boundary in spacetime beyond which events cannot affect the observer, thus referring to a black hole's boundary and the boundary of an expanding universe Apparent horizon, a surface defined in general relativity Cauchy horizon, a surface found in the study of Cauchy problems Cosmological horizon, a limit of observability Killing horizon, a null surface on which there.",
-    "hookType": "the_weird_part",
+    "hookType": "why_it_matters",
     "hook": "It connects quickly to Spacetime, which is why one topic can open into a much larger rabbit hole.",
     "relatedCandidates": [
       "Spacetime",

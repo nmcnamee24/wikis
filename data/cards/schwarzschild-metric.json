@@ -14,7 +14,7 @@
     "title": "Schwarzschild metric",
     "pillar": "science",
     "explanation": "In Einstein's theory of general relativity, the Schwarzschild metric (also known as the Schwarzschild solution) is an exact solution to the Einstein field equations that describes the gravitational field outside a spherical mass, on the assumption that the electric charge of the mass, angular momentum of the mass, and universal cosmological constant are all zero. The solution is a useful approximation for describing slowly rotating astronomical objects such as many stars and planets, including Earth and the Sun. It was found by Karl Schwarzschild and independently of him by Johannes Droste in 1916. According to Birkhoff's theorem, the Schwarzschild metric is the most general spherically.",
-    "hookType": "the_weird_part",
+    "hookType": "why_it_matters",
     "hook": "It connects quickly to Albert Einstein, which is why one topic can open into a much larger rabbit hole.",
     "relatedCandidates": [
       "Albert Einstein",

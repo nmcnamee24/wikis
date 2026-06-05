@@ -16,6 +16,7 @@ MIGRATIONS = [
     Path("migrations/003_ingestion_workflow.sql"),
     Path("migrations/004_allow_culture_pillar.sql"),
     Path("migrations/005_ingestion_generation_state.sql"),
+    Path("migrations/006_enable_rls.sql"),
 ]
 
 

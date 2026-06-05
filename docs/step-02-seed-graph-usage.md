@@ -49,6 +49,16 @@ left  -> teleport
 
 ## Current Scope
 
-This is a seed graph built from 100 prototype-pass generated cards. The Step 02 target is 100 to 300 topics before the app is production-ready, so the current graph is usable for the next prototype step.
+This is a seed graph built from 100 prototype-pass generated cards. The Step 02 target is 100 to 300 topics before the app is production-ready, so the current graph satisfies the lower bound.
 
 The important proof here is that every topic can produce a valid gesture path without depending on live generation.
+
+Current validation result:
+
+```text
+topics: 100
+edges: 715
+candidate_queue: 100
+starter_pool: 100
+issues: 0
+```

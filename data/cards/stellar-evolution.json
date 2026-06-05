@@ -14,7 +14,7 @@
     "title": "Stellar evolution",
     "pillar": "science",
     "explanation": "Stellar evolution is the process by which a star changes over the course of time. Depending on the mass of the star, its lifetime can range from a few million years for the most massive to trillions of years for the least massive, which is considerably longer than the current age of the universe. The table shows the lifetimes of stars as a function of their masses. All stars are formed from collapsing clouds of gas and dust, often called nebulae or molecular clouds.",
-    "hookType": "the_weird_part",
+    "hookType": "why_it_matters",
     "hook": "It connects quickly to Star, which is why one topic can open into a much larger rabbit hole.",
     "relatedCandidates": [
       "Star",

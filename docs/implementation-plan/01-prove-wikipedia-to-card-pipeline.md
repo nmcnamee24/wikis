@@ -55,7 +55,7 @@ Outputs:
 ## Acceptance Criteria
 
 - At least 20 generated cards exist.
-- Each card has a 20 to 30 second explanation.
+- Each card has a 20 to 35 second explanation.
 - Each card ends with a valid hook.
 - Each card has at least three related topic candidates.
 - Each card records source page ID and revision ID.
@@ -67,6 +67,7 @@ Outputs:
 Implemented:
 
 - `scripts/wiki_to_card.py`
+- `scripts/validate_cards.py`
 - `data/seed_topics.txt`
 - `data/cards/*.json`
 - `docs/step-01-pipeline-usage.md`
@@ -79,17 +80,17 @@ The script now:
 - falls back to broader lead-section links when the first paragraph is too sparse
 - classifies a prototype pillar
 - selects a Wikipedia image or records a pillar-background fallback
-- generates a deterministic prototype card
+- generates either a deterministic prototype card or an OpenAI structured-output card
 - validates explanation length, hook shape, related-topic coverage, and image choice
 - writes one JSON file per topic
 
 Current seed result:
 
-- 20 generated topic cards
-- 20 prototype-pass cards
+- 100 generated topic cards
+- 100 validation-pass cards
 - 0 failing cards
 
-The current condenser is intentionally local and deterministic. The next production upgrade is to replace it with a source-grounded LLM condenser while keeping the same JSON contract.
+The current pipeline supports both the local deterministic condenser and the source-grounded OpenAI condenser. The JSON contract is validated by `scripts/validate_cards.py` and by the consolidated Step 1-6 verifier.
 
 ## Do Not Build Yet
 

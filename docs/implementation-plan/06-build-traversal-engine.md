@@ -46,8 +46,22 @@ Implemented:
 - `Sources/WikisCoreSmokeTests/main.swift`
 - `App/Wikis/Sources/FeedStore.swift`
 - `scripts/feed_next.py`
+- `api/main.py`
+- `railway.json`
 
-The current engine is a deterministic rules scorer that can later sit behind `POST /v1/feed/next`. It returns the selected topic, reason code, selected edge, fallback candidates, prefetch candidates, capped background-ingestion candidates, and a debug summary. The existing app still uses the local graph, but navigation now passes exploration history so recent repeats are penalized. `scripts/feed_next.py` provides the same backend-shaped request/response contract before a hosted server exists.
+The current engine is a deterministic rules scorer available in three forms:
+
+- Swift core logic for the prototype.
+- `scripts/feed_next.py` for local JSON and Supabase-backed backend dry runs.
+- Hosted FastAPI endpoint at `POST /v1/feed/next` on Railway.
+
+It returns the selected topic, full next-topic payload, reason code, selected edge, fallback candidates, prefetch candidates, capped background-ingestion candidates, fallback-used flag, and a debug summary. The API loads approved/prototype-pass topics from Supabase, avoids unapproved targets, applies repeat penalties, and exposes `/v1/events` so exploration history can be persisted.
+
+Live endpoint:
+
+```text
+https://wikis-api-production.up.railway.app/v1/feed/next
+```
 
 ## Acceptance Criteria
 

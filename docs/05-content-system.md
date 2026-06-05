@@ -38,17 +38,9 @@ Every explanation should:
 - fit in a 20 to 30 second read
 - prepare at least one useful next topic
 
-## Hook Rules
+## Reading Block Rules
 
-Accepted hook prefixes:
-
-- The weird part:
-- Why it matters:
-- Scientists still don't know:
-- The twist:
-- The surprising part:
-
-Each hook should be one or two sentences.
+For now, write one plain explanatory block. Do not add a separate labeled hook section; any curiosity cue should be part of the normal paragraph.
 
 ## Example: Black Holes
 
@@ -58,9 +50,6 @@ SCIENCE
 Black Holes
 
 A black hole is not really a hole. It is what happens when so much matter gets squeezed into one place that space itself bends inward. Past a boundary called the event horizon, even light cannot escape, which means the object becomes invisible except for how it affects everything around it.
-
-The weird part:
-Near a black hole, time stretches. Two observers can disagree about how much time has passed and both can be right.
 ```
 
 ## Example: The Silk Road
@@ -139,8 +128,8 @@ Output:
   "title": "Black Holes",
   "pillar": "science",
   "explanation": "A short, vivid explanation grounded in the source packet.",
-  "hookType": "the_weird_part",
-  "hook": "One sharp curiosity hook.",
+  "hookType": "why_it_matters",
+  "hook": "Optional internal navigation cue; not displayed as a separate labeled section.",
   "relatedCandidates": ["Event Horizon", "Spacetime", "General Relativity"],
   "readingSeconds": 24,
   "confidenceNotes": ["No unsupported claims detected."]

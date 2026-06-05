@@ -2,8 +2,8 @@
 """Resolve the next Wikis feed topic from a graph JSON request.
 
 This is the Step 06 backend-shaped traversal entrypoint. It mirrors the V1
-rules scorer used by WikisCore and returns the response shape expected from a
-future POST /v1/feed/next endpoint.
+rules scorer used by WikisCore and returns the response shape used by the
+hosted POST /v1/feed/next endpoint.
 """
 
 from __future__ import annotations

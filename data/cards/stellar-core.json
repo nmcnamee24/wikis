@@ -14,7 +14,7 @@
     "title": "Stellar core",
     "pillar": "science",
     "explanation": "A stellar core is the extremely hot, dense region at the center of a star. For an ordinary main sequence star, the core region is the volume where the temperature and pressure conditions allow for energy production through thermonuclear fusion of hydrogen into helium. This energy in turn counterbalances the mass of the star pressing inward; a process that self-maintains the conditions in thermal and hydrostatic equilibrium. The minimum temperature required for stellar hydrogen fusion exceeds 107 K (10 MK), while the density at the core of the Sun is over 100 g/cm3.",
-    "hookType": "the_weird_part",
+    "hookType": "why_it_matters",
     "hook": "It connects quickly to Main sequence, which is why one topic can open into a much larger rabbit hole.",
     "relatedCandidates": [
       "Main sequence",

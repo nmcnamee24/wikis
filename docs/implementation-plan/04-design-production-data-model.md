@@ -34,7 +34,12 @@ Recommended base:
 
 - `migrations/001_production_schema.sql`
 - `migrations/002_seed_step02_graph.sql`
+- `migrations/003_ingestion_workflow.sql`
+- `migrations/004_allow_culture_pillar.sql`
+- `migrations/005_ingestion_generation_state.sql`
+- `migrations/006_enable_rls.sql`
 - `scripts/seed_production_db.py`
+- `scripts/apply_supabase_db.py`
 
 ## Apply
 
@@ -66,7 +71,13 @@ The Step 02 seed graph currently maps into production tables as:
 
 ## Current Caveat
 
-The prototype card/image pipeline did not fetch full Wikimedia license records yet. Selected image rows preserve URL, source title, dimensions, quality score, and attribution text, while license is marked `unverified_wikimedia_license` until the Step 05 ingestion system fetches definitive media metadata.
+The original seed cards preserve URL, source title, dimensions, quality score, attribution text, and an explicit license field. The Step 05 ingestion path now fetches Wikipedia image metadata and stores attribution/license metadata for newly ingested topics. If the app later caches transformed image assets in object storage, those transformed assets should keep the same source attribution fields.
+
+## Live Verification
+
+The schema and seed data are applied in Supabase. The consolidated verifier checks live counts for topics, source snapshots, LLM generation records, approved edges, candidate edges, ready topics, and the approved Ada Lovelace ingestion sample.
+
+RLS is enabled on the public app tables. No direct anon/authenticated Data API policies are granted yet because the current app path uses the Railway API as the controlled server boundary.
 
 ## Acceptance Criteria
 

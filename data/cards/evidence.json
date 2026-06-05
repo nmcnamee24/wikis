@@ -1,35 +1,55 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-05T06:54:12+00:00",
+  "generatedAt": "2026-06-05T20:29:06+00:00",
+  "generation": {
+    "provider": "openai",
+    "model": "gpt-5-mini",
+    "promptVersion": "wikis-topic-page-v1"
+  },
   "source": {
     "requestedTitle": "Evidence",
     "wikipediaTitle": "Evidence",
     "pageId": 20550772,
     "revisionId": 1355957640,
-    "fetchedAt": "2026-06-05T06:54:12+00:00",
+    "fetchedAt": "2026-06-05T20:28:44+00:00",
     "extract": "Evidence for a proposition is what supports the proposition. It is usually understood as an indication that the proposition is true. The exact definition and role of evidence vary across different fields. In epistemology, evidence is what justifies beliefs or what makes it rational to hold a certain doxastic attitude. For example, a perceptual experience of a tree may serve as evidence to justify the belief that there is a tree. In this role, evidence is usually understood as a private mental state. In phenomenology, evidence is limited to intuitive knowledge, often associated with the controversial assumption that it provides indubitable access to truth. In science, scientific evidence is information gained through the scientific method that confirms or disconfirms scientific hypotheses, acting as a neutral arbiter between competing theories. Measurements of Mercury's \"anomalous\" orbit, for example, are seen as evidence that confirms Einstein's theory of general relativity. The problems of underdetermination and theory-ladenness are two obstacles that threaten to undermine the role of scientific evidence. Philosophers of science tend to understand evidence not as mental states but as verifiable information, observable physical objects or events, secured by following the scientific method. In law, evidence is information to establish or refute claims relevant to a case, such as testimony, documentary evidence, and physical evidence. The relation between evidence and a supported statement can vary in strength, ranging from weak correlation to indisputable proof. Theories of the evidential relation examine the nature of this connection. Probabilistic approaches hold that something counts as evidence if it increases the probability of the supported statement. According to hypothetico-deductivism, evidence consists in observational consequences of a hypothesis. The positive-instance approach states that an observation sentence is evidence for a universal statement if the sentence describes a positive instance of this statement.",
-    "firstParagraph": "Evidence for a proposition is what supports the proposition. It is usually understood as an indication that the proposition is true. The exact definition and role of evidence vary across different fields."
+    "firstParagraph": "Evidence for a proposition is what supports the proposition. It is usually understood as an indication that the proposition is true. The exact definition and role of evidence vary across different fields.",
+    "leadHtml": "<div class=\"mw-content-ltr mw-parser-output\" lang=\"en\" dir=\"ltr\"><div class=\"shortdescription nomobile noexcerpt noprint searchaux\" style=\"display:none\">Material supporting an assertion</div><style data-mw-deduplicate=\"TemplateStyles:r1353705441\">.mw-parser-output .hatnote{font-style:italic}.mw-parser-output div.hatnote{padding-left:1.6em;margin-bottom:0.5em}.mw-parser-output .hatnote i{font-style:normal}.mw-parser-output .hatnote+span.mw-empty-elt+.hatnote,.mw-parser-output .hatnote+link+.hatnote{margin-top:-0.5em}@media print{body.ns-0 .mw-parser-output .hatnote{display:none!important}}</style><div role=\"note\" class=\"hatnote navigation-not-searchable\">For other uses, see <a href=\"/wiki/Evidence_(disambiguation)\" class=\"mw-disambig\" title=\"Evidence (disambiguation)\">Evidence (disambiguation)</a>.</div><figure class=\"mw-default-size\" typeof=\"mw:File/Thumb\"><a href=\"/wiki/File:Oameni_la_BIAS_2014_(14495218155).jpg\" class=\"mw-file-description\"><img src=\"//upload.wikimedia.org/wikipedia/commons/thumb/8/80/Oameni_la_BIAS_2014_%2814495218155%29.jpg/250px-Oameni_la_BIAS_2014_%2814495218155%29.jpg\" decoding=\"async\" width=\"250\" height=\"167\" class=\"mw-file-element\" srcset=\"//upload.wikimedia.org/wikipedia/commons/thumb/8/80/Oameni_la_BIAS_2014_%2814495218155%29.jpg/500px-Oameni_la_BIAS_2014_%2814495218155%29.jpg 2x\" data-file-width=\"2047\" data-file-height=\"1365\" /></a><figcaption>These <a href=\"/wiki/Contrail\" title=\"Contrail\">contrails</a> at an <a href=\"/wiki/Airshow\" class=\"mw-redirect\" title=\"Airshow\">airshow</a> provide evidence regarding the aircraft's flight path.</figcaption></figure>\n<p><b>Evidence</b> for a <a href=\"/wiki/Proposition\" title=\"Proposition\">proposition</a> is what supports the proposition. It is usually understood as an indication that the proposition is <a href=\"/wiki/Truth\" title=\"Truth\">true</a>. The exact definition and role of evidence vary across different fields.\n</p><p>In <a href=\"/wiki/Epistemology\" title=\"Epistemology\">epistemology</a>, evidence is what <a href=\"/wiki/Justification_(epistemology)\" title=\"Justification (epistemology)\">justifies</a> <a href=\"/wiki/Beliefs\" class=\"mw-redirect\" title=\"Beliefs\">beliefs</a> or what makes it <a href=\"/wiki/Rational\" class=\"mw-redirect\" title=\"Rational\">rational</a> to hold a certain <a href=\"https://en.wiktionary.org/wiki/doxastic\" class=\"extiw\" title=\"wikt:doxastic\">doxastic</a> attitude. For example, a perceptual experience of a tree may serve as evidence to justify the belief that there is a tree. In this role, evidence is usually understood as a private <a href=\"/wiki/Mental_state\" title=\"Mental state\">mental state</a>. In <a href=\"/wiki/Phenomenology_(philosophy)\" title=\"Phenomenology (philosophy)\">phenomenology</a>, evidence is limited to intuitive knowledge, often associated with the controversial assumption that it provides indubitable access to truth.\n</p><p>In <a href=\"/wiki/Science\" title=\"Science\">science</a>, <a href=\"/wiki/Scientific_evidence\" title=\"Scientific evidence\">scientific evidence</a> is information gained through the <a href=\"/wiki/Scientific_method\" title=\"Scientific method\">scientific method</a> that confirms or disconfirms <a href=\"/wiki/Hypothesis#Scientific_hypothesis\" title=\"Hypothesis\">scientific hypotheses</a>, acting as a neutral arbiter between competing <a href=\"/wiki/Scientific_theory\" title=\"Scientific theory\">theories</a>. Measurements of <a href=\"/wiki/Mercury_(planet)\" title=\"Mercury (planet)\">Mercury</a>'s \"anomalous\" <a href=\"/wiki/Orbit\" title=\"Orbit\">orbit</a>, for example, are seen as evidence that confirms <a href=\"/wiki/Einstein\" class=\"mw-redirect\" title=\"Einstein\">Einstein</a>'s <a href=\"/wiki/Theory_of_general_relativity\" class=\"mw-redirect\" title=\"Theory of general relativity\">theory of general relativity</a>. The problems of <a href=\"/wiki/Underdetermination\" title=\"Underdetermination\">underdetermination</a> and <a href=\"/wiki/Theory-ladenness\" title=\"Theory-ladenness\">theory-ladenness</a> are two obstacles that threaten to undermine the role of scientific evidence. <a href=\"/wiki/Philosophy_of_science\" title=\"Philosophy of science\">Philosophers of science</a> tend to understand evidence not as mental states but as verifiable information, observable physical objects or events, secured by following the scientific method.\n</p><p>In <a href=\"/wiki/Law\" title=\"Law\">law</a>, <a href=\"/wiki/Evidence_(law)\" title=\"Evidence (law)\">evidence</a> is information to establish or refute claims relevant to a case, such as <a href=\"/wiki/Testimony\" title=\"Testimony\">testimony</a>, <a href=\"/wiki/Documentary_evidence\" title=\"Documentary evidence\">documentary evidence</a>, and <a href=\"/wiki/Real_evidence\" title=\"Real evidence\">physical evidence</a>.<sup id=\"cite&#95;ref-1\" class=\"reference\"><a href=\"#cite_note-1\"><span class=\"cite-bracket\">&#91;</span>1<span class=\"cite-bracket\">&#93;</span></a></sup>\n</p><p>The <a class=\"mw-selflink-fragment\" href=\"#Evidential_relation\">relation between evidence and a supported statement</a> can vary in strength, ranging from weak correlation to indisputable <a href=\"/wiki/Proof_(truth)\" title=\"Proof (truth)\">proof</a>. Theories of the evidential relation examine the nature of this connection. Probabilistic approaches hold that something counts as evidence if it increases the <a href=\"/wiki/Probability\" title=\"Probability\">probability</a> of the supported statement. According to <a href=\"/wiki/Hypothetico-deductive_model\" title=\"Hypothetico-deductive model\">hypothetico-deductivism</a>, evidence consists in <a href=\"/wiki/Observation\" title=\"Observation\">observational</a> consequences of a hypothesis. The positive-instance approach states that an observation sentence is evidence for a universal statement if the sentence describes a positive instance of this statement.\n</p>\n<div class=\"mw-references-wrap\"><ol class=\"references\">\n<li id=\"cite&#95;note-1\"><span class=\"mw-cite-backlink\"><b><a href=\"#cite_ref-1\">^</a></b></span> <span class=\"reference-text\">American College of Forensic Examiners Institute. (2016). <i>The Certified Criminal Investigator Body of Knowledge</i>. Boca Raton, Florida: CRC Press. pp.&#160;112–113. <style data-mw-deduplicate=\"TemplateStyles:r1333433106\">.mw-parser-output cite.citation{font-style:inherit;word-wrap:break-word}.mw-parser-output .citation q{quotes:\"\\\"\"\"\\\"\"\"'\"\"'\"}.mw-parser-output .citation:target{background-color:rgba(0,127,255,0.133)}.mw-parser-output .id-lock-free.id-lock-free a{background:url(\"//upload.wikimedia.org/wikipedia/commons/6/65/Lock-green.svg\")right 0.1em center/9px no-repeat}.mw-parser-output .id-lock-limited.id-lock-limited a,.mw-parser-output .id-lock-registration.id-lock-registration a{background:url(\"//upload.wikimedia.org/wikipedia/commons/d/d6/Lock-gray-alt-2.svg\")right 0.1em center/9px no-repeat}.mw-parser-output .id-lock-subscription.id-lock-subscription a{background:url(\"//upload.wikimedia.org/wikipedia/commons/a/aa/Lock-red-alt-2.svg\")right 0.1em center/9px no-repeat}.mw-parser-output .cs1-ws-icon a{background:url(\"//upload.wikimedia.org/wikipedia/commons/4/4c/Wikisource-logo.svg\")right 0.1em center/12px no-repeat}body:not(.skin-timeless):not(.skin-minerva) .mw-parser-output .id-lock-free a,body:not(.skin-timeless):not(.skin-minerva) .mw-parser-output .id-lock-limited a,body:not(.skin-timeless):not(.skin-minerva) .mw-parser-output .id-lock-registration a,body:not(.skin-timeless):not(.skin-minerva) .mw-parser-output .id-lock-subscription a,body:not(.skin-timeless):not(.skin-minerva) .mw-parser-output .cs1-ws-icon a{background-size:contain;padding:0 1em 0 0}.mw-parser-output .cs1-code{color:inherit;background:inherit;border:none;padding:inherit}.mw-parser-output .cs1-hidden-error{display:none;color:var(--color-error,#bf3c2c)}.mw-parser-output .cs1-visible-error{color:var(--color-error,#bf3c2c)}.mw-parser-output .cs1-maint{display:none;color:#085;margin-left:0.3em}.mw-parser-output .cs1-kern-left{padding-left:0.2em}.mw-parser-output .cs1-kern-right{padding-right:0.2em}.mw-parser-output .citation .mw-selflink{font-weight:inherit}@media screen{.mw-parser-output .cs1-format{font-size:95%}html.skin-theme-clientpref-night .mw-parser-output .cs1-maint{color:#18911f}}@media screen and (prefers-color-scheme:dark){html.skin-theme-clientpref-os .mw-parser-output .cs1-maint{color:#18911f}}</style><a href=\"/wiki/ISBN_(identifier)\" class=\"mw-redirect\" title=\"ISBN (identifier)\">ISBN</a>&#160;<a href=\"/wiki/Special:BookSources/978-1-4987-5206-0\" title=\"Special:BookSources/978-1-4987-5206-0\"><bdi>978-1-4987-5206-0</bdi></a></span>\n</li>\n</ol></div>\n<!-- \nNewPP limit report\nParsed by mw‐api‐ext.eqiad.main‐7675448b98‐6fst4\nCached time: 20260605202844\nCache expiry: 2592000\nReduced expiry: false\nComplications: [vary‐revision‐sha1]\nCPU time usage: 0.091 seconds\nReal time usage: 0.147 seconds\nPreprocessor visited node count: 160/1000000\nRevision size: 2880/2097152 bytes\nPost‐expand include size: 1571/2097152 bytes\nTemplate argument size: 396/2097152 bytes\nHighest expansion depth: 8/100\nExpensive parser function count: 2/500\nUnstrip recursion depth: 0/20\nUnstrip post‐expand size: 2815/5000000 bytes\nLua time usage: 0.062/10.000 seconds\nLua memory usage: 2558797/52428800 bytes\nNumber of Wikibase entities loaded: 0/500\n-->\n<!--\nTransclusion expansion time report (%,ms,calls,template)\n100.00%  129.640      1 -total\n 42.01%   54.459      1 Template:Short_description\n 31.31%   40.590      1 Template:ISBN\n 23.05%   29.886      2 Template:Pagetype\n 21.74%   28.184      1 Template:Other_uses\n 11.21%   14.538      2 Template:Main_other\n 10.38%   13.455      1 Template:SDcat\n  1.42%    1.846      1 Template:Short_description/lowercasecheck\n-->\n\n<!-- Render ID 25b8b01a-611d-11f1-af09-c3c70d9c9744 -->\n</div>"
   },
   "card": {
     "title": "Evidence",
     "pillar": "science",
-    "explanation": "Evidence for a proposition is what supports the proposition. It is usually understood as an indication that the proposition is true. The exact definition and role of evidence vary across different fields. In epistemology, evidence is what justifies beliefs or what makes it rational to hold a certain doxastic attitude.",
-    "hookType": "the_weird_part",
-    "hook": "It connects quickly to Evidence (disambiguation), which is why one topic can open into a much larger rabbit hole.",
+    "explanation": "Evidence for a proposition is what supports that proposition, usually indicating it is true. Its role and definition shift across fields.\n\nIn epistemology evidence is what justifies beliefs, often conceived as private mental states such as a perceptual experience. In science, evidence is information gathered by the scientific method that can confirm or disconfirm hypotheses; for example, measurements of Mercury's anomalous orbit helped confirm general relativity. Philosophers worry that underdetermination and theory-ladenness can undermine scientific evidence.\n\nIn law, evidence includes testimony, documents, and physical objects used to establish claims. The strength of evidence varies: some data merely raise a probability, while other connections aim for near-proof.",
+    "hookType": "why_it_matters",
+    "hook": "The statement or claim that evidence is said to support or make more likely.",
     "relatedCandidates": [
+      "Scientific evidence",
+      "Proposition",
       "Evidence (disambiguation)",
       "Contrail",
       "Airshow",
-      "Proposition",
       "Truth",
       "Epistemology",
-      "Justification (epistemology)",
-      "Beliefs"
+      "Justification (epistemology)"
     ],
-    "readingSeconds": 18,
+    "navigationNodes": {
+      "deeper": {
+        "name": "Scientific evidence",
+        "connection": "A subtype of evidence: information obtained via the scientific method that can confirm or disconfirm scientific hypotheses."
+      },
+      "adjacent": {
+        "name": "Proposition",
+        "connection": "The statement or claim that evidence is said to support or make more likely."
+      }
+    },
+    "readingSeconds": 28,
     "confidenceNotes": [
-      "Generated by deterministic local condenser from Wikipedia extract."
-    ]
+      "Generated with OpenAI Responses API model gpt-5-mini.",
+      "Prompt version: wikis-topic-page-v1."
+    ],
+    "generationProvider": "openai",
+    "generationModel": "gpt-5-mini",
+    "promptVersion": "wikis-topic-page-v1"
   },
   "mapping": {
     "linkStrategy": "lead_section_fallback",
@@ -178,14 +198,14 @@
       }
     ],
     "relatedTopicCandidates": [
+      "Scientific evidence",
+      "Proposition",
       "Evidence (disambiguation)",
       "Contrail",
       "Airshow",
-      "Proposition",
       "Truth",
       "Epistemology",
-      "Justification (epistemology)",
-      "Beliefs"
+      "Justification (epistemology)"
     ]
   },
   "image": {
@@ -198,8 +218,30 @@
       "width": 2047,
       "height": 1365,
       "qualityScore": 0.82,
-      "rejectionReasons": []
+      "rejectionReasons": [],
+      "license": "CC BY-SA 2.0",
+      "attribution": "Răzvan Băltărețu from BUCURESTI, România",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "descriptionUrl": null,
+      "mime": "image/jpeg"
     },
+    "candidates": [
+      {
+        "source": "wikipedia_pageimage",
+        "title": "Oameni_la_BIAS_2014_(14495218155).jpg",
+        "url": "https://upload.wikimedia.org/wikipedia/commons/8/80/Oameni_la_BIAS_2014_%2814495218155%29.jpg",
+        "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Oameni_la_BIAS_2014_%2814495218155%29.jpg/1920px-Oameni_la_BIAS_2014_%2814495218155%29.jpg",
+        "width": 2047,
+        "height": 1365,
+        "qualityScore": 0.82,
+        "rejectionReasons": [],
+        "license": "CC BY-SA 2.0",
+        "attribution": "Răzvan Băltărețu from BUCURESTI, România",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+        "descriptionUrl": null,
+        "mime": "image/jpeg"
+      }
+    ],
     "fallbackPillar": null
   },
   "quality": {

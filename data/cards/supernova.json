@@ -14,7 +14,7 @@
     "title": "Supernova",
     "pillar": "science",
     "explanation": "A supernova (pl.: supernovae) is a powerful and luminous explosion of a star. A supernova occurs during the last evolutionary stages of a massive star, or when a white dwarf is triggered into runaway nuclear fusion. The original object, called the progenitor, either collapses to a neutron star or black hole, or is completely destroyed to form a diffuse nebula. The peak optical luminosity of a supernova can be comparable to that of an entire galaxy before fading over several weeks or months.",
-    "hookType": "the_weird_part",
+    "hookType": "why_it_matters",
     "hook": "It connects quickly to Explosion, which is why one topic can open into a much larger rabbit hole.",
     "relatedCandidates": [
       "Explosion",

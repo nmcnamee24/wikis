@@ -8,6 +8,7 @@ Apply the workflow migrations after the Step 04 schema and Step 02 seed data:
 psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f migrations/003_ingestion_workflow.sql
 psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f migrations/004_allow_culture_pillar.sql
 psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f migrations/005_ingestion_generation_state.sql
+psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f migrations/006_enable_rls.sql
 ```
 
 Or apply the full schema/seed sequence with the repo helper:
@@ -16,7 +17,7 @@ Or apply the full schema/seed sequence with the repo helper:
 python3 scripts/apply_supabase_db.py
 ```
 
-The helper reads `DATABASE_URL` from `.env` by default, regenerates `migrations/002_seed_step02_graph.sql`, applies migrations `001` through `005`, and verifies the topic count. The Supabase dashboard connection string must contain the real URL-encoded database password, not the `[YOUR-PASSWORD]` placeholder.
+The helper reads `DATABASE_URL` from `.env` by default, regenerates `migrations/002_seed_step02_graph.sql`, applies migrations `001` through `006`, and verifies the topic count. The Supabase dashboard connection string must contain the real URL-encoded database password, not the `[YOUR-PASSWORD]` placeholder.
 
 ## OpenAI Setup
 

@@ -37,8 +37,32 @@ def main() -> int:
                 if target not in topic_ids:
                     issues.append(f"{topic_id}:{gesture}:unknown_target:{target}")
 
+    if not 100 <= len(graph["topics"]) <= 300:
+        issues.append(f"topic_count_out_of_range:{len(graph['topics'])}")
+    if len(graph.get("starterPool", [])) < 25:
+        issues.append(f"starter_pool_too_small:{len(graph.get('starterPool', []))}")
+
+    for topic in graph["topics"]:
+        if topic.get("qualityStatus") != "prototype_pass":
+            issues.append(f"{topic['id']}:not_prototype_pass:{topic.get('qualityStatus')}")
+        image = topic.get("image", {})
+        if image.get("strategy") == "wikipedia_image" and not image.get("selected"):
+            issues.append(f"{topic['id']}:missing_selected_image")
+        if image.get("strategy") == "pillar_background" and not image.get("fallbackPillar"):
+            issues.append(f"{topic['id']}:missing_fallback_pillar")
+
     edge_types = Counter(edge["type"] for edge in graph["edges"])
     pillars = Counter(topic["pillar"] for topic in graph["topics"])
+    if len(pillars) < 4:
+        issues.append(f"too_few_pillars:{dict(pillars)}")
+    for pillar, count in pillars.items():
+        if count / max(len(graph["topics"]), 1) > 0.50:
+            issues.append(f"pillar_imbalance:{pillar}:{count}")
+
+    for start_id in graph.get("starterPool", [])[:25]:
+        path = rabbit_hole_path(graph, start_id, length=10)
+        if len(path) < 10:
+            issues.append(f"{start_id}:rabbit_hole_dead_end:{len(path)}")
 
     print(f"graph: {args.graph}")
     print(f"topics: {len(graph['topics'])}")
@@ -54,6 +78,20 @@ def main() -> int:
     return 1 if issues else 0
 
 
+def rabbit_hole_path(graph: dict, start_id: str, length: int) -> list[str]:
+    path = [start_id]
+    current = start_id
+    for gesture in ["down", "right", "left", "down", "right", "down", "left", "right", "down"]:
+        if len(path) >= length:
+            break
+        targets = graph.get("gestureIndex", {}).get(current, {}).get(gesture, [])
+        next_id = next((target for target in targets if target not in path), None) or (targets[0] if targets else None)
+        if not next_id:
+            break
+        path.append(next_id)
+        current = next_id
+    return path
+
+
 if __name__ == "__main__":
     raise SystemExit(main())
-

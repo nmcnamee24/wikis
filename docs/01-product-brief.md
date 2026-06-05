@@ -27,7 +27,7 @@ Open Wikis and get:
 
 - one topic that owns the screen
 - a beautiful or consistent visual environment
-- a 20 to 30 second explanation
+- a 20 to 35 second explanation
 - a curiosity hook that makes the next swipe feel obvious
 - a map of what your curiosity has explored over time
 

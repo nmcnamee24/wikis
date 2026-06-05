@@ -14,7 +14,7 @@
     "title": "Trade route",
     "pillar": "society",
     "explanation": "A trade route is a logistical network identified as a series of pathways and stoppages used for the commercial transport of cargo. Ancient trade routes were long-distance networks used in the ancient world to exchange goods, ideas, cultures, and technologies between civilizations. The term can also be used to refer to trade over land or water. Allowing goods to reach distant markets, a single trade route contains long-distance arteries, which may further be connected to smaller networks of commercial and noncommercial transportation routes.",
-    "hookType": "the_weird_part",
+    "hookType": "why_it_matters",
     "hook": "It connects quickly to Logistics, which is why one topic can open into a much larger rabbit hole.",
     "relatedCandidates": [
       "Logistics",
