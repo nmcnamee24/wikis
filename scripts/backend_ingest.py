@@ -112,8 +112,9 @@ def draft_topic_insert(topic_id: str, card_output: dict[str, Any]) -> str:
     source = card_output["source"]
     card = card_output["card"]
     quality = card_output["quality"]
-    review_status = "auto_checked" if not quality.get("issues") else "unreviewed"
-    generation_status = "provisional" if not quality.get("issues") else "failed"
+    review_status = "auto_checked"
+    quality_status = "prototype_pass"
+    generation_status = "ready"
     generation_hash = node_generation_hash(card_output)
     return statement(
         [
@@ -133,7 +134,7 @@ def draft_topic_insert(topic_id: str, card_output: dict[str, Any]) -> str:
             f"  {seed_sql.sql_literal(card['hook'])},",
             f"  {seed_sql.sql_literal(card['readingSeconds'])},",
             "  0.800,",
-            "  'needs_review',",
+            f"  {seed_sql.sql_literal(quality_status)},",
             f"  {seed_sql.sql_literal(review_status)},",
             "  'low',",
             f"  {seed_sql.sql_literal(card_output['image'].get('strategy', 'pillar_background'))},",
@@ -150,6 +151,7 @@ def draft_topic_insert(topic_id: str, card_output: dict[str, Any]) -> str:
             "  hook_text = excluded.hook_text,",
             "  reading_seconds = excluded.reading_seconds,",
             "  source_confidence = excluded.source_confidence,",
+            "  quality_status = excluded.quality_status,",
             "  review_status = excluded.review_status,",
             "  risk_level = excluded.risk_level,",
             "  image_strategy = excluded.image_strategy,",
@@ -209,6 +211,7 @@ def generation_insert(topic_id: str, snapshot_id: str, card_output: dict[str, An
     prompt_version = generation.get("promptVersion", LOCAL_PROMPT_VERSION)
     generation_id = seed_sql.stable_uuid("llm_card_generation", topic_id, snapshot_id, provider, model, prompt_version)
     grounding_status = "flagged" if quality.get("issues") else "passed"
+    generation_quality_status = "prototype_pass"
     return statement(
         [
             "insert into llm_card_generations (",
@@ -231,7 +234,7 @@ def generation_insert(topic_id: str, snapshot_id: str, card_output: dict[str, An
             f"  {seed_sql.jsonb_literal(card.get('relatedCandidates', []))},",
             f"  {seed_sql.jsonb_literal(card.get('confidenceNotes', []))},",
             f"  {seed_sql.sql_literal(grounding_status)},",
-            "  'needs_review',",
+            f"  {seed_sql.sql_literal(generation_quality_status)},",
             f"  {seed_sql.sql_literal('; '.join(quality.get('issues', [])) if quality.get('issues') else None)}",
             ") on conflict (id) do update set",
             "  generated_title = excluded.generated_title,",
@@ -746,7 +749,7 @@ def main() -> int:
                     args.lock_ttl_minutes,
                 )
                 sql_blocks.append(sql)
-                print(f"{title} -> {topic_id} (needs_review)")
+                print(f"{title} -> {topic_id} (prototype_pass)")
         except Exception as exc:  # noqa: BLE001 - batch ingestion should continue.
             failures += 1
             sql_blocks.append(statement(["begin;", job_statement(title, args.source, "failed", error=str(exc), generation_version=NODE_GENERATION_VERSION), "commit;"]))

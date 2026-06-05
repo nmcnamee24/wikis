@@ -13,6 +13,7 @@ final class FeedStore: ObservableObject {
     @Published var lastGestureLabel: String?
     @Published var loadingError: String?
     @Published private(set) var liveGenerationStatus: String?
+    @Published private(set) var navigationRevision = 0
 
     private var navigator: GraphNavigator?
     private let apiBaseURL = URL(string: "https://wikis-production.up.railway.app")!
@@ -72,6 +73,7 @@ final class FeedStore: ObservableObject {
             self.currentTopic = topic
             self.exploredTopics.append(topic)
             self.lastGestureLabel = gesture.label
+            self.navigationRevision += 1
         }
         if let liveGeneration {
             switch liveGeneration.status {
@@ -194,6 +196,7 @@ final class FeedStore: ObservableObject {
             exploredTopics.removeLast()
             currentTopic = exploredTopics.last
             lastGestureLabel = "Back"
+            navigationRevision += 1
         }
         return true
     }

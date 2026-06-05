@@ -55,7 +55,7 @@ Apply directly to Postgres:
 python3 scripts/backend_ingest.py ingest "Ada Lovelace" --condenser openai --execute
 ```
 
-The script writes a draft topic, source snapshot, generation metadata, image candidates with attribution/license metadata, pending candidate edges, and an `ingestion_jobs` row. Topic and asset rows stay review-gated until approval.
+The script writes a live prototype topic, source snapshot, generation metadata, image candidates with attribution/license metadata, pending candidate edges, and an `ingestion_jobs` row. For this prototype stage, generated topics are immediately `prototype_pass` and `ready`; validation warnings remain attached as generation/reviewer notes for later cleanup.
 
 Each generated topic also records node generation state:
 
@@ -138,7 +138,7 @@ python3 scripts/procedural_expand.py "Black hole" \
   --execute
 ```
 
-Keep the caps conservative at first. `--links-per-topic 5 --max-depth 2` can generate up to 31 topics before duplicate filtering. Generated topics stay review-gated as draft/provisional rows until they are approved.
+Keep the caps conservative at first. `--links-per-topic 5 --max-depth 2` can generate up to 31 topics before duplicate filtering. Generated topics become live prototype content immediately.
 
 ## Live Mobile Frontier Generation
 
@@ -169,7 +169,7 @@ Behavior:
 - It includes `backgroundIngestionTopics`, which are first-link Wikipedia candidates from the current frontier.
 - If live generation is enabled, the API first claims up to `liveGenerationLimit` candidates in `ingestion_jobs`, then schedules only the claimed candidates after the response is sent.
 - Repeated swipes do not call OpenAI again for a candidate that is already `queued`, `running`, or `succeeded`.
-- Generated topics are stored as `needs_review` and `provisional`, but the resolver can include them when `allowPrototypeContent` is true.
+- Generated topics are stored as `prototype_pass` and `ready`, so the resolver can use them immediately while later review tooling catches up.
 - Repeated swipes grow the graph around the user's actual path instead of recursively generating a large tree from one gesture.
 
 Production environment switches:

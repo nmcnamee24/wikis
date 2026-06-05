@@ -8,6 +8,7 @@ struct FeedView: View {
     @GestureState private var dragOffset: CGSize = .zero
     @State private var exitOffset: CGSize = .zero
     @State private var isTransitioning = false
+    @State private var pendingNavigationRevision: Int?
 
     var body: some View {
         ZStack {
@@ -84,6 +85,11 @@ struct FeedView: View {
                     .padding(.horizontal, 20)
             }
         }
+        .onChange(of: store.navigationRevision) { _, revision in
+            guard pendingNavigationRevision != nil else { return }
+            pendingNavigationRevision = nil
+            resetSwipeTransition()
+        }
     }
 
     private func visualOffset(for translation: CGSize) -> CGSize {
@@ -153,13 +159,23 @@ struct FeedView: View {
         }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.16) {
+            pendingNavigationRevision = store.navigationRevision
             store.navigate(gesture)
-            var resetTransaction = Transaction()
-            resetTransaction.disablesAnimations = true
-            withTransaction(resetTransaction) {
-                exitOffset = .zero
-                isTransitioning = false
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.2) {
+                guard pendingNavigationRevision == store.navigationRevision else { return }
+                pendingNavigationRevision = nil
+                resetSwipeTransition()
             }
+        }
+    }
+
+    private func resetSwipeTransition() {
+        var resetTransaction = Transaction()
+        resetTransaction.disablesAnimations = true
+        withTransaction(resetTransaction) {
+            exitOffset = .zero
+            isTransitioning = false
         }
     }
 
