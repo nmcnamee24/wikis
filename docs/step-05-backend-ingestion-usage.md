@@ -167,7 +167,8 @@ Behavior:
 
 - The API returns the next cached/provisional topic immediately.
 - It includes `backgroundIngestionTopics`, which are first-link Wikipedia candidates from the current frontier.
-- If live generation is enabled, the API schedules up to `liveGenerationLimit` background candidate generations after the response is sent.
+- If live generation is enabled, the API first claims up to `liveGenerationLimit` candidates in `ingestion_jobs`, then schedules only the claimed candidates after the response is sent.
+- Repeated swipes do not call OpenAI again for a candidate that is already `queued`, `running`, or `succeeded`.
 - Generated topics are stored as `needs_review` and `provisional`, but the resolver can include them when `allowPrototypeContent` is true.
 - Repeated swipes grow the graph around the user's actual path instead of recursively generating a large tree from one gesture.
 
@@ -181,6 +182,34 @@ WIKIS_LIVE_CARDS_OUT=data/cards
 ```
 
 Set `WIKIS_LIVE_GENERATION_ENABLED=0` to keep the endpoint traversal-only while still returning `backgroundIngestionTopics` for a separate worker.
+
+## Supabase Graph Visualization
+
+Export the current Supabase graph to a standalone interactive HTML file:
+
+```bash
+python3 scripts/export_supabase_graph.py \
+  --out data/graph/supabase_graph.html \
+  --json-out data/graph/supabase_graph.json
+```
+
+Open the HTML file in a browser. It shows:
+
+- topic nodes from `topics`
+- ungenerated pending candidate nodes from `candidate_edges`
+- solid lines for `deeper` and `prerequisite` routes
+- dashed lines for adjacent routes such as `neighbor`, `contrast`, `person`, and `place`
+- pending candidate routes as lower-opacity edges
+
+To highlight what one app session already explored:
+
+```bash
+python3 scripts/export_supabase_graph.py \
+  --session-id "your-session-id" \
+  --out data/graph/session_graph.html
+```
+
+This uses `exploration_events` to mark explored nodes and route edges in gold.
 
 ## Queue Background Frontier Expansion
 

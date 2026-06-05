@@ -12,3 +12,6 @@ __pycache__/
 .env
 .env.*
 !.env.example
+data/graph/supabase_graph.html
+data/graph/supabase_graph.json
+data/graph/explore_sim_latest.json

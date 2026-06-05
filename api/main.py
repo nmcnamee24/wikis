@@ -22,7 +22,6 @@ from backend_ingest import (  # noqa: E402
     NODE_GENERATION_VERSION,
     ingest_sql,
     job_statement,
-    psql_execute,
     statement,
 )
 from feed_next import load_graph_from_database, resolve_next  # noqa: E402
@@ -82,7 +81,65 @@ def live_generation_condenser() -> str:
     return "openai" if os.environ.get("OPENAI_API_KEY") else "local"
 
 
-def ingest_background_candidates(candidates: list[dict[str, Any]], limit: int) -> None:
+def claim_background_candidates(candidates: list[dict[str, Any]], limit: int) -> list[dict[str, Any]]:
+    if limit <= 0:
+        return []
+
+    lock_owner = os.environ.get("WIKIS_INGEST_LOCK_OWNER", DEFAULT_LOCK_OWNER)
+    ttl_minutes = int(os.environ.get("WIKIS_INGEST_LOCK_TTL_MINUTES", DEFAULT_LOCK_TTL_MINUTES))
+    claimed: list[dict[str, Any]] = []
+
+    with psycopg.connect(database_url()) as connection:
+        with connection.cursor() as cursor:
+            for candidate in candidates:
+                if len(claimed) >= limit:
+                    break
+                title = str(candidate.get("title") or candidate.get("id") or "").strip()
+                if not title:
+                    continue
+                cursor.execute(
+                    """
+                    insert into ingestion_jobs (
+                      requested_title, normalized_title, source, priority, status, attempts,
+                      started_at, finished_at, job_kind, lock_owner, locked_until,
+                      frontier_depth, frontier_limit, generation_version
+                    ) values (
+                      %s, %s, 'background_expansion', %s, 'running', 0,
+                      now(), null, 'node', %s, now() + (%s::text || ' minutes')::interval,
+                      1, %s, %s
+                    )
+                    on conflict (requested_title, source) do update set
+                      status = 'running',
+                      priority = greatest(ingestion_jobs.priority, excluded.priority),
+                      started_at = now(),
+                      finished_at = null,
+                      job_kind = excluded.job_kind,
+                      lock_owner = excluded.lock_owner,
+                      locked_until = excluded.locked_until,
+                      frontier_depth = excluded.frontier_depth,
+                      frontier_limit = excluded.frontier_limit,
+                      generation_version = excluded.generation_version
+                    where ingestion_jobs.status not in ('running', 'succeeded')
+                       or ingestion_jobs.locked_until < now()
+                    returning requested_title;
+                    """,
+                    (
+                        title,
+                        str(candidate.get("id") or title),
+                        int(candidate.get("priority") or 100),
+                        lock_owner,
+                        ttl_minutes,
+                        limit,
+                        NODE_GENERATION_VERSION,
+                    ),
+                )
+                if cursor.fetchone():
+                    claimed.append(candidate)
+        connection.commit()
+    return claimed
+
+
+def ingest_background_candidates(candidates: list[dict[str, Any]]) -> None:
     db_url = os.environ.get("DATABASE_URL")
     if not db_url:
         return
@@ -93,7 +150,7 @@ def ingest_background_candidates(candidates: list[dict[str, Any]], limit: int) -
     cards_out = Path(os.environ.get("WIKIS_LIVE_CARDS_OUT", str(ROOT / "data" / "cards")))
     sql_blocks: list[str] = []
 
-    for candidate in candidates[:limit]:
+    for candidate in candidates:
         title = str(candidate.get("title") or candidate.get("id") or "").strip()
         if not title:
             continue
@@ -120,7 +177,7 @@ def ingest_background_candidates(candidates: list[dict[str, Any]], limit: int) -
                             error=str(exc),
                             generation_version=NODE_GENERATION_VERSION,
                             frontier_depth=1,
-                            frontier_limit=limit,
+                            frontier_limit=len(candidates),
                         ),
                         "commit;",
                     ]
@@ -129,7 +186,10 @@ def ingest_background_candidates(candidates: list[dict[str, Any]], limit: int) -
 
     if sql_blocks:
         try:
-            psql_execute(db_url, "\n".join(sql_blocks))
+            with psycopg.connect(db_url) as connection:
+                with connection.cursor() as cursor:
+                    cursor.execute("\n".join(sql_blocks))
+                connection.commit()
         except Exception as exc:  # noqa: BLE001 - never let live generation break feed serving.
             print(f"live background ingestion failed: {exc}", file=sys.stderr)
 
@@ -167,15 +227,13 @@ def feed_next(request: FeedNextRequest, background_tasks: BackgroundTasks) -> di
         response = resolve_next(graph, request.model_dump())
         background_candidates = response.get("backgroundIngestionTopics", [])
         if live_generation_enabled(request) and background_candidates:
-            background_tasks.add_task(
-                ingest_background_candidates,
-                background_candidates,
-                request.liveGenerationLimit,
-            )
+            claimed_candidates = claim_background_candidates(background_candidates, request.liveGenerationLimit)
+            if claimed_candidates:
+                background_tasks.add_task(ingest_background_candidates, claimed_candidates)
             response["liveGeneration"] = {
-                "status": "scheduled",
+                "status": "scheduled" if claimed_candidates else "already_queued",
                 "limit": request.liveGenerationLimit,
-                "candidateTitles": [candidate.get("title") for candidate in background_candidates[: request.liveGenerationLimit]],
+                "candidateTitles": [candidate.get("title") for candidate in claimed_candidates],
             }
         else:
             response["liveGeneration"] = {"status": "idle", "limit": 0, "candidateTitles": []}

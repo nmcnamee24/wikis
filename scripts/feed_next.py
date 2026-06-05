@@ -140,15 +140,26 @@ edge_rows as (
 ),
 candidate_rows as (
   select jsonb_build_object(
-    'id', normalized_to_title,
-    'title', to_title,
-    'source', source,
-    'seenFrom', jsonb_agg(distinct from_topic_id) filter (where from_topic_id is not null),
-    'priority', greatest(1, coalesce(max((candidate_strength * 100)::integer), 1))
+    'id', ce.normalized_to_title,
+    'title', ce.to_title,
+    'source', ce.source,
+    'seenFrom', jsonb_agg(distinct ce.from_topic_id) filter (where ce.from_topic_id is not null),
+    'priority', greatest(1, coalesce(max((ce.candidate_strength * 100)::integer), 1))
   ) as item
-  from candidate_edges
-  where status = 'pending'
-  group by normalized_to_title, to_title, source
+  from candidate_edges ce
+  left join topics existing_topic
+    on existing_topic.id = ce.normalized_to_title
+   and existing_topic.quality_status in ('approved', 'prototype_pass', 'needs_review')
+   and existing_topic.generation_status <> 'failed'
+  left join ingestion_jobs active_job
+    on lower(active_job.requested_title) = lower(ce.to_title)
+   and active_job.source = 'background_expansion'
+   and active_job.status in ('queued', 'running', 'succeeded')
+   and (active_job.locked_until is null or active_job.locked_until > now() or active_job.status = 'succeeded')
+  where ce.status = 'pending'
+    and existing_topic.id is null
+    and active_job.id is null
+  group by ce.normalized_to_title, ce.to_title, ce.source
 ),
 starter_rows as (
   select coalesce(jsonb_agg(id order by pillar, id), '[]'::jsonb) as items

@@ -15,8 +15,9 @@ final class FeedStore: ObservableObject {
     @Published private(set) var liveGenerationStatus: String?
 
     private var navigator: GraphNavigator?
-    private let apiBaseURL = URL(string: "https://wikis-api-production.up.railway.app")!
+    private let apiBaseURL = URL(string: "https://wikis-production.up.railway.app")!
     private let useLiveAPI = true
+    private let sessionId = UUID().uuidString
 
     init() {
         loadGraph()
@@ -104,6 +105,14 @@ final class FeedStore: ObservableObject {
                 savedTopicIds: Array(savedTopicIds)
             )
             apply(topic: response.nextTopic, gesture: gesture, liveGeneration: response.liveGeneration)
+            Task {
+                await recordExplorationEvent(
+                    fromTopicId: currentTopic.id,
+                    toTopicId: response.nextTopic.id,
+                    gesture: gesture,
+                    reasonCode: response.reasonCode
+                )
+            }
             loadingError = nil
         } catch {
             if let decision = localDecision(from: currentTopic, gesture: gesture) {
@@ -146,6 +155,36 @@ final class FeedStore: ObservableObject {
             throw URLError(.badServerResponse)
         }
         return try JSONDecoder().decode(FeedNextResponse.self, from: data)
+    }
+
+    private func recordExplorationEvent(
+        fromTopicId: String,
+        toTopicId: String,
+        gesture: NavigationGesture,
+        reasonCode: String
+    ) async {
+        do {
+            var request = URLRequest(url: apiBaseURL.appending(path: "/v1/events"))
+            request.httpMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.timeoutInterval = 8
+            request.httpBody = try JSONEncoder().encode(
+                ExplorationEventAPIRequest(
+                    sessionId: sessionId,
+                    anonymousSessionId: sessionId,
+                    fromTopicId: fromTopicId,
+                    toTopicId: toTopicId,
+                    gesture: gesture.apiValue,
+                    reasonCode: reasonCode,
+                    dwellMs: nil,
+                    saved: false,
+                    clientEventAt: ISO8601DateFormatter().string(from: Date())
+                )
+            )
+            _ = try await URLSession.shared.data(for: request)
+        } catch {
+            // Exploration tracking should never interrupt reading or navigation.
+        }
     }
 
     @discardableResult
@@ -201,6 +240,18 @@ private struct FeedNextAPIRequest: Encodable {
     let allowPrototypeContent: Bool
     let liveGenerationEnabled: Bool
     let liveGenerationLimit: Int
+}
+
+private struct ExplorationEventAPIRequest: Encodable {
+    let sessionId: String
+    let anonymousSessionId: String
+    let fromTopicId: String
+    let toTopicId: String
+    let gesture: String
+    let reasonCode: String
+    let dwellMs: Int?
+    let saved: Bool
+    let clientEventAt: String
 }
 
 private struct FeedNextResponse: Decodable {
