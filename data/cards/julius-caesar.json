@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-05T06:33:15+00:00",
+  "source": {
+    "requestedTitle": "Julius Caesar",
+    "wikipediaTitle": "Julius Caesar",
+    "pageId": 15924,
+    "revisionId": 1355006674,
+    "fetchedAt": "2026-06-05T06:33:15+00:00",
+    "extract": "Gaius Julius Caesar (12 or 13 July 100 BC – 15 March 44 BC) was a Roman general, statesman, and author who was the dictator of the Roman Republic almost continuously from 49 BC until his assassination in 44 BC. A member of the First Triumvirate, he led the Roman armies through the Gallic Wars and defeated his political rival Pompey in Caesar's civil war. He consolidated power and proclaimed himself dictator for life in 44 BC, helping create the political conditions that led to the collapse of the Roman Republic and the emergence of the Roman Empire. For his role in these events, he is regarded as one of history’s most influential figures. In 60 BC, Caesar, Crassus, and Pompey formed the First Triumvirate, an informal political alliance that dominated Roman politics for several years. Their attempts to amass political power were opposed by many in the Senate, including Cato the Younger with the private support of Cicero. Caesar rose to become one of the most powerful politicians in the Roman Republic through a string of military victories in the Gallic Wars, completed by 51 BC, which greatly expanded Roman territory. During this time, he invaded Britain and built a bridge across the Rhine. These achievements, along with the loyalty of his veteran army, threatened to eclipse the standing of Pompey. The alliance between Caesar and Pompey slowly broke down and, by 50 BC, Pompey had realigned himself with the Senate. With his command expiring and the Gallic Wars largely concluded, the Senate ordered Caesar to relinquish his military command and return to Rome. In early January 49 BC, Caesar openly defied the Senate by crossing the Rubicon and marching towards Rome at the head of an army. This act began Caesar's civil war, which he won, leaving him in a position of near-unchallenged power and influence in 45 BC. After assuming control of government and pardoning many of his enemies, Caesar carried out various reforms and public works. He created the Julian calendar to replace the republican lunisolar calendar, reduced the size of the grain dole, settled his veterans in new overseas colonies, greatly increased the size of the Senate, and extended citizenship to communities in Spain and what is now northern Italy. In early 44 BC, he was proclaimed \"dictator for life\". Fearful of his power, his domination of the state, and the possibility that he might make himself king, a group of senators led by Brutus and Cassius assassinated Caesar on the Ides of March (15 March) 44 BC. A new series of civil wars broke out and the constitutional government of the Republic was never fully restored. Caesar's great-nephew and adoptive heir Octavian, later known as Augustus, rose to sole power after defeating his opponents thirteen years later. Octavian then set about consolidating his power, transforming the Republic into the Roman Empire as its first emperor. Caesar was an accomplished author and commentator; much of his life is known through his own accounts of his military campaigns. Other contemporary sources include the letters and speeches of Cicero and the historical writings of Sallust. Later biographies of Caesar by Suetonius and Plutarch are also important sources. Caesar is considered by many historians to be one of the greatest military commanders in history. His cognomen subsequently became a synonym for emperor; the title Caesar was used throughout the Roman Empire, and gave rise to modern derivatives such as Kaiser and Tsar. He has frequently appeared in literary and artistic works.",
+    "firstParagraph": "Gaius Julius Caesar (12 or 13 July 100 BC – 15 March 44 BC) was a Roman general, statesman, and author who was the dictator of the Roman Republic almost continuously from 49 BC until his assassination in 44 BC. A member of the First Triumvirate, he led the Roman armies through the Gallic Wars and defeated his political rival Pompey in Caesar's civil war. He consolidated power and proclaimed himself dictator for life in 44 BC, helping create the political conditions that led to the collapse of the Roman Republic and the emergence of the Roman Empire."
+  },
+  "card": {
+    "title": "Julius Caesar",
+    "pillar": "history",
+    "explanation": "Gaius Julius Caesar (12 or 13 July 100 BC – 15 March 44 BC) was a Roman general, statesman, and author who was the dictator of the Roman Republic almost continuously from 49 BC until his assassination in 44 BC. A member of the First Triumvirate, he led the Roman armies through the Gallic Wars and defeated his political rival Pompey in Caesar's civil war. He consolidated power and proclaimed himself dictator for life in 44 BC, helping create the political conditions that led to the collapse of the Roman Republic and the emergence of the Roman Empire. For his role in these events, he.",
+    "hookType": "the_weird_part",
+    "hook": "It connects quickly to Roman dictator, which is why one topic can open into a much larger rabbit hole.",
+    "relatedCandidates": [
+      "Roman dictator",
+      "Roman Republic",
+      "Assassination of Julius Caesar",
+      "First Triumvirate",
+      "Gallic Wars",
+      "Pompey",
+      "Caesar's civil war",
+      "Dictator for life"
+    ],
+    "readingSeconds": 33,
+    "confidenceNotes": [
+      "Generated by deterministic local condenser from Wikipedia extract."
+    ]
+  },
+  "mapping": {
+    "linkStrategy": "first_paragraph",
+    "firstParagraphLinks": [
+      {
+        "title": "Roman dictator",
+        "label": "dictator"
+      },
+      {
+        "title": "Roman Republic",
+        "label": "Roman Republic"
+      },
+      {
+        "title": "Assassination of Julius Caesar",
+        "label": "his assassination"
+      },
+      {
+        "title": "First Triumvirate",
+        "label": "First Triumvirate"
+      },
+      {
+        "title": "Gallic Wars",
+        "label": "Gallic Wars"
+      },
+      {
+        "title": "Pompey",
+        "label": "Pompey"
+      },
+      {
+        "title": "Caesar's civil war",
+        "label": "Caesar's civil war"
+      },
+      {
+        "title": "Dictator for life",
+        "label": "dictator for life"
+      },
+      {
+        "title": "Crisis of the Roman Republic",
+        "label": "political conditions"
+      },
+      {
+        "title": "Roman Empire",
+        "label": "Roman Empire"
+      }
+    ],
+    "leadOrFallbackLinks": [
+      {
+        "title": "Roman dictator",
+        "label": "dictator"
+      },
+      {
+        "title": "Roman Republic",
+        "label": "Roman Republic"
+      },
+      {
+        "title": "Assassination of Julius Caesar",
+        "label": "his assassination"
+      },
+      {
+        "title": "First Triumvirate",
+        "label": "First Triumvirate"
+      },
+      {
+        "title": "Gallic Wars",
+        "label": "Gallic Wars"
+      },
+      {
+        "title": "Pompey",
+        "label": "Pompey"
+      },
+      {
+        "title": "Caesar's civil war",
+        "label": "Caesar's civil war"
+      },
+      {
+        "title": "Dictator for life",
+        "label": "dictator for life"
+      },
+      {
+        "title": "Crisis of the Roman Republic",
+        "label": "political conditions"
+      },
+      {
+        "title": "Roman Empire",
+        "label": "Roman Empire"
+      }
+    ],
+    "relatedTopicCandidates": [
+      "Roman dictator",
+      "Roman Republic",
+      "Assassination of Julius Caesar",
+      "First Triumvirate",
+      "Gallic Wars",
+      "Pompey",
+      "Caesar's civil war",
+      "Dictator for life"
+    ]
+  },
+  "image": {
+    "strategy": "wikipedia_image",
+    "selected": {
+      "source": "wikipedia_pageimage",
+      "title": "Retrato_de_Julio_César_(26724093101)_(cropped).jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/6/62/Retrato_de_Julio_C%C3%A9sar_%2826724093101%29_%28cropped%29.jpg",
+      "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/6/62/Retrato_de_Julio_C%C3%A9sar_%2826724093101%29_%28cropped%29.jpg",
+      "width": 1752,
+      "height": 2379,
+      "qualityScore": 0.82,
+      "rejectionReasons": []
+    },
+    "fallbackPillar": null
+  },
+  "quality": {
+    "status": "prototype_pass",
+    "issues": []
+  }
+}

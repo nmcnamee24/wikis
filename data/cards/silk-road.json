@@ -1,0 +1,173 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-05T06:33:05+00:00",
+  "source": {
+    "requestedTitle": "Silk Road",
+    "wikipediaTitle": "Silk Road",
+    "pageId": 54253,
+    "revisionId": 1356228752,
+    "fetchedAt": "2026-06-05T06:33:05+00:00",
+    "extract": "The Silk Road was a network of Asian trade routes active from the second century BCE until the mid-15th century. Spanning over 6,400 km (4,000 mi) on land, it played a central role in facilitating economic, cultural, political, and religious interactions between the Eastern and Western worlds. The name \"Silk Road\" was coined in the late 19th century, but some 20th- and 21st-century historians instead prefer the term Silk Routes, on the grounds that it more accurately describes the intricate web of land and sea routes connecting Central, East, South, Southeast, and West Asia as well as East Africa and Southern Europe. In fact, some scholars criticise or even dismiss the idea of silk roads and call for a new definition or alternate term. According to them, the literature using this term has \"privileged the sedentary and literate empires at either end of Eurasia\" thereby ignoring the contributions of steppe nomads. In addition, the classic definition sidelines prominent civilisations such as India and Iran. The Silk Road derives its name from the highly lucrative trade of silk textiles that were primarily produced in China. The network began with the expansion of the Han dynasty (202 BCE – 220 CE) into Central Asia around 114 BCE, through the missions and explorations of the Chinese imperial envoy Zhang Qian, which brought the region under unified control. The Chinese took great interest in the security of their trade products, and extended the Great Wall of China to ensure the protection of the trade route. The Parthian Empire provided a vital bridge connecting the network to the Mediterranean. Meanwhile, the rise of the Roman Empire in the west further established the western terminus of the interconnected trade system. By the first century CE, Chinese silk was widely sought after in Rome, Egypt, and Greece. Other lucrative commodities from the East included tea, dyes, perfumes, and porcelain; among Western exports were horses, camels, honey, wine, and gold. Aside from generating substantial wealth for emerging mercantile classes, the proliferation of goods such as paper and gunpowder greatly affected the trajectory of political history in several theatres in Eurasia and beyond. The Silk Road was utilized over a period that saw immense political variation across the continent, exemplified by major events such as the Black Death and the Mongol conquests. The network was highly decentralized, and security was sparse: travelers faced constant threats of banditry and nomadic raiders, and long expanses of inhospitable terrain. Few individuals traveled the entire length of the Silk Road, instead relying on a succession of middlemen based at various stopping points along the way. In addition to goods, the network facilitated an unprecedented exchange of religious (especially Buddhist), philosophical, and scientific thought, much of which was syncretised by societies along the way. Likewise, a wide variety of people used the routes. Diseases such as plague also spread along the Silk Road, possibly contributing to the Black Death. From 1453 onwards, the Ottoman Empire began competing with other gunpowder empires for greater control over the overland routes, which prompted European polities to seek alternatives while themselves gaining leverage over their trade partners. This marked the beginning of the Age of Discovery, European colonialism, and the further intensification of globalization. In the 21st century, the name \"New Silk Road\" is used to describe several large infrastructure projects along many of the historic trade routes; among the best known include the Eurasian Land Bridge and the Chinese Belt and Road Initiative (BRI). UNESCO designated the Chang'an-Tianshan corridor of the Silk Road as a World Heritage Site in 2014, and the Zarafshan-Karakum Corridor in 2023. The Fergana-Syrdarya Corridor, the Indian and Iranian portions, and the remaining sites in China remain on the tentative lists. Despite the popular imagination, Silk Road was never a singular east-west trade route that linked China to the Mediterranean, nor was there unrestricted trade before the Mongol Empire. It was a network of routes. Even Marco Polo, often linked to the Silk Road, never used the term despite traveling during a time of Mongol-enabled ease of movement.",
+    "firstParagraph": "The Silk Road was a network of Asian trade routes active from the second century BCE until the mid-15th century. Spanning over 6,400 km (4,000 mi) on land, it played a central role in facilitating economic, cultural, political, and religious interactions between the Eastern and Western worlds. The name \"Silk Road\" was coined in the late 19th century, but some 20th- and 21st-century historians instead prefer the term Silk Routes, on the grounds that it more accurately describes the intricate web of land and sea routes connecting Central, East, South, Southeast, and West Asia as well as East Africa and Southern Europe."
+  },
+  "card": {
+    "title": "Silk Road",
+    "pillar": "history",
+    "explanation": "The Silk Road was a network of Asian trade routes active from the second century BCE until the mid-15th century. Spanning over 6,400 km (4,000 mi) on land, it played a central role in facilitating economic, cultural, political, and religious interactions between the Eastern and Western worlds. The name \"Silk Road\" was coined in the late 19th century, but some 20th- and 21st-century historians instead prefer the term Silk Routes, on the grounds that it more accurately describes the intricate web of land and sea routes connecting Central, East, South, Southeast, and West Asia as well as East Africa and Southern Europe. In fact, some.",
+    "hookType": "the_weird_part",
+    "hook": "It connects quickly to Asia, which is why one topic can open into a much larger rabbit hole.",
+    "relatedCandidates": [
+      "Asia",
+      "Trade route",
+      "Eastern world",
+      "Western world",
+      "Central Asia",
+      "East Asia",
+      "South Asia",
+      "Southeast Asia"
+    ],
+    "readingSeconds": 32,
+    "confidenceNotes": [
+      "Generated by deterministic local condenser from Wikipedia extract."
+    ]
+  },
+  "mapping": {
+    "linkStrategy": "first_paragraph",
+    "firstParagraphLinks": [
+      {
+        "title": "Asia",
+        "label": "Asian"
+      },
+      {
+        "title": "Trade route",
+        "label": "trade routes"
+      },
+      {
+        "title": "Eastern world",
+        "label": "Eastern"
+      },
+      {
+        "title": "Western world",
+        "label": "Western worlds"
+      },
+      {
+        "title": "Central Asia",
+        "label": "Central"
+      },
+      {
+        "title": "East Asia",
+        "label": "East"
+      },
+      {
+        "title": "South Asia",
+        "label": "South"
+      },
+      {
+        "title": "Southeast Asia",
+        "label": "Southeast"
+      },
+      {
+        "title": "West Asia",
+        "label": "West Asia"
+      },
+      {
+        "title": "East Africa",
+        "label": "East Africa"
+      },
+      {
+        "title": "Southern Europe",
+        "label": "Southern Europe"
+      },
+      {
+        "title": "Eurasia",
+        "label": "Eurasia"
+      },
+      {
+        "title": "India",
+        "label": "India"
+      },
+      {
+        "title": "Iran",
+        "label": "Iran"
+      }
+    ],
+    "leadOrFallbackLinks": [
+      {
+        "title": "Asia",
+        "label": "Asian"
+      },
+      {
+        "title": "Trade route",
+        "label": "trade routes"
+      },
+      {
+        "title": "Eastern world",
+        "label": "Eastern"
+      },
+      {
+        "title": "Western world",
+        "label": "Western worlds"
+      },
+      {
+        "title": "Central Asia",
+        "label": "Central"
+      },
+      {
+        "title": "East Asia",
+        "label": "East"
+      },
+      {
+        "title": "South Asia",
+        "label": "South"
+      },
+      {
+        "title": "Southeast Asia",
+        "label": "Southeast"
+      },
+      {
+        "title": "West Asia",
+        "label": "West Asia"
+      },
+      {
+        "title": "East Africa",
+        "label": "East Africa"
+      },
+      {
+        "title": "Southern Europe",
+        "label": "Southern Europe"
+      },
+      {
+        "title": "Eurasia",
+        "label": "Eurasia"
+      },
+      {
+        "title": "India",
+        "label": "India"
+      },
+      {
+        "title": "Iran",
+        "label": "Iran"
+      }
+    ],
+    "relatedTopicCandidates": [
+      "Asia",
+      "Trade route",
+      "Eastern world",
+      "Western world",
+      "Central Asia",
+      "East Asia",
+      "South Asia",
+      "Southeast Asia"
+    ]
+  },
+  "image": {
+    "strategy": "pillar_background",
+    "selected": null,
+    "fallbackPillar": "history",
+    "reason": "no_suitable_wikipedia_image"
+  },
+  "quality": {
+    "status": "prototype_pass",
+    "issues": []
+  }
+}

@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-05T08:52:20+00:00",
+  "source": {
+    "requestedTitle": "Western world",
+    "wikipediaTitle": "Western world",
+    "pageId": 21208200,
+    "revisionId": 1357249185,
+    "fetchedAt": "2026-06-05T08:52:20+00:00",
+    "extract": "The Western world, also known as the West, primarily refers to various nations and states in Europe, Northern America, and Australasia; with some debate as to whether those in the former Soviet Union and Latin America also constitute the West. The Western world likewise is called the Occident (from Latin occidens 'setting down, sunset, west') in contrast to the Eastern world known as the Orient (from Latin oriens 'origin, sunrise, east'). Definitions of the \"Western world\" vary according to context and perspectives; the West is an evolving concept made up of cultural, political, and economic synergy among diverse groups of people, and not a rigid region with fixed borders and members. Ancient Greece and Rome are widely regarded as the birthplaces of Western civilization. A geographical concept of the West started to take shape in the 4th century CE when Constantine, the first Christian Roman emperor, divided the Roman Empire between the Greek East and Latin West. The East Roman Empire, later called the Byzantine Empire, continued for a millennium, while the West Roman Empire lasted for only about a century and a half. Significant theological and ecclesiastical differences led Western Europeans to consider the Christians in the Byzantine Empire as heretics. In 1054 CE, when the church in Rome excommunicated the patriarch of Byzantium, the politico-religious division between the Western church and Eastern church culminated in the Great Schism or the East–West Schism. Even though friendly relations continued between the two parts of Christendom for some time, the crusades made the schism definitive with hostility. The West during these crusades tried to capture trade routes to the East and failed, it instead discovered the Americas. In the aftermath of the European colonization of the Americas, primarily involving Western European powers, an idea of the \"Western\" world, as an inheritor of Latin Christendom emerged. According to the Oxford English Dictionary, the earliest reference to the term \"Western world\" was from 1586, found in the writings of William Warner. The countries that are considered constituents of the West vary according to perspective rather than their geographical location. Countries like Australia and New Zealand, located in the Eastern Hemisphere are included in modern definitions of the Western world, as these regions and others like them have been significantly influenced by the British—derived from colonization, and immigration of Europeans—factors that grounded such countries to the West. Depending on the context and the historical period in question, Russia was sometimes seen as a part of the West, and at other times juxtaposed with it, as well as endorsing anti-Western sentiment. The United States became more prominently featured in the conceptualizations of the West as it rose as a great power, amidst the development of communication–transportation technologies like the telegraph and railroads \"shrinking\" the distance between both the Atlantic Ocean shores. At some times between the 18th century and the mid-20th century, prominent countries in the West such as the United States, Canada, Brazil, Argentina, Australia, Uruguay, and New Zealand have been envisioned by some as ethnocracies for Whites. Racism is claimed as a contributing factor to Western European colonization of the New World, which today constitutes much of the geographical Western world and is split between Global North and Global South. Starting from the late 1960s, certain parts of the Western world have become notable for their diversity due to immigration and changes in fertility rates. The idea of \"the West\" over the course of time has evolved from a directional concept to a socio-political concept—temporalized and rendered as a concept of the future bestowed with notions of progress and modernity.",
+    "firstParagraph": "The Western world, also known as the West, primarily refers to various nations and states in Europe, Northern America, and Australasia; with some debate as to whether those in the former Soviet Union and Latin America also constitute the West. The Western world likewise is called the Occident (from Latin occidens 'setting down, sunset, west') in contrast to the Eastern world known as the Orient (from Latin oriens 'origin, sunrise, east'). Definitions of the \"Western world\" vary according to context and perspectives; the West is an evolving concept made up of cultural, political, and economic synergy among diverse groups of people, and not a rigid region with fixed borders and members."
+  },
+  "card": {
+    "title": "Western world",
+    "pillar": "history",
+    "explanation": "The Western world, also known as the West, primarily refers to various nations and states in Europe, Northern America, and Australasia; with some debate as to whether those in the former Soviet Union and Latin America also constitute the West. The Western world likewise is called the Occident (from Latin occidens 'setting down, sunset, west') in contrast to the Eastern world known as the Orient (from Latin oriens 'origin, sunrise, east'). Definitions of the \"Western world\" vary according to context and perspectives; the West is an evolving concept made up of cultural, political, and economic synergy among diverse groups of people, and not a rigid.",
+    "hookType": "the_weird_part",
+    "hook": "It connects quickly to Nation, which is why one topic can open into a much larger rabbit hole.",
+    "relatedCandidates": [
+      "Nation",
+      "State (polity)",
+      "Northern America",
+      "Australasia",
+      "Soviet Union",
+      "Latin America",
+      "Occident",
+      "Latin language"
+    ],
+    "readingSeconds": 32,
+    "confidenceNotes": [
+      "Generated by deterministic local condenser from Wikipedia extract."
+    ]
+  },
+  "mapping": {
+    "linkStrategy": "first_paragraph",
+    "firstParagraphLinks": [
+      {
+        "title": "Nation",
+        "label": "nations"
+      },
+      {
+        "title": "State (polity)",
+        "label": "states"
+      },
+      {
+        "title": "Northern America",
+        "label": "Northern America"
+      },
+      {
+        "title": "Australasia",
+        "label": "Australasia"
+      },
+      {
+        "title": "Soviet Union",
+        "label": "Soviet Union"
+      },
+      {
+        "title": "Latin America",
+        "label": "Latin America"
+      },
+      {
+        "title": "Occident",
+        "label": "Occident"
+      },
+      {
+        "title": "Latin language",
+        "label": "Latin"
+      },
+      {
+        "title": "Eastern world",
+        "label": "Eastern world"
+      },
+      {
+        "title": "Orient",
+        "label": "Orient"
+      }
+    ],
+    "leadOrFallbackLinks": [
+      {
+        "title": "Nation",
+        "label": "nations"
+      },
+      {
+        "title": "State (polity)",
+        "label": "states"
+      },
+      {
+        "title": "Northern America",
+        "label": "Northern America"
+      },
+      {
+        "title": "Australasia",
+        "label": "Australasia"
+      },
+      {
+        "title": "Soviet Union",
+        "label": "Soviet Union"
+      },
+      {
+        "title": "Latin America",
+        "label": "Latin America"
+      },
+      {
+        "title": "Occident",
+        "label": "Occident"
+      },
+      {
+        "title": "Latin language",
+        "label": "Latin"
+      },
+      {
+        "title": "Eastern world",
+        "label": "Eastern world"
+      },
+      {
+        "title": "Orient",
+        "label": "Orient"
+      }
+    ],
+    "relatedTopicCandidates": [
+      "Nation",
+      "State (polity)",
+      "Northern America",
+      "Australasia",
+      "Soviet Union",
+      "Latin America",
+      "Occident",
+      "Latin language"
+    ]
+  },
+  "image": {
+    "strategy": "wikipedia_image",
+    "selected": {
+      "source": "wikipedia_pageimage",
+      "title": "The_Parthenon_in_Athens.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/d/da/The_Parthenon_in_Athens.jpg",
+      "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/d/da/The_Parthenon_in_Athens.jpg",
+      "width": 1144,
+      "height": 804,
+      "qualityScore": 0.82,
+      "rejectionReasons": []
+    },
+    "fallbackPillar": null
+  },
+  "quality": {
+    "status": "prototype_pass",
+    "issues": []
+  }
+}
