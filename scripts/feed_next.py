@@ -231,6 +231,7 @@ def quality_score(topic: dict[str, Any]) -> float:
         "approved": 1.0,
         "prototype_pass": 0.86,
         "needs_review": 0.58,
+        "pending_candidate": 0.30,
     }.get(topic.get("qualityStatus"), 0.0)
 
 
@@ -328,7 +329,15 @@ def resolve_next(graph: dict[str, Any], request: dict[str, Any]) -> dict[str, An
         )
     candidates.sort(key=lambda item: (-item["score"], item["topic"]["title"]))
 
-    selected = candidates[0] if candidates else fallback_candidate(graph, topics, current, current_id, gesture, explored, allow_prototype, saved)
+    selected = candidates[0] if candidates else pending_candidate(
+        graph,
+        current,
+        current_id,
+        gesture,
+        explored,
+        bool(request.get("allowPendingCandidateCards", True)),
+    )
+    selected = selected or fallback_candidate(graph, topics, current, current_id, gesture, explored, allow_prototype, saved)
     if not selected:
         raise RuntimeError(f"No visible traversal candidate from {current_id}")
 
@@ -337,6 +346,9 @@ def resolve_next(graph: dict[str, Any], request: dict[str, Any]) -> dict[str, An
     excluded = set(explored + [current_id, selected_topic["id"]])
     prefetch = prefetch_topics(graph, topics, selected_topic["id"], excluded, prefetch_limit, allow_prototype)
     background = background_topics(graph, current_id, frontier_limit)
+    if selected.get("pendingCandidate"):
+        selected_candidate = selected["pendingCandidate"]
+        background = [selected_candidate, *[candidate for candidate in background if candidate.get("id") != selected_candidate.get("id")]]
     fallback_ids = [item["topic"]["id"] for item in candidates[1:4]]
 
     return {
@@ -355,6 +367,62 @@ def resolve_next(graph: dict[str, Any], request: dict[str, Any]) -> dict[str, An
             "currentTopicId": current_id,
             "candidateCount": len(candidates),
             "frontierLimit": frontier_limit,
+            "pendingCandidateUsed": bool(selected.get("pendingCandidate")),
+        },
+    }
+
+
+def pending_candidate(
+    graph: dict[str, Any],
+    current: dict[str, Any] | None,
+    current_id: str,
+    gesture: str,
+    explored: list[str],
+    allow_pending: bool,
+) -> dict[str, Any] | None:
+    if not allow_pending or gesture == "left":
+        return None
+    explored_set = set(explored)
+    candidates = [
+        candidate for candidate in graph.get("candidateQueue", [])
+        if current_id in (candidate.get("seenFrom") or []) and candidate.get("id") not in explored_set
+    ]
+    candidates.sort(key=lambda item: (-int(item.get("priority") or 0), item["title"]))
+    if not candidates:
+        return None
+    candidate = candidates[0]
+    topic = pending_topic_card(candidate, current)
+    return {
+        "topic": topic,
+        "edge": None,
+        "score": 0.36,
+        "reasonCode": "pending_candidate_card",
+        "pendingCandidate": candidate,
+    }
+
+
+def pending_topic_card(candidate: dict[str, Any], current: dict[str, Any] | None) -> dict[str, Any]:
+    pillar = (current or {}).get("pillar") or "science"
+    title = candidate.get("title") or candidate.get("id") or "Pending topic"
+    return {
+        "id": candidate.get("id") or title.lower().replace(" ", "-"),
+        "title": title,
+        "pillar": pillar,
+        "explanation": "This card is being generated from Wikipedia. Stay here for a moment and Wikis will replace it with the full version when it is ready.",
+        "hookType": "why_it_matters",
+        "hook": "Wikis found this as a nearby path and is building the card now.",
+        "readingSeconds": 8,
+        "qualityStatus": "pending_candidate",
+        "wikipedia": {
+            "title": title,
+            "pageId": 0,
+            "revisionId": None,
+        },
+        "image": {
+            "strategy": "pillar_background",
+            "selected": None,
+            "fallbackPillar": pillar,
+            "reason": "pending_generation",
         },
     }
 
@@ -427,7 +495,7 @@ def prefetch_topics(
 def background_topics(graph: dict[str, Any], current_id: str, limit: int) -> list[dict[str, Any]]:
     candidates = [
         candidate for candidate in graph.get("candidateQueue", [])
-        if current_id in candidate.get("seenFrom", [])
+        if current_id in (candidate.get("seenFrom") or [])
     ]
     candidates.sort(key=lambda item: (-int(item.get("priority") or 0), item["title"]))
     return candidates[:limit]

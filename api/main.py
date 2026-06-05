@@ -38,6 +38,7 @@ class FeedNextRequest(BaseModel):
     frontierLimit: int = Field(default=2, ge=0, le=20)
     prefetchLimit: int = Field(default=3, ge=0, le=20)
     allowPrototypeContent: bool = True
+    allowPendingCandidateCards: bool = True
     liveGenerationEnabled: bool = True
     liveGenerationLimit: int = Field(default=1, ge=0, le=5)
 
@@ -211,7 +212,7 @@ def root() -> dict[str, Any]:
     return {
         "name": "Wikis API",
         "status": "ok",
-        "endpoints": ["/health", "/v1/feed/next", "/v1/events", "/v1/saved-topics"],
+        "endpoints": ["/health", "/v1/feed/next", "/v1/topics/{topic_id}", "/v1/events", "/v1/saved-topics"],
     }
 
 
@@ -238,6 +239,20 @@ def feed_next(request: FeedNextRequest, background_tasks: BackgroundTasks) -> di
         else:
             response["liveGeneration"] = {"status": "idle", "limit": 0, "candidateTitles": []}
         return response
+    except HTTPException:
+        raise
+    except Exception as exc:  # noqa: BLE001 - keep API errors bounded.
+        raise HTTPException(status_code=500, detail=str(exc)) from exc
+
+
+@app.get("/v1/topics/{topic_id}")
+def get_topic(topic_id: str) -> dict[str, Any]:
+    try:
+        graph = load_graph_from_database(database_url())
+        for topic in graph.get("topics", []):
+            if topic.get("id") == topic_id:
+                return topic
+        raise HTTPException(status_code=404, detail="topic is not generated yet")
     except HTTPException:
         raise
     except Exception as exc:  # noqa: BLE001 - keep API errors bounded.

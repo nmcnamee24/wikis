@@ -75,7 +75,9 @@ final class FeedStore: ObservableObject {
             self.lastGestureLabel = gesture.label
             self.navigationRevision += 1
         }
-        if let liveGeneration {
+        if topic.isPendingCandidate {
+            liveGenerationStatus = "Generating \(topic.title)..."
+        } else if let liveGeneration {
             switch liveGeneration.status {
             case "scheduled":
                 let titleList = liveGeneration.candidateTitles.compactMap { $0 }.joined(separator: ", ")
@@ -115,6 +117,9 @@ final class FeedStore: ObservableObject {
                     reasonCode: response.reasonCode
                 )
             }
+            if response.nextTopic.isPendingCandidate {
+                await pollPendingTopic(topicId: response.nextTopic.id)
+            }
             loadingError = nil
         } catch {
             if let decision = localDecision(from: currentTopic, gesture: gesture) {
@@ -145,6 +150,7 @@ final class FeedStore: ObservableObject {
                 frontierLimit: 2,
                 prefetchLimit: 3,
                 allowPrototypeContent: true,
+                allowPendingCandidateCards: true,
                 liveGenerationEnabled: true,
                 liveGenerationLimit: 1
             )
@@ -157,6 +163,48 @@ final class FeedStore: ObservableObject {
             throw URLError(.badServerResponse)
         }
         return try JSONDecoder().decode(FeedNextResponse.self, from: data)
+    }
+
+    private func requestTopic(topicId: String) async throws -> Topic {
+        var request = URLRequest(url: apiBaseURL.appending(path: "/v1/topics/\(topicId)"))
+        request.httpMethod = "GET"
+        request.timeoutInterval = 8
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse,
+              (200..<300).contains(httpResponse.statusCode)
+        else {
+            throw URLError(.badServerResponse)
+        }
+        return try JSONDecoder().decode(Topic.self, from: data)
+    }
+
+    private func pollPendingTopic(topicId: String) async {
+        let delays: [UInt64] = [2, 4, 6, 8, 10]
+        for delay in delays {
+            try? await Task.sleep(nanoseconds: delay * 1_000_000_000)
+            guard currentTopic?.id == topicId else { return }
+            do {
+                let topic = try await requestTopic(topicId: topicId)
+                guard !topic.isPendingCandidate, currentTopic?.id == topicId else { return }
+                replaceCurrentTopic(with: topic)
+                return
+            } catch {
+                continue
+            }
+        }
+    }
+
+    private func replaceCurrentTopic(with topic: Topic) {
+        withAnimation(.easeInOut(duration: 0.24)) {
+            currentTopic = topic
+            if let lastIndex = exploredTopics.lastIndex(where: { $0.id == topic.id }) {
+                exploredTopics[lastIndex] = topic
+            }
+            if liveGenerationStatus != nil {
+                liveGenerationStatus = nil
+            }
+        }
     }
 
     private func recordExplorationEvent(
@@ -241,6 +289,7 @@ private struct FeedNextAPIRequest: Encodable {
     let frontierLimit: Int
     let prefetchLimit: Int
     let allowPrototypeContent: Bool
+    let allowPendingCandidateCards: Bool
     let liveGenerationEnabled: Bool
     let liveGenerationLimit: Int
 }
@@ -269,4 +318,10 @@ private struct LiveGenerationStatus: Decodable {
     let status: String
     let limit: Int
     let candidateTitles: [String?]
+}
+
+private extension Topic {
+    var isPendingCandidate: Bool {
+        qualityStatus == "pending_candidate"
+    }
 }
