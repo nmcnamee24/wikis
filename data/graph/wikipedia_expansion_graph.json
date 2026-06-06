@@ -1,0 +1,1729 @@
+{
+  "schemaVersion": 1,
+  "graphId": "wikis-wikipedia-expansion-v0",
+  "seedTitle": "Black hole",
+  "maxDepth": 2,
+  "linksPerTopic": 6,
+  "nodes": [
+    {
+      "id": "black-hole",
+      "title": "Black hole",
+      "depth": 0,
+      "status": "expanded",
+      "pageId": 4650,
+      "contentStatus": "missing",
+      "source": "wikipedia_parse_lead"
+    },
+    {
+      "id": "brightness-temperature",
+      "title": "Brightness temperature",
+      "depth": 1,
+      "status": "expanded",
+      "pageId": 47501,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "event-horizon-telescope",
+      "title": "Event Horizon Telescope",
+      "depth": 1,
+      "status": "expanded",
+      "pageId": 34573309,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "messier-87",
+      "title": "Messier 87",
+      "depth": 1,
+      "status": "expanded",
+      "pageId": 214077,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "radio-telescope",
+      "title": "Radio telescope",
+      "depth": 1,
+      "status": "expanded",
+      "pageId": 46656,
+      "contentStatus": "missing",
+      "source": "wikipedia_parse_lead"
+    },
+    {
+      "id": "radio-telescopes",
+      "title": "Radio telescopes",
+      "depth": 1,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "schwarzschild-black-hole",
+      "title": "Schwarzschild black hole",
+      "depth": 1,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "schwarzschild-metric",
+      "title": "Schwarzschild metric",
+      "depth": 1,
+      "status": "expanded",
+      "pageId": 264606,
+      "contentStatus": "missing",
+      "source": "wikipedia_parse_lead"
+    },
+    {
+      "id": "supermassive-black-hole",
+      "title": "Supermassive black hole",
+      "depth": 1,
+      "status": "expanded",
+      "pageId": 215706,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "active-galactic-nucleus",
+      "title": "Active galactic nucleus",
+      "depth": 2,
+      "status": "expanded",
+      "pageId": 177092,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "albert-einstein",
+      "title": "Albert Einstein",
+      "depth": 2,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "angular-momentum",
+      "title": "Angular momentum",
+      "depth": 2,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "antenna",
+      "title": "Antenna (radio)",
+      "depth": 2,
+      "status": "expanded",
+      "pageId": 187317,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "astronomical-radio-source",
+      "title": "Astronomical radio source",
+      "depth": 2,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "astrophysical-jet",
+      "title": "Astrophysical jet",
+      "depth": 2,
+      "status": "expanded",
+      "pageId": 1358453,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "atacama-large-millimeter-array",
+      "title": "Atacama Large Millimeter Array",
+      "depth": 2,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "atacama-pathfinder-experiment",
+      "title": "Atacama Pathfinder Experiment",
+      "depth": 2,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "black-body",
+      "title": "Black body",
+      "depth": 2,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "compositing",
+      "title": "Compositing",
+      "depth": 2,
+      "status": "expanded",
+      "pageId": 1136715,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "einstein-field-equations",
+      "title": "Einstein field equations",
+      "depth": 2,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "electric-charge",
+      "title": "Electric charge",
+      "depth": 2,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "general-relativity",
+      "title": "General relativity",
+      "depth": 2,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "gravitational-field",
+      "title": "Gravitational field",
+      "depth": 2,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "greenland-telescope",
+      "title": "Greenland Telescope",
+      "depth": 2,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "grey-body",
+      "title": "Grey body",
+      "depth": 2,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "heinrich-hertz-submillimeter-telescope",
+      "title": "Heinrich Hertz Submillimeter Telescope",
+      "depth": 2,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "hubble-space-telescope",
+      "title": "Hubble Space Telescope",
+      "depth": 2,
+      "status": "expanded",
+      "pageId": 40203,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "iram-30m-telescope",
+      "title": "IRAM 30m telescope",
+      "depth": 2,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "infrared",
+      "title": "Infrared",
+      "depth": 2,
+      "status": "expanded",
+      "pageId": 15022,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "intensity",
+      "title": "Intensity (heat transfer)",
+      "depth": 2,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "james-clerk-maxwell-telescope",
+      "title": "James Clerk Maxwell Telescope",
+      "depth": 2,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "mass",
+      "title": "Mass",
+      "depth": 2,
+      "status": "expanded",
+      "pageId": 19048,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "materials-science",
+      "title": "Materials science",
+      "depth": 2,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "on-the-order-of",
+      "title": "On the order of",
+      "depth": 2,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "order-of-magnitude",
+      "title": "Order of magnitude",
+      "depth": 2,
+      "status": "expanded",
+      "pageId": 22657,
+      "contentStatus": "missing",
+      "source": "wikipedia_parse_lead"
+    },
+    {
+      "id": "planetary-science",
+      "title": "Planetary science",
+      "depth": 2,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "radio-astronomy",
+      "title": "Radio astronomy",
+      "depth": 2,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "radio-frequency",
+      "title": "Radio frequency",
+      "depth": 2,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "radio-receiver",
+      "title": "Radio receiver",
+      "depth": 2,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "radio-wave",
+      "title": "Radio wave",
+      "depth": 2,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "solar-mass",
+      "title": "Solar mass",
+      "depth": 2,
+      "status": "expanded",
+      "pageId": 172987,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "sun",
+      "title": "Sun",
+      "depth": 2,
+      "status": "expanded",
+      "pageId": 26751,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "visible-spectrum",
+      "title": "Visible spectrum",
+      "depth": 2,
+      "status": "expanded",
+      "pageId": 41464,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "astronomical-unit",
+      "title": "Astronomical unit",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "astronomy",
+      "title": "Astronomy",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "balance",
+      "title": "Balance (device for weighing)",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "chroma-key",
+      "title": "Chroma key",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "digital-compositing",
+      "title": "Digital compositing",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "digital-image",
+      "title": "Digital image",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "electromagnetic-radiation",
+      "title": "Electromagnetic radiation",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "electromagnetic-spectrum",
+      "title": "Electromagnetic spectrum",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "electronic-component",
+      "title": "Electronic component",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "galaxy",
+      "title": "Galaxy",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "georges-m-li-s",
+      "title": "Georges Méliès",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "helios",
+      "title": "Helios",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "human-eye",
+      "title": "Human eye",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "international-designator",
+      "title": "International Designator",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "ionization",
+      "title": "Ionization",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "kilogram",
+      "title": "Kilogram",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "live-action",
+      "title": "Live action",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "lockheed-missiles-and-space-company",
+      "title": "Lockheed Missiles and Space Company",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "microwave",
+      "title": "Microwave",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "microwaves",
+      "title": "Microwaves",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "ounce",
+      "title": "Ounce",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "passivity",
+      "title": "Passivity (engineering)",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "perkinelmer",
+      "title": "PerkinElmer",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "planet-symbols",
+      "title": "Planet symbols",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "pound",
+      "title": "Pound (mass)",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "powers-of-ten",
+      "title": "Powers of ten",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "radio-waves",
+      "title": "Radio waves",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "ratio-scale",
+      "title": "Ratio scale",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "red",
+      "title": "Red",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "rotation",
+      "title": "Rotation",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "si-base-unit",
+      "title": "SI base unit",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "si-unit",
+      "title": "SI unit",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "satellite-catalog-number",
+      "title": "Satellite Catalog Number",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "sol",
+      "title": "Sol (Roman mythology)",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "solar-filter",
+      "title": "Solar filter",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "space-telescope-science-institute",
+      "title": "Space Telescope Science Institute",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "special-relativity",
+      "title": "Special relativity",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "spectral-band",
+      "title": "Spectral band",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "speed-of-light",
+      "title": "Speed of light",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "star",
+      "title": "Star",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "star-cluster",
+      "title": "Star cluster",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "s-l",
+      "title": "Sól (Germanic mythology)",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "television-antenna",
+      "title": "Television antenna",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "vhf",
+      "title": "VHF",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "visible-light",
+      "title": "Visible light",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "visual-perception",
+      "title": "Visual perception",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "wavelength",
+      "title": "Wavelength",
+      "depth": 3,
+      "status": "placeholder",
+      "pageId": null,
+      "contentStatus": "missing",
+      "source": "wikipedia_first_paragraph_link"
+    }
+  ],
+  "edges": [
+    {
+      "id": "active-galactic-nucleus__deeper__galaxy",
+      "from": "active-galactic-nucleus",
+      "to": "galaxy",
+      "type": "deeper",
+      "rank": 0,
+      "label": "galaxy",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "active-galactic-nucleus__deeper__electromagnetic-spectrum",
+      "from": "active-galactic-nucleus",
+      "to": "electromagnetic-spectrum",
+      "type": "deeper",
+      "rank": 1,
+      "label": "electromagnetic spectrum",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "active-galactic-nucleus__deeper__star",
+      "from": "active-galactic-nucleus",
+      "to": "star",
+      "type": "deeper",
+      "rank": 2,
+      "label": "stars",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "active-galactic-nucleus__neighbor__radio-waves",
+      "from": "active-galactic-nucleus",
+      "to": "radio-waves",
+      "type": "neighbor",
+      "rank": 3,
+      "label": "radio",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "active-galactic-nucleus__neighbor__microwave",
+      "from": "active-galactic-nucleus",
+      "to": "microwave",
+      "type": "neighbor",
+      "rank": 4,
+      "label": "microwave",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "active-galactic-nucleus__neighbor__infrared",
+      "from": "active-galactic-nucleus",
+      "to": "infrared",
+      "type": "neighbor",
+      "rank": 5,
+      "label": "infrared",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "antenna__deeper__television-antenna",
+      "from": "antenna",
+      "to": "television-antenna",
+      "type": "deeper",
+      "rank": 0,
+      "label": "television antenna",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "antenna__deeper__vhf",
+      "from": "antenna",
+      "to": "vhf",
+      "type": "deeper",
+      "rank": 1,
+      "label": "VHF",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "antenna__deeper__electronic-component",
+      "from": "antenna",
+      "to": "electronic-component",
+      "type": "deeper",
+      "rank": 2,
+      "label": "Component type",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "antenna__neighbor__passivity",
+      "from": "antenna",
+      "to": "passivity",
+      "type": "neighbor",
+      "rank": 3,
+      "label": "Passive",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "astrophysical-jet__deeper__astronomy",
+      "from": "astrophysical-jet",
+      "to": "astronomy",
+      "type": "deeper",
+      "rank": 0,
+      "label": "astronomical",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "astrophysical-jet__deeper__ionization",
+      "from": "astrophysical-jet",
+      "to": "ionization",
+      "type": "deeper",
+      "rank": 1,
+      "label": "ionised",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "astrophysical-jet__deeper__rotation",
+      "from": "astrophysical-jet",
+      "to": "rotation",
+      "type": "deeper",
+      "rank": 2,
+      "label": "axis of rotation",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "astrophysical-jet__neighbor__speed-of-light",
+      "from": "astrophysical-jet",
+      "to": "speed-of-light",
+      "type": "neighbor",
+      "rank": 3,
+      "label": "speed of light",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "astrophysical-jet__neighbor__special-relativity",
+      "from": "astrophysical-jet",
+      "to": "special-relativity",
+      "type": "neighbor",
+      "rank": 4,
+      "label": "special relativity",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "black-hole__deeper__messier-87",
+      "from": "black-hole",
+      "to": "messier-87",
+      "type": "deeper",
+      "rank": 0,
+      "label": "Messier 87",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "black-hole__deeper__supermassive-black-hole",
+      "from": "black-hole",
+      "to": "supermassive-black-hole",
+      "type": "deeper",
+      "rank": 1,
+      "label": "supermassive black hole",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "black-hole__deeper__radio-telescopes",
+      "from": "black-hole",
+      "to": "radio-telescopes",
+      "type": "deeper",
+      "rank": 2,
+      "label": "radio telescopes",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "black-hole__neighbor__event-horizon-telescope",
+      "from": "black-hole",
+      "to": "event-horizon-telescope",
+      "type": "neighbor",
+      "rank": 3,
+      "label": "EHT",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "black-hole__neighbor__brightness-temperature",
+      "from": "black-hole",
+      "to": "brightness-temperature",
+      "type": "neighbor",
+      "rank": 4,
+      "label": "brightness temperature",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "black-hole__neighbor__schwarzschild-black-hole",
+      "from": "black-hole",
+      "to": "schwarzschild-black-hole",
+      "type": "neighbor",
+      "rank": 5,
+      "label": "nonspinning, uncharged black hole",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "brightness-temperature__deeper__black-body",
+      "from": "brightness-temperature",
+      "to": "black-body",
+      "type": "deeper",
+      "rank": 0,
+      "label": "black body",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "brightness-temperature__deeper__intensity",
+      "from": "brightness-temperature",
+      "to": "intensity",
+      "type": "deeper",
+      "rank": 1,
+      "label": "intensity",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "brightness-temperature__deeper__grey-body",
+      "from": "brightness-temperature",
+      "to": "grey-body",
+      "type": "deeper",
+      "rank": 2,
+      "label": "grey body",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "brightness-temperature__neighbor__radio-astronomy",
+      "from": "brightness-temperature",
+      "to": "radio-astronomy",
+      "type": "neighbor",
+      "rank": 3,
+      "label": "radio astronomy",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "brightness-temperature__neighbor__planetary-science",
+      "from": "brightness-temperature",
+      "to": "planetary-science",
+      "type": "neighbor",
+      "rank": 4,
+      "label": "planetary science",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "brightness-temperature__neighbor__materials-science",
+      "from": "brightness-temperature",
+      "to": "materials-science",
+      "type": "neighbor",
+      "rank": 5,
+      "label": "materials science",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "compositing__deeper__live-action",
+      "from": "compositing",
+      "to": "live-action",
+      "type": "deeper",
+      "rank": 0,
+      "label": "Live-action",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "compositing__deeper__chroma-key",
+      "from": "compositing",
+      "to": "chroma-key",
+      "type": "deeper",
+      "rank": 1,
+      "label": "chroma key",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "compositing__deeper__digital-image",
+      "from": "compositing",
+      "to": "digital-image",
+      "type": "deeper",
+      "rank": 2,
+      "label": "digital image",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "compositing__neighbor__digital-compositing",
+      "from": "compositing",
+      "to": "digital-compositing",
+      "type": "neighbor",
+      "rank": 3,
+      "label": "digital compositing",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "compositing__neighbor__georges-m-li-s",
+      "from": "compositing",
+      "to": "georges-m-li-s",
+      "type": "neighbor",
+      "rank": 4,
+      "label": "Georges Méliès",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "event-horizon-telescope__deeper__atacama-large-millimeter-array",
+      "from": "event-horizon-telescope",
+      "to": "atacama-large-millimeter-array",
+      "type": "deeper",
+      "rank": 0,
+      "label": "Atacama Large Millimeter Array",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "event-horizon-telescope__deeper__atacama-pathfinder-experiment",
+      "from": "event-horizon-telescope",
+      "to": "atacama-pathfinder-experiment",
+      "type": "deeper",
+      "rank": 1,
+      "label": "Atacama Pathfinder Experiment",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "event-horizon-telescope__deeper__greenland-telescope",
+      "from": "event-horizon-telescope",
+      "to": "greenland-telescope",
+      "type": "deeper",
+      "rank": 2,
+      "label": "Greenland Telescope",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "event-horizon-telescope__neighbor__heinrich-hertz-submillimeter-telescope",
+      "from": "event-horizon-telescope",
+      "to": "heinrich-hertz-submillimeter-telescope",
+      "type": "neighbor",
+      "rank": 3,
+      "label": "Heinrich Hertz Submillimeter Telescope",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "event-horizon-telescope__neighbor__iram-30m-telescope",
+      "from": "event-horizon-telescope",
+      "to": "iram-30m-telescope",
+      "type": "neighbor",
+      "rank": 4,
+      "label": "IRAM 30m telescope",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "event-horizon-telescope__neighbor__james-clerk-maxwell-telescope",
+      "from": "event-horizon-telescope",
+      "to": "james-clerk-maxwell-telescope",
+      "type": "neighbor",
+      "rank": 5,
+      "label": "James Clerk Maxwell Telescope",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "hubble-space-telescope__deeper__astronomy",
+      "from": "hubble-space-telescope",
+      "to": "astronomy",
+      "type": "deeper",
+      "rank": 0,
+      "label": "Astronomy",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "hubble-space-telescope__deeper__space-telescope-science-institute",
+      "from": "hubble-space-telescope",
+      "to": "space-telescope-science-institute",
+      "type": "deeper",
+      "rank": 1,
+      "label": "STScI",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "hubble-space-telescope__deeper__international-designator",
+      "from": "hubble-space-telescope",
+      "to": "international-designator",
+      "type": "deeper",
+      "rank": 2,
+      "label": "COSPAR ID",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "hubble-space-telescope__neighbor__satellite-catalog-number",
+      "from": "hubble-space-telescope",
+      "to": "satellite-catalog-number",
+      "type": "neighbor",
+      "rank": 3,
+      "label": "SATCAT no.",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "hubble-space-telescope__neighbor__lockheed-missiles-and-space-company",
+      "from": "hubble-space-telescope",
+      "to": "lockheed-missiles-and-space-company",
+      "type": "neighbor",
+      "rank": 4,
+      "label": "Lockheed Martin",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "hubble-space-telescope__neighbor__perkinelmer",
+      "from": "hubble-space-telescope",
+      "to": "perkinelmer",
+      "type": "neighbor",
+      "rank": 5,
+      "label": "Perkin-Elmer",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "infrared__deeper__electromagnetic-radiation",
+      "from": "infrared",
+      "to": "electromagnetic-radiation",
+      "type": "deeper",
+      "rank": 0,
+      "label": "electromagnetic radiation",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "infrared__deeper__wavelength",
+      "from": "infrared",
+      "to": "wavelength",
+      "type": "deeper",
+      "rank": 1,
+      "label": "wavelengths",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "infrared__deeper__visible-light",
+      "from": "infrared",
+      "to": "visible-light",
+      "type": "deeper",
+      "rank": 2,
+      "label": "visible light",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "infrared__neighbor__microwaves",
+      "from": "infrared",
+      "to": "microwaves",
+      "type": "neighbor",
+      "rank": 3,
+      "label": "microwaves",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "infrared__neighbor__spectral-band",
+      "from": "infrared",
+      "to": "spectral-band",
+      "type": "neighbor",
+      "rank": 4,
+      "label": "spectral band",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "infrared__neighbor__red",
+      "from": "infrared",
+      "to": "red",
+      "type": "neighbor",
+      "rank": 5,
+      "label": "red",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "mass__deeper__balance",
+      "from": "mass",
+      "to": "balance",
+      "type": "deeper",
+      "rank": 0,
+      "label": "balances",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "mass__deeper__si-unit",
+      "from": "mass",
+      "to": "si-unit",
+      "type": "deeper",
+      "rank": 1,
+      "label": "SI unit",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "mass__deeper__kilogram",
+      "from": "mass",
+      "to": "kilogram",
+      "type": "deeper",
+      "rank": 2,
+      "label": "kilogram",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "mass__neighbor__pound",
+      "from": "mass",
+      "to": "pound",
+      "type": "neighbor",
+      "rank": 3,
+      "label": "pound",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "mass__neighbor__ounce",
+      "from": "mass",
+      "to": "ounce",
+      "type": "neighbor",
+      "rank": 4,
+      "label": "ounce",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "mass__neighbor__si-base-unit",
+      "from": "mass",
+      "to": "si-base-unit",
+      "type": "neighbor",
+      "rank": 5,
+      "label": "SI base units",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "messier-87__deeper__astrophysical-jet",
+      "from": "messier-87",
+      "to": "astrophysical-jet",
+      "type": "deeper",
+      "rank": 0,
+      "label": "plasma jet",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "messier-87__deeper__active-galactic-nucleus",
+      "from": "messier-87",
+      "to": "active-galactic-nucleus",
+      "type": "deeper",
+      "rank": 1,
+      "label": "galactic core",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "messier-87__deeper__compositing",
+      "from": "messier-87",
+      "to": "compositing",
+      "type": "deeper",
+      "rank": 2,
+      "label": "composite image",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "messier-87__neighbor__hubble-space-telescope",
+      "from": "messier-87",
+      "to": "hubble-space-telescope",
+      "type": "neighbor",
+      "rank": 3,
+      "label": "Hubble Space Telescope",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "messier-87__neighbor__visible-spectrum",
+      "from": "messier-87",
+      "to": "visible-spectrum",
+      "type": "neighbor",
+      "rank": 4,
+      "label": "visible",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "messier-87__neighbor__infrared",
+      "from": "messier-87",
+      "to": "infrared",
+      "type": "neighbor",
+      "rank": 5,
+      "label": "infrared",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "order-of-magnitude__deeper__ratio-scale",
+      "from": "order-of-magnitude",
+      "to": "ratio-scale",
+      "type": "deeper",
+      "rank": 0,
+      "label": "ratio scale",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "order-of-magnitude__neighbor__powers-of-ten",
+      "from": "order-of-magnitude",
+      "to": "powers-of-ten",
+      "type": "neighbor",
+      "rank": 1,
+      "label": "powers of ten",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "radio-telescope__deeper__antenna",
+      "from": "radio-telescope",
+      "to": "antenna",
+      "type": "deeper",
+      "rank": 0,
+      "label": "antenna",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "radio-telescope__deeper__radio-receiver",
+      "from": "radio-telescope",
+      "to": "radio-receiver",
+      "type": "deeper",
+      "rank": 1,
+      "label": "radio receiver",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "radio-telescope__deeper__radio-wave",
+      "from": "radio-telescope",
+      "to": "radio-wave",
+      "type": "deeper",
+      "rank": 2,
+      "label": "radio waves",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "radio-telescope__neighbor__astronomical-radio-source",
+      "from": "radio-telescope",
+      "to": "astronomical-radio-source",
+      "type": "neighbor",
+      "rank": 3,
+      "label": "astronomical radio sources",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "radio-telescope__neighbor__radio-astronomy",
+      "from": "radio-telescope",
+      "to": "radio-astronomy",
+      "type": "neighbor",
+      "rank": 4,
+      "label": "radio astronomy",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "radio-telescope__neighbor__radio-frequency",
+      "from": "radio-telescope",
+      "to": "radio-frequency",
+      "type": "neighbor",
+      "rank": 5,
+      "label": "radio frequency",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "schwarzschild-metric__deeper__albert-einstein",
+      "from": "schwarzschild-metric",
+      "to": "albert-einstein",
+      "type": "deeper",
+      "rank": 0,
+      "label": "Einstein",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "schwarzschild-metric__deeper__general-relativity",
+      "from": "schwarzschild-metric",
+      "to": "general-relativity",
+      "type": "deeper",
+      "rank": 1,
+      "label": "general relativity",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "schwarzschild-metric__deeper__einstein-field-equations",
+      "from": "schwarzschild-metric",
+      "to": "einstein-field-equations",
+      "type": "deeper",
+      "rank": 2,
+      "label": "Einstein field equations",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "schwarzschild-metric__neighbor__gravitational-field",
+      "from": "schwarzschild-metric",
+      "to": "gravitational-field",
+      "type": "neighbor",
+      "rank": 3,
+      "label": "gravitational field",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "schwarzschild-metric__neighbor__electric-charge",
+      "from": "schwarzschild-metric",
+      "to": "electric-charge",
+      "type": "neighbor",
+      "rank": 4,
+      "label": "electric charge",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "schwarzschild-metric__neighbor__angular-momentum",
+      "from": "schwarzschild-metric",
+      "to": "angular-momentum",
+      "type": "neighbor",
+      "rank": 5,
+      "label": "angular momentum",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "solar-mass__deeper__mass",
+      "from": "solar-mass",
+      "to": "mass",
+      "type": "deeper",
+      "rank": 0,
+      "label": "unit of mass",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "solar-mass__deeper__astronomy",
+      "from": "solar-mass",
+      "to": "astronomy",
+      "type": "deeper",
+      "rank": 1,
+      "label": "astronomy",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "solar-mass__deeper__kilogram",
+      "from": "solar-mass",
+      "to": "kilogram",
+      "type": "deeper",
+      "rank": 2,
+      "label": "kg",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "solar-mass__neighbor__sun",
+      "from": "solar-mass",
+      "to": "sun",
+      "type": "neighbor",
+      "rank": 3,
+      "label": "Sun",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "solar-mass__neighbor__star",
+      "from": "solar-mass",
+      "to": "star",
+      "type": "neighbor",
+      "rank": 4,
+      "label": "stars",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "solar-mass__neighbor__star-cluster",
+      "from": "solar-mass",
+      "to": "star-cluster",
+      "type": "neighbor",
+      "rank": 5,
+      "label": "stellar clusters",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "sun__deeper__solar-filter",
+      "from": "sun",
+      "to": "solar-filter",
+      "type": "deeper",
+      "rank": 0,
+      "label": "solar filter",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "sun__deeper__sol",
+      "from": "sun",
+      "to": "sol",
+      "type": "deeper",
+      "rank": 1,
+      "label": "Sol",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "sun__deeper__s-l",
+      "from": "sun",
+      "to": "s-l",
+      "type": "deeper",
+      "rank": 2,
+      "label": "Sól",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "sun__neighbor__helios",
+      "from": "sun",
+      "to": "helios",
+      "type": "neighbor",
+      "rank": 3,
+      "label": "Helios",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "sun__neighbor__planet-symbols",
+      "from": "sun",
+      "to": "planet-symbols",
+      "type": "neighbor",
+      "rank": 4,
+      "label": "Symbol",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "sun__neighbor__astronomical-unit",
+      "from": "sun",
+      "to": "astronomical-unit",
+      "type": "neighbor",
+      "rank": 5,
+      "label": "au",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "supermassive-black-hole__deeper__messier-87",
+      "from": "supermassive-black-hole",
+      "to": "messier-87",
+      "type": "deeper",
+      "rank": 0,
+      "label": "Messier 87",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "supermassive-black-hole__deeper__black-hole",
+      "from": "supermassive-black-hole",
+      "to": "black-hole",
+      "type": "deeper",
+      "rank": 1,
+      "label": "black hole",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "supermassive-black-hole__deeper__mass",
+      "from": "supermassive-black-hole",
+      "to": "mass",
+      "type": "deeper",
+      "rank": 2,
+      "label": "mass",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "supermassive-black-hole__neighbor__on-the-order-of",
+      "from": "supermassive-black-hole",
+      "to": "on-the-order-of",
+      "type": "neighbor",
+      "rank": 3,
+      "label": "on the order of",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "supermassive-black-hole__neighbor__sun",
+      "from": "supermassive-black-hole",
+      "to": "sun",
+      "type": "neighbor",
+      "rank": 4,
+      "label": "Sun",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "supermassive-black-hole__neighbor__solar-mass",
+      "from": "supermassive-black-hole",
+      "to": "solar-mass",
+      "type": "neighbor",
+      "rank": 5,
+      "label": "M☉",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "visible-spectrum__deeper__spectral-band",
+      "from": "visible-spectrum",
+      "to": "spectral-band",
+      "type": "deeper",
+      "rank": 0,
+      "label": "band",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "visible-spectrum__deeper__electromagnetic-spectrum",
+      "from": "visible-spectrum",
+      "to": "electromagnetic-spectrum",
+      "type": "deeper",
+      "rank": 1,
+      "label": "electromagnetic spectrum",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "visible-spectrum__deeper__visual-perception",
+      "from": "visible-spectrum",
+      "to": "visual-perception",
+      "type": "deeper",
+      "rank": 2,
+      "label": "visible",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "visible-spectrum__neighbor__human-eye",
+      "from": "visible-spectrum",
+      "to": "human-eye",
+      "type": "neighbor",
+      "rank": 3,
+      "label": "human eye",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "visible-spectrum__neighbor__electromagnetic-radiation",
+      "from": "visible-spectrum",
+      "to": "electromagnetic-radiation",
+      "type": "neighbor",
+      "rank": 4,
+      "label": "Electromagnetic radiation",
+      "source": "wikipedia_first_paragraph_link"
+    },
+    {
+      "id": "visible-spectrum__neighbor__wavelength",
+      "from": "visible-spectrum",
+      "to": "wavelength",
+      "type": "neighbor",
+      "rank": 5,
+      "label": "wavelengths",
+      "source": "wikipedia_first_paragraph_link"
+    }
+  ],
+  "stats": {
+    "nodeCount": 90,
+    "edgeCount": 100,
+    "expandedCount": 18,
+    "placeholderCount": 72,
+    "failureCount": 0
+  },
+  "failures": []
+}
