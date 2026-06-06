@@ -18,6 +18,7 @@
 		A00000000000000000000009 /* WikisGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000109 /* WikisGraph.swift */; };
 		A0000000000000000000000A /* GraphNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000010A /* GraphNavigator.swift */; };
 		A0000000000000000000000B /* seed_graph.json in Resources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000010B /* seed_graph.json */; };
+		A0000000000000000000000C /* OfflineTopicCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000010D /* OfflineTopicCache.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +34,7 @@
 		A0000000000000000000010A /* GraphNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphNavigator.swift; sourceTree = "<group>"; };
 		A0000000000000000000010B /* seed_graph.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = seed_graph.json; sourceTree = "<group>"; };
 		A0000000000000000000010C /* WikisPrototype.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WikisPrototype.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A0000000000000000000010D /* OfflineTopicCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineTopicCache.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +94,7 @@
 				A00000000000000000000106 /* KnowledgeMapView.swift */,
 				A00000000000000000000107 /* ProfileView.swift */,
 				A00000000000000000000108 /* DesignSystem.swift */,
+				A0000000000000000000010D /* OfflineTopicCache.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -181,6 +184,7 @@
 				A00000000000000000000006 /* KnowledgeMapView.swift in Sources */,
 				A00000000000000000000007 /* ProfileView.swift in Sources */,
 				A00000000000000000000008 /* DesignSystem.swift in Sources */,
+				A0000000000000000000000C /* OfflineTopicCache.swift in Sources */,
 				A00000000000000000000009 /* WikisGraph.swift in Sources */,
 				A0000000000000000000000A /* GraphNavigator.swift in Sources */,
 			);

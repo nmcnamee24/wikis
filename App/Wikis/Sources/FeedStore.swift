@@ -16,6 +16,7 @@ final class FeedStore: ObservableObject {
     @Published private(set) var navigationRevision = 0
 
     private var navigator: GraphNavigator?
+    private let offlineTopicCache = OfflineTopicCache()
     private let apiBaseURL = URL(string: "https://wikis-production.up.railway.app")!
     private let useLiveAPI = true
     private let sessionId = UUID().uuidString
@@ -30,7 +31,9 @@ final class FeedStore: ObservableObject {
             let navigator = GraphNavigator(graph: graph)
             self.graph = graph
             self.navigator = navigator
-            let initialTopic = graph.topic(id: "black-hole") ?? navigator.initialTopic
+            let seedTopic = graph.topic(id: "black-hole") ?? navigator.initialTopic
+            offlineTopicCache.store(topic: seedTopic, markAsLast: false)
+            let initialTopic = offlineTopicCache.latestTopic() ?? seedTopic
             currentTopic = initialTopic
             exploredTopics = [initialTopic]
             loadingError = nil
@@ -69,6 +72,7 @@ final class FeedStore: ObservableObject {
     }
 
     private func apply(topic: Topic, gesture: NavigationGesture, liveGeneration: LiveGenerationStatus? = nil) {
+        offlineTopicCache.store(topic: topic)
         withAnimation(.spring(response: 0.42, dampingFraction: 0.86)) {
             self.currentTopic = topic
             self.exploredTopics.append(topic)
@@ -122,7 +126,15 @@ final class FeedStore: ObservableObject {
             }
             loadingError = nil
         } catch {
-            if let decision = localDecision(from: currentTopic, gesture: gesture) {
+            let excludedIds = Set(exploredTopicIds.suffix(8) + [currentTopic.id])
+            if let cachedTopic = offlineTopicCache.fallbackTopic(
+                excluding: excludedIds,
+                preferredPillar: currentTopic.pillar,
+                gesture: gesture
+            ) {
+                apply(topic: cachedTopic, gesture: gesture)
+                loadingError = "Using offline cache. Live API unavailable."
+            } else if let decision = localDecision(from: currentTopic, gesture: gesture) {
                 apply(topic: decision.nextTopic, gesture: gesture)
                 loadingError = "Using offline graph. Live API unavailable."
             } else {
@@ -187,6 +199,7 @@ final class FeedStore: ObservableObject {
             do {
                 let topic = try await requestTopic(topicId: topicId)
                 guard !topic.isPendingCandidate, currentTopic?.id == topicId else { return }
+                offlineTopicCache.store(topic: topic)
                 replaceCurrentTopic(with: topic)
                 return
             } catch {
