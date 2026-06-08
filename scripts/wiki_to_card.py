@@ -178,18 +178,22 @@ def wiki_api(params: dict[str, Any], *, retries: int = 5) -> dict[str, Any]:
     raise RuntimeError(f"Wikipedia API request failed: {last_error}") from last_error
 
 
-def fetch_source_packet(title: str) -> SourcePacket:
+def fetch_source_packet(title: str, include_images: bool = True) -> SourcePacket:
+    props = "extracts|info|pageimages" if include_images else "extracts|info"
+    page_image_options = {
+        "piprop": "thumbnail|original|name",
+        "pithumbsize": 1600,
+    } if include_images else {}
     page_data = wiki_api(
         {
             "action": "query",
             "titles": title,
             "redirects": 1,
-            "prop": "extracts|info|pageimages",
+            "prop": props,
             "exintro": 1,
             "explaintext": 1,
-            "piprop": "thumbnail|original|name",
-            "pithumbsize": 1600,
             "inprop": "url",
+            **page_image_options,
         }
     )
     pages = page_data["query"]["pages"]
@@ -199,7 +203,7 @@ def fetch_source_packet(title: str) -> SourcePacket:
     page = pages[0]
     normalized_title = page["title"]
     extract = clean_text(page.get("extract", ""))
-    images = image_candidates_from_page(page)
+    images = image_candidates_from_page(page) if include_images else []
 
     return SourcePacket(
         requested_title=title,
@@ -494,8 +498,21 @@ def validate_card(card: dict[str, Any], packet: SourcePacket, image_decision: di
     return issues
 
 
-def build_card_output(title: str, condenser: str = "local", model: str | None = None) -> dict[str, Any]:
-    packet = fetch_source_packet(title)
+def build_card_output(
+    title: str,
+    condenser: str = "local",
+    model: str | None = None,
+    include_images: bool = True,
+) -> dict[str, Any]:
+    packet = fetch_source_packet(title, include_images=include_images)
+    return build_card_output_from_packet(packet, condenser=condenser, model=model)
+
+
+def build_card_output_from_packet(
+    packet: SourcePacket,
+    condenser: str = "local",
+    model: str | None = None,
+) -> dict[str, Any]:
     pillar = classify_pillar(packet.normalized_title, packet.extract)
     if condenser == "openai":
         card = condense_with_openai(packet, model)

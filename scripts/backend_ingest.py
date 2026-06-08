@@ -387,9 +387,31 @@ def ingest_sql(
     openai_model: str | None,
     lock_owner: str,
     lock_ttl_minutes: int,
+    topic_id_override: str | None = None,
+    include_images: bool = True,
 ) -> tuple[str, str]:
-    card_output = build_card_output(title, condenser=condenser, model=openai_model)
-    topic_id = slugify(card_output["source"]["wikipediaTitle"])
+    card_output = build_card_output(title, condenser=condenser, model=openai_model, include_images=include_images)
+    return card_output_sql(
+        title,
+        source,
+        cards_out,
+        card_output,
+        lock_owner,
+        lock_ttl_minutes,
+        topic_id_override=topic_id_override,
+    )
+
+
+def card_output_sql(
+    title: str,
+    source: str,
+    cards_out: Path | None,
+    card_output: dict[str, Any],
+    lock_owner: str,
+    lock_ttl_minutes: int,
+    topic_id_override: str | None = None,
+) -> tuple[str, str]:
+    topic_id = topic_id_override or slugify(card_output["source"]["wikipediaTitle"])
     generation_hash = node_generation_hash(card_output)
     if cards_out:
         write_card(cards_out, card_output)
@@ -551,6 +573,7 @@ def parse_args() -> argparse.Namespace:
     ingest.add_argument("--skip-cached", action="store_true", help="Skip titles whose local card JSON already exists.")
     ingest.add_argument("--lock-owner", default=os.environ.get("WIKIS_INGEST_LOCK_OWNER", DEFAULT_LOCK_OWNER))
     ingest.add_argument("--lock-ttl-minutes", type=int, default=DEFAULT_LOCK_TTL_MINUTES)
+    ingest.add_argument("--no-images", action="store_true", help="Use pillar backgrounds instead of fetching Wikipedia image metadata.")
 
     review = subparsers.add_parser("review", help="Approve or reject a generated topic.")
     review.add_argument("action", choices=["approve", "reject"])
@@ -594,6 +617,7 @@ def main() -> int:
                     args.openai_model,
                     args.lock_owner,
                     args.lock_ttl_minutes,
+                    include_images=not args.no_images,
                 )
                 sql_blocks.append(sql)
                 print(f"{title} -> {topic_id} (prototype_pass)")
