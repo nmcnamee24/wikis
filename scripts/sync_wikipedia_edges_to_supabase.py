@@ -211,17 +211,24 @@ def collect_links(roots: list[TopicRoot], aliases: dict[str, str], links_per_top
 
 
 def reset_statements(delete_existing_edges: bool) -> list[str]:
-    if not delete_existing_edges:
-        return []
-    return [
-        "-- Destructive edge reset requested by --delete-existing-edges.",
-        "delete from topic_edges;",
-        "delete from candidate_edges;",
-        "delete from ingestion_jobs",
-        "where source = 'background_expansion'",
-        "  and status in ('queued', 'retryable')",
-        "  and topic_id is null;",
+    statements = [
+        "-- Remove stale non-Wikipedia edge sources even when a full reset is disabled.",
+        f"delete from topic_edges where reason <> {sql_literal(EDGE_SOURCE)};",
+        f"delete from candidate_edges where source <> {sql_literal(EDGE_SOURCE)};",
     ]
+    if delete_existing_edges:
+        statements.extend(
+            [
+                "-- Destructive edge reset requested by --delete-existing-edges.",
+                "delete from topic_edges;",
+                "delete from candidate_edges;",
+                "delete from ingestion_jobs",
+                "where source = 'background_expansion'",
+                "  and status in ('queued', 'retryable')",
+                "  and topic_id is null;",
+            ]
+        )
+    return statements
 
 
 def topic_edge_statement(record: LinkRecord) -> str:
@@ -373,6 +380,24 @@ def generate_sql(records: list[LinkRecord], delete_existing_edges: bool) -> tupl
     statements.extend(
         job_statement(title, normalized, priority)
         for normalized, (title, priority) in sorted(best_missing.items())
+    )
+    statements.extend(
+        [
+            "-- Enforce the product invariant: every stored edge is one of the first six Wikipedia links.",
+            f"delete from topic_edges where reason <> {sql_literal(EDGE_SOURCE)} or rank is null or rank > 6;",
+            f"delete from candidate_edges where source <> {sql_literal(EDGE_SOURCE)} or raw_position is null or raw_position > 6;",
+            "do $$",
+            "declare",
+            "  invalid_topic_edges integer;",
+            "  invalid_candidate_edges integer;",
+            "begin",
+            f"  select count(*) into invalid_topic_edges from topic_edges where reason <> {sql_literal(EDGE_SOURCE)} or rank is null or rank > 6;",
+            f"  select count(*) into invalid_candidate_edges from candidate_edges where source <> {sql_literal(EDGE_SOURCE)} or raw_position is null or raw_position > 6;",
+            "  if invalid_topic_edges > 0 or invalid_candidate_edges > 0 then",
+            "    raise exception 'Wikipedia edge invariant failed: topic_edges=%, candidate_edges=%', invalid_topic_edges, invalid_candidate_edges;",
+            "  end if;",
+            "end $$;",
+        ]
     )
     statements.append("commit;")
 

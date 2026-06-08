@@ -27,7 +27,9 @@ LOCAL_PROMPT_VERSION = "step-05-local-v1"
 LOCAL_PROVIDER = "local"
 LOCAL_MODEL = "deterministic-wikipedia-condenser"
 NODE_GENERATION_VERSION = "step-05-node-v1"
-EDGE_GENERATION_VERSION = "step-05-edge-v1"
+EDGE_SOURCE = "wikipedia_first_paragraph_link"
+EDGE_EXTRACTION_METHOD = "wikipedia_parse_section_0"
+EDGE_GENERATION_VERSION = "wikipedia-edge-reset-v1"
 DEFAULT_LOCK_OWNER = "backend_ingest_cli"
 DEFAULT_LOCK_TTL_MINUTES = 15
 
@@ -63,6 +65,7 @@ def node_generation_hash(card_output: dict[str, Any]) -> str:
 def edge_generation_hash(topic_id: str, link: dict[str, Any], index: int) -> str:
     return stable_hash(
         {
+            "source": EDGE_SOURCE,
             "topic_id": topic_id,
             "link": link,
             "index": index,
@@ -351,11 +354,19 @@ def image_statements(topic_id: str, card_output: dict[str, Any]) -> list[str]:
 
 
 def candidate_edge_statements(topic_id: str, card_output: dict[str, Any]) -> list[str]:
-    output: list[str] = []
+    output: list[str] = [
+        statement(
+            [
+                f"delete from topic_edges where from_topic_id = {seed_sql.sql_literal(topic_id)} and reason <> {seed_sql.sql_literal(EDGE_SOURCE)};",
+                f"delete from candidate_edges where from_topic_id = {seed_sql.sql_literal(topic_id)} and source <> {seed_sql.sql_literal(EDGE_SOURCE)};",
+                f"delete from candidate_edges where from_topic_id = {seed_sql.sql_literal(topic_id)} and source = {seed_sql.sql_literal(EDGE_SOURCE)};",
+            ]
+        )
+    ]
     source = card_output["source"]
-    for index, link in enumerate(card_output["mapping"].get("leadOrFallbackLinks", [])[:16]):
+    for index, link in enumerate(card_output["mapping"].get("firstParagraphLinks", [])[:6]):
         normalized = slugify(link["title"])
-        candidate_id = seed_sql.stable_uuid("candidate_edge", "wikipedia_ingestion", topic_id, normalized)
+        candidate_id = seed_sql.stable_uuid("candidate_edge", EDGE_SOURCE, topic_id, normalized, EDGE_EXTRACTION_METHOD)
         strength = round(max(0.2, 0.82 - (index * 0.03)), 3)
         generation_hash = edge_generation_hash(topic_id, link, index)
         output.append(
@@ -366,14 +377,14 @@ def candidate_edge_statements(topic_id: str, card_output: dict[str, Any]) -> lis
                     "  raw_position, extraction_method, candidate_strength, proposed_edge_type, status",
                     ") values (",
                     f"  {seed_sql.uuid_literal(candidate_id)},",
-                    "  'wikipedia_ingestion',",
+                    f"  {seed_sql.sql_literal(EDGE_SOURCE)},",
                     f"  {seed_sql.sql_literal(source.get('pageId'))},",
                     f"  {seed_sql.sql_literal(topic_id)},",
                     f"  {seed_sql.sql_literal(source.get('wikipediaTitle'))},",
                     f"  {seed_sql.sql_literal(link['title'])},",
                     f"  {seed_sql.sql_literal(normalized)},",
                     f"  {seed_sql.sql_literal(index + 1)},",
-                    f"  {seed_sql.sql_literal(card_output['mapping'].get('linkStrategy', 'lead_links'))},",
+                    f"  {seed_sql.sql_literal(EDGE_EXTRACTION_METHOD)},",
                     f"  {seed_sql.sql_literal(strength)},",
                     "  'neighbor',",
                     "  'pending'",
@@ -389,9 +400,9 @@ def candidate_edge_statements(topic_id: str, card_output: dict[str, Any]) -> lis
         output.append(
             job_statement(
                 link["title"],
-                "candidate_queue",
+                "background_expansion",
                 "queued",
-                job_kind="edge",
+                job_kind="node",
                 topic_id=None,
                 generation_version=EDGE_GENERATION_VERSION,
                 generation_hash=generation_hash,
@@ -399,7 +410,83 @@ def candidate_edge_statements(topic_id: str, card_output: dict[str, Any]) -> lis
                 frontier_limit=0,
             )
         )
+    output.append(promote_wikipedia_candidate_edges_statement(topic_id))
     return output
+
+
+def promote_wikipedia_candidate_edges_statement(topic_id: str) -> str:
+    edge_id_sql = (
+        "md5('topic_edge:' || ce.source || ':' || ce.from_topic_id || ':' || target.id || ':' || "
+        "coalesce(ce.proposed_edge_type, 'neighbor'))::uuid"
+    )
+    generation_hash_sql = (
+        "md5('edge_hash:' || ce.source || ':' || ce.from_topic_id || ':' || target.id || ':' || "
+        "coalesce(ce.raw_position::text, '0'))"
+    )
+    return statement(
+        [
+            "with promotable as (",
+            "  select",
+            "    ce.*,",
+            "    target.id as target_topic_id,",
+            "    coalesce(ce.proposed_edge_type, 'neighbor') as resolved_edge_type,",
+            "    row_number() over (partition by ce.from_topic_id order by ce.raw_position nulls last, ce.created_at) as source_rank",
+            "  from candidate_edges ce",
+            "  join topics target on target.id = ce.normalized_to_title",
+            f"  where ce.source = {seed_sql.sql_literal(EDGE_SOURCE)}",
+            "    and ce.raw_position between 1 and 6",
+            "    and ce.from_topic_id is not null",
+            "    and ce.from_topic_id <> target.id",
+            f"    and (ce.from_topic_id = {seed_sql.sql_literal(topic_id)} or ce.normalized_to_title = {seed_sql.sql_literal(topic_id)})",
+            "    and target.quality_status in ('approved', 'prototype_pass')",
+            "    and target.generation_status = 'ready'",
+            "), inserted_edges as (",
+            "  insert into topic_edges (",
+            "    id, from_topic_id, to_topic_id, edge_type, strength, reason, status,",
+            "    rank, confidence, source_evidence, generation_status, generation_version, generation_hash",
+            "  )",
+            "  select",
+            f"    {edge_id_sql},",
+            "    from_topic_id,",
+            "    target_topic_id,",
+            "    resolved_edge_type,",
+            "    candidate_strength,",
+            f"    {seed_sql.sql_literal(EDGE_SOURCE)},",
+            "    'approved',",
+            "    raw_position,",
+            "    candidate_strength,",
+            "    jsonb_build_object(",
+            "      'fromTitle', from_title,",
+            "      'toTitle', to_title,",
+            "      'label', to_title,",
+            "      'rank', raw_position,",
+            f"      'source', {seed_sql.sql_literal(EDGE_SOURCE)}",
+            "    ),",
+            "    'ready',",
+            f"    {seed_sql.sql_literal(EDGE_GENERATION_VERSION)},",
+            f"    {generation_hash_sql}",
+            "  from promotable",
+            "  where source_rank <= 6",
+            "  on conflict (from_topic_id, to_topic_id, edge_type) do update set",
+            "    strength = excluded.strength,",
+            "    reason = excluded.reason,",
+            "    status = excluded.status,",
+            "    rank = excluded.rank,",
+            "    confidence = excluded.confidence,",
+            "    source_evidence = excluded.source_evidence,",
+            "    generation_status = excluded.generation_status,",
+            "    generation_version = excluded.generation_version,",
+            "    generation_hash = excluded.generation_hash",
+            "  returning from_topic_id, to_topic_id",
+            ")",
+            "update candidate_edges ce",
+            "set status = 'accepted'",
+            "from inserted_edges ie",
+            "where ce.from_topic_id = ie.from_topic_id",
+            "  and ce.normalized_to_title = ie.to_topic_id",
+            f"  and ce.source = {seed_sql.sql_literal(EDGE_SOURCE)};",
+        ]
+    )
 
 
 def job_statement(

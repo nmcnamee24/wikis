@@ -16,7 +16,6 @@ final class FeedStore: ObservableObject {
     @Published private(set) var navigationRevision = 0
 
     private var navigator: GraphNavigator?
-    private let offlineTopicCache = OfflineTopicCache()
     private let apiBaseURL = URL(string: "https://wikis-production.up.railway.app")!
     private let useLiveAPI = true
     private let sessionId = UUID().uuidString
@@ -32,11 +31,12 @@ final class FeedStore: ObservableObject {
             self.graph = graph
             self.navigator = navigator
             let seedTopic = graph.topic(id: "black-hole") ?? navigator.initialTopic
-            offlineTopicCache.store(topic: seedTopic, markAsLast: false)
-            let initialTopic = offlineTopicCache.latestTopic() ?? seedTopic
-            currentTopic = initialTopic
-            exploredTopics = [initialTopic]
+            currentTopic = seedTopic
+            exploredTopics = [seedTopic]
             loadingError = nil
+            Task {
+                await loadInitialTopicFromLiveAPI(topicId: seedTopic.id)
+            }
         } catch {
             loadingError = "Seed graph could not be loaded."
         }
@@ -72,7 +72,6 @@ final class FeedStore: ObservableObject {
     }
 
     private func apply(topic: Topic, gesture: NavigationGesture, liveGeneration: LiveGenerationStatus? = nil) {
-        offlineTopicCache.store(topic: topic)
         withAnimation(.spring(response: 0.42, dampingFraction: 0.86)) {
             self.currentTopic = topic
             self.exploredTopics.append(topic)
@@ -89,6 +88,21 @@ final class FeedStore: ObservableObject {
             default:
                 liveGenerationStatus = nil
             }
+        }
+    }
+
+    func openTopicFromMap(_ topic: Topic) {
+        withAnimation(.spring(response: 0.42, dampingFraction: 0.86)) {
+            if let existingIndex = exploredTopics.lastIndex(where: { $0.id == topic.id }) {
+                exploredTopics = Array(exploredTopics.prefix(existingIndex + 1))
+            } else {
+                exploredTopics.append(topic)
+            }
+            currentTopic = topic
+            lastGestureLabel = "Map"
+            liveGenerationStatus = topic.isPendingCandidate ? "Generating \(topic.title)..." : nil
+            loadingError = nil
+            navigationRevision += 1
         }
     }
 
@@ -126,20 +140,17 @@ final class FeedStore: ObservableObject {
             }
             loadingError = nil
         } catch {
-            let excludedIds = Set(exploredTopicIds.suffix(8) + [currentTopic.id])
-            if let cachedTopic = offlineTopicCache.fallbackTopic(
-                excluding: excludedIds,
-                preferredPillar: currentTopic.pillar,
-                gesture: gesture
-            ) {
-                apply(topic: cachedTopic, gesture: gesture)
-                loadingError = "Using offline cache. Live API unavailable."
-            } else if let decision = localDecision(from: currentTopic, gesture: gesture) {
-                apply(topic: decision.nextTopic, gesture: gesture)
-                loadingError = "Using offline graph. Live API unavailable."
-            } else {
-                loadingError = "Could not load the next topic."
-            }
+            loadingError = "Live API unavailable. Could not load the next Supabase topic."
+        }
+    }
+
+    private func loadInitialTopicFromLiveAPI(topicId: String) async {
+        do {
+            let topic = try await requestTopic(topicId: topicId)
+            replaceCurrentTopic(with: topic)
+            loadingError = nil
+        } catch {
+            loadingError = "Live API unavailable. Showing startup topic until Supabase responds."
         }
     }
 
@@ -199,7 +210,6 @@ final class FeedStore: ObservableObject {
             do {
                 let topic = try await requestTopic(topicId: topicId)
                 guard !topic.isPendingCandidate, currentTopic?.id == topicId else { return }
-                offlineTopicCache.store(topic: topic)
                 replaceCurrentTopic(with: topic)
                 return
             } catch {

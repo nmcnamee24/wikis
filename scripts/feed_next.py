@@ -151,14 +151,8 @@ candidate_rows as (
     on existing_topic.id = ce.normalized_to_title
    and existing_topic.quality_status in ('approved', 'prototype_pass', 'needs_review')
    and existing_topic.generation_status <> 'failed'
-  left join ingestion_jobs active_job
-    on lower(active_job.requested_title) = lower(ce.to_title)
-   and active_job.source = 'background_expansion'
-   and active_job.status in ('queued', 'running', 'succeeded')
-   and (active_job.locked_until is null or active_job.locked_until > now() or active_job.status = 'succeeded')
   where ce.status = 'pending'
     and existing_topic.id is null
-    and active_job.id is null
   group by ce.normalized_to_title, ce.to_title, ce.source
 ),
 starter_rows as (
@@ -324,7 +318,7 @@ def resolve_next(graph: dict[str, Any], request: dict[str, Any]) -> dict[str, An
                 "topic": topic,
                 "edge": edge,
                 "score": score_candidate(edge, topic, current, gesture, explored, saved),
-                "reasonCode": REASON_CODES.get((gesture, edge["type"]), "fallback_any_approved"),
+                "reasonCode": REASON_CODES[(gesture, edge["type"])],
             }
         )
     candidates.sort(key=lambda item: (-item["score"], item["topic"]["title"]))
@@ -337,9 +331,8 @@ def resolve_next(graph: dict[str, Any], request: dict[str, Any]) -> dict[str, An
         explored,
         bool(request.get("allowPendingCandidateCards", True)),
     )
-    selected = selected or fallback_candidate(graph, topics, current, current_id, gesture, explored, allow_prototype, saved)
     if not selected:
-        raise RuntimeError(f"No visible traversal candidate from {current_id}")
+        raise RuntimeError(f"No Wikipedia-linked traversal candidate from {current_id}")
 
     selected_topic = selected["topic"]
     selected_edge = selected.get("edge")
@@ -362,7 +355,7 @@ def resolve_next(graph: dict[str, Any], request: dict[str, Any]) -> dict[str, An
         "prefetchTopicIds": prefetch,
         "prefetchTopics": [topics[topic_id] for topic_id in prefetch if topic_id in topics],
         "backgroundIngestionTopics": background,
-        "fallbackWasUsed": selected_edge is None,
+        "fallbackWasUsed": False,
         "debug": {
             "currentTopicId": current_id,
             "candidateCount": len(candidates),
@@ -424,52 +417,6 @@ def pending_topic_card(candidate: dict[str, Any], current: dict[str, Any] | None
             "fallbackPillar": pillar,
             "reason": "pending_generation",
         },
-    }
-
-
-def fallback_candidate(
-    graph: dict[str, Any],
-    topics: dict[str, dict[str, Any]],
-    current: dict[str, Any] | None,
-    current_id: str,
-    gesture: str,
-    explored: list[str],
-    allow_prototype: bool,
-    saved: set[str],
-) -> dict[str, Any] | None:
-    excluded = set(explored[-8:] + [current_id])
-    visible = [
-        topic for topic in graph["topics"]
-        if topic["id"] not in excluded and is_visible(topic, allow_prototype)
-    ]
-    if gesture == "left":
-        preferred = [topic for topic in visible if not current or topic.get("pillar") != current.get("pillar")]
-        reason = "fallback_cross_pillar"
-    else:
-        preferred = [topic for topic in visible if not current or topic.get("pillar") == current.get("pillar")]
-        reason = "fallback_same_pillar"
-    pool = preferred or visible
-    if not pool:
-        return None
-    explored_set = set(explored)
-
-    def fallback_score(topic: dict[str, Any]) -> float:
-        novelty_weight = 0.30 if gesture == "left" else 0.18
-        return (
-            quality_score(topic) * 0.35
-            + source_confidence(topic) * 0.25
-            + novelty_score(topic, current, explored_set, saved) * novelty_weight
-            + visual_strength(topic) * 0.10
-            - repetition_penalty(topic["id"], explored)
-            - sensitivity_penalty(topic)
-        )
-
-    topic = sorted(pool, key=lambda item: (-fallback_score(item), item["title"]))[0]
-    return {
-        "topic": topic,
-        "edge": None,
-        "score": fallback_score(topic),
-        "reasonCode": reason if preferred else "fallback_any_approved",
     }
 
 
