@@ -11,7 +11,6 @@ import argparse
 import datetime as dt
 import json
 import os
-import subprocess
 import sys
 import time
 from dataclasses import dataclass
@@ -166,6 +165,30 @@ def mark_failed(database_url: str, target: NodeTarget, error: str) -> None:
         connection.commit()
 
 
+def mark_retryable(database_url: str, target: NodeTarget, error: str) -> None:
+    with connect_database(database_url) as connection:
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                update topics
+                set generation_status = 'missing',
+                    generation_error = %s
+                where id = %s;
+                """,
+                (error[:1000], target.topic_id),
+            )
+        connection.commit()
+
+
+def record_error(database_url: str, target: NodeTarget, error: str, *, execute: bool, mark_failed_on_error: bool) -> None:
+    if not execute:
+        return
+    if mark_failed_on_error:
+        mark_failed(database_url, target, error)
+    else:
+        mark_retryable(database_url, target, error)
+
+
 def generate_target(
     database_url: str,
     target: NodeTarget,
@@ -296,25 +319,9 @@ def batch_fetch_source_packets(targets: list[NodeTarget]) -> dict[str, SourcePac
 
 
 def execute_sql_quietly(database_url: str, sql: str) -> None:
-    import tempfile
-
-    with tempfile.NamedTemporaryFile("w", suffix=".sql", delete=False, encoding="utf-8") as handle:
-        handle.write(sql)
-        path = handle.name
-    try:
-        subprocess.run(
-            ["psql", database_url, "-v", "ON_ERROR_STOP=1", "-q", "-f", path],
-            check=True,
-            capture_output=True,
-            text=True,
-        )
-    except subprocess.CalledProcessError as exc:
-        stderr = (exc.stderr or "").strip()
-        stdout = (exc.stdout or "").strip()
-        detail = stderr or stdout or f"psql exited with {exc.returncode}"
-        raise RuntimeError(detail) from exc
-    finally:
-        Path(path).unlink(missing_ok=True)
+    with connect_database(database_url) as connection:
+        with connection.cursor() as cursor:
+            cursor.execute(sql)
 
 
 def parse_args() -> argparse.Namespace:
@@ -332,22 +339,22 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--openai-model", default=os.environ.get("WIKIS_OPENAI_MODEL", DEFAULT_OPENAI_MODEL))
     parser.add_argument("--include-images", action="store_true", help="Fetch Wikipedia page images instead of using pillar backgrounds.")
     parser.add_argument("--batch-size", type=int, default=50, help="Wikipedia titles per source fetch for local text-only generation.")
+    parser.add_argument("--watch", action="store_true", help="Continuously poll for new placeholder/missing nodes and generate them.")
+    parser.add_argument("--poll-interval", type=float, default=15.0, help="Seconds to wait between watch-mode polls when no targets are available.")
+    parser.add_argument("--mark-failed-on-error", action="store_true", help="Mark failed nodes as failed instead of leaving them retryable.")
     parser.add_argument("--lock-owner", default=os.environ.get("WIKIS_INGEST_LOCK_OWNER", LOCK_OWNER))
     parser.add_argument("--lock-ttl-minutes", type=int, default=DEFAULT_LOCK_TTL_MINUTES)
     return parser.parse_args()
 
 
-def main() -> int:
-    args = parse_args()
-    load_dotenv(args.env_file)
-    database_url = validate_database_url(args.database_url or os.environ.get("DATABASE_URL"))
-    targets = load_targets(
-        database_url,
-        all_nodes=args.all,
-        include_failed=args.include_failed,
-        limit=args.limit,
-    )
-    if args.sql_out and args.sql_out.exists():
+def process_targets(
+    args: argparse.Namespace,
+    database_url: str,
+    targets: list[NodeTarget],
+    *,
+    truncate_sql_out: bool,
+) -> dict[str, Any]:
+    if truncate_sql_out and args.sql_out and args.sql_out.exists():
         args.sql_out.unlink()
 
     print(
@@ -364,8 +371,9 @@ def main() -> int:
     if not args.execute and not args.sql_out and not args.cards_out:
         for index, target in enumerate(targets, start=1):
             print(f"{index}/{len(targets)} {target.topic_id}: {target.wikipedia_title}")
-        print(json.dumps({"attempted": 0, "previewed": len(targets), "execute": False}, indent=2))
-        return 0
+        summary = {"attempted": 0, "previewed": len(targets), "execute": False}
+        print(json.dumps(summary, indent=2))
+        return summary
 
     failures = 0
     completed = 0
@@ -380,7 +388,7 @@ def main() -> int:
                 completed += len(group)
                 failures += len(group)
                 print(f"ERROR chunk {group_index}: {exc}", file=sys.stderr)
-                if args.execute:
+                if args.execute and args.mark_failed_on_error:
                     for target in group:
                         mark_failed(database_url, target, str(exc))
                 continue
@@ -392,8 +400,13 @@ def main() -> int:
                     failures += 1
                     error = "Wikipedia page not found in batch response"
                     print(f"ERROR {completed}/{len(targets)} {target.wikipedia_title}: {error}", file=sys.stderr)
-                    if args.execute:
-                        mark_failed(database_url, target, error)
+                    record_error(
+                        database_url,
+                        target,
+                        error,
+                        execute=args.execute,
+                        mark_failed_on_error=args.mark_failed_on_error,
+                    )
                     continue
                 try:
                     generated_id = generate_target_from_packet(
@@ -412,8 +425,13 @@ def main() -> int:
                 except Exception as exc:  # noqa: BLE001 - batch generator should keep moving.
                     failures += 1
                     print(f"ERROR {completed}/{len(targets)} {target.wikipedia_title}: {exc}", file=sys.stderr)
-                    if args.execute:
-                        mark_failed(database_url, target, str(exc))
+                    record_error(
+                        database_url,
+                        target,
+                        str(exc),
+                        execute=args.execute,
+                        mark_failed_on_error=args.mark_failed_on_error,
+                    )
             if group_index < len(target_chunks) and args.delay > 0:
                 time.sleep(args.delay)
     else:
@@ -436,8 +454,13 @@ def main() -> int:
             except Exception as exc:  # noqa: BLE001 - batch generator should keep moving.
                 failures += 1
                 print(f"ERROR {index}/{len(targets)} {target.wikipedia_title}: {exc}", file=sys.stderr)
-                if args.execute:
-                    mark_failed(database_url, target, str(exc))
+                record_error(
+                    database_url,
+                    target,
+                    str(exc),
+                    execute=args.execute,
+                    mark_failed_on_error=args.mark_failed_on_error,
+                )
             if index < len(targets) and args.delay > 0:
                 time.sleep(args.delay)
 
@@ -448,7 +471,49 @@ def main() -> int:
         "execute": args.execute,
     }
     print(json.dumps(summary, indent=2))
-    return 1 if failures else 0
+    return summary
+
+
+def main() -> int:
+    args = parse_args()
+    load_dotenv(args.env_file)
+    database_url = validate_database_url(args.database_url or os.environ.get("DATABASE_URL"))
+    if args.watch and not args.execute:
+        raise RuntimeError("--watch requires --execute so new nodes are hydrated live")
+    if args.watch and args.all:
+        raise RuntimeError("--watch cannot be combined with --all; watch mode only hydrates missing/new nodes")
+
+    first_pass = True
+    while True:
+        targets = load_targets(
+            database_url,
+            all_nodes=args.all,
+            include_failed=args.include_failed,
+            limit=args.limit,
+        )
+        if targets:
+            summary = process_targets(args, database_url, targets, truncate_sql_out=first_pass)
+            first_pass = False
+            if not args.watch:
+                return 1 if summary.get("failed") else 0
+            continue
+
+        summary = process_targets(args, database_url, targets, truncate_sql_out=first_pass)
+        first_pass = False
+        if not args.watch:
+            return 1 if summary.get("failed") else 0
+
+        print(
+            json.dumps(
+                {
+                    "watch": "idle",
+                    "pollIntervalSeconds": args.poll_interval,
+                    "checkedAt": dt.datetime.now(dt.UTC).replace(microsecond=0).isoformat(),
+                },
+                indent=2,
+            )
+        )
+        time.sleep(args.poll_interval)
 
 
 if __name__ == "__main__":
