@@ -209,7 +209,7 @@ private struct MapRouteStrip: View {
         if !topics.isEmpty {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 8) {
-                    ForEach(Array(topics.enumerated()), id: \.element.id) { index, topic in
+                    ForEach(Array(topics.enumerated()), id: \.offset) { index, topic in
                         HStack(spacing: 7) {
                             Circle()
                                 .fill(topic.pillar.accentColor)
@@ -445,7 +445,7 @@ private struct KnowledgeMapLayout {
 
         let nodes: [KnowledgeMapNode] = exploredTopics.enumerated().map { index, topic in
             KnowledgeMapNode(
-                id: topic.id,
+                id: "\(topic.id)-path-\(index)",
                 topic: topic,
                 title: topic.title,
                 pillar: topic.pillar,
@@ -455,12 +455,12 @@ private struct KnowledgeMapLayout {
         }
         var links: [KnowledgeMapLink] = []
 
-        let nodesById = Dictionary(uniqueKeysWithValues: nodes.map { ($0.id, $0) })
-        for pair in zip(exploredTopics, exploredTopics.dropFirst()) {
-            guard let from = nodesById[pair.0.id], let to = nodesById[pair.1.id] else { continue }
+        for index in nodes.indices.dropLast() {
+            let from = nodes[index]
+            let to = nodes[index + 1]
             links.append(
                 KnowledgeMapLink(
-                    id: "\(pair.0.id)-path-\(pair.1.id)",
+                    id: "\(from.id)-path-\(to.id)",
                     from: from.position,
                     to: to.position,
                     isContext: false
@@ -492,7 +492,7 @@ private struct KnowledgeMapLayout {
         }
         var nodes = [
             KnowledgeMapNode(
-                id: topic.id,
+                id: "\(topic.id)-focus",
                 topic: topic,
                 title: topic.title,
                 pillar: topic.pillar,
@@ -505,13 +505,13 @@ private struct KnowledgeMapLayout {
         let contextTopics = exploredTopics
             .suffix(5)
             .filter { contextTopic in
-                contextTopic.id != topic.id && !nodes.contains { $0.id == contextTopic.id }
+                contextTopic.id != topic.id && !nodes.contains { $0.topic.id == contextTopic.id }
             }
         for (index, contextTopic) in contextTopics.enumerated() {
             let position = routeContextPosition(index: index, count: contextTopics.count, size: size)
             nodes.append(
                 KnowledgeMapNode(
-                    id: contextTopic.id,
+                    id: "\(contextTopic.id)-context-\(index)",
                     topic: contextTopic,
                     title: contextTopic.title,
                     pillar: contextTopic.pillar,

@@ -9,7 +9,9 @@ public struct WikisGraph: Codable, Sendable {
     public let stats: GraphStats
 
     public var topicsById: [String: Topic] {
-        Dictionary(uniqueKeysWithValues: topics.map { ($0.id, $0) })
+        topics.reduce(into: [:]) { result, topic in
+            result[topic.id] = topic
+        }
     }
 
     public func topic(id: String) -> Topic? {
