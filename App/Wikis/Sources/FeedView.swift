@@ -61,18 +61,7 @@ struct FeedView: View {
         .clipped()
         .ignoresSafeArea()
         .overlay(alignment: .top) {
-            if let status = store.liveGenerationStatus {
-                Text(status)
-                    .font(.system(size: 12, weight: .semibold))
-                    .lineLimit(2)
-                    .multilineTextAlignment(.center)
-                    .foregroundStyle(Color.wikisCream)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 8)
-                    .background(.black.opacity(0.42), in: Capsule())
-                    .padding(.top, 12)
-                    .padding(.horizontal, 20)
-            } else if let error = store.loadingError {
+            if let error = store.loadingError {
                 Text(error)
                     .font(.system(size: 12, weight: .semibold))
                     .lineLimit(2)

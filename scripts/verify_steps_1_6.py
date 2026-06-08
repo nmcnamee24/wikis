@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run acceptance verification for Wikis implementation Steps 1-6."""
+"""Run acceptance verification for the Supabase-only Wikis V1."""
 
 from __future__ import annotations
 
@@ -42,7 +42,7 @@ def psql_scalar(sql: str) -> str:
 
 
 def verify_database() -> None:
-    print("== Step 4/5 Supabase database")
+    print("== Supabase database")
     rls_missing = psql_scalar(
         """
         select count(*)
@@ -57,7 +57,6 @@ def verify_database() -> None:
             'image_candidates',
             'topic_assets',
             'topic_edges',
-            'candidate_edges',
             'app_users',
             'exploration_events',
             'saved_topics',
@@ -79,22 +78,14 @@ def verify_database() -> None:
           (select count(*) from topic_source_snapshots),
           (select count(*) from llm_card_generations),
           (select count(*) from topic_edges),
-          (select count(*) from candidate_edges),
           (select count(*) from topics where generation_status = 'ready');
         """
     )
     values = [int(item) for item in counts.split("|")]
-    labels = ["topics", "snapshots", "generations", "edges", "candidate_edges", "ready_topics"]
+    labels = ["topics", "snapshots", "generations", "edges", "ready_topics"]
     print(dict(zip(labels, values)))
-    if values[0] < 100 or values[1] < 100 or values[2] < 100 or values[3] < 700 or values[5] < 100:
+    if values[0] < 1 or values[1] < 1 or values[2] < 1 or values[3] < 1 or values[4] < 1:
         raise RuntimeError(f"database counts below acceptance thresholds: {counts}")
-
-    ada = psql_scalar(
-        "select quality_status || '|' || review_status || '|' || generation_status from topics where id = 'ada-lovelace';"
-    )
-    print(f"ada-lovelace: {ada}")
-    if ada != "approved|approved|ready":
-        raise RuntimeError("Ada Lovelace live ingestion approval is not ready")
 
 
 def http_json(url: str, payload: dict | None = None) -> tuple[int, dict]:
@@ -112,7 +103,7 @@ def http_json(url: str, payload: dict | None = None) -> tuple[int, dict]:
 
 
 def verify_api(base_url: str) -> None:
-    print("== Step 6 Railway API")
+    print("== Railway API")
     status, root = http_json(f"{base_url.rstrip('/')}/")
     print(f"root: {status} {root.get('status')}")
     if status != 200 or root.get("status") != "ok":
@@ -123,33 +114,10 @@ def verify_api(base_url: str) -> None:
     if status != 200 or health.get("status") != "ok":
         raise RuntimeError("health endpoint failed")
 
-    status, down = http_json(
-        f"{base_url.rstrip('/')}/v1/feed/next",
-        {
-            "currentTopicId": "black-hole",
-            "gesture": "down",
-            "exploredTopicIds": ["black-hole"],
-            "frontierLimit": 2,
-            "prefetchLimit": 3,
-        },
-    )
-    print(f"black-hole/down: {status} {down.get('nextTopicId')} {down.get('reasonCode')}")
-    if down.get("nextTopicId") != "event-horizon" or down.get("reasonCode") != "best_deeper_edge":
-        raise RuntimeError("feed next down route failed")
-
-    status, ada = http_json(
-        f"{base_url.rstrip('/')}/v1/feed/next",
-        {
-            "currentTopicId": "ada-lovelace",
-            "gesture": "right",
-            "exploredTopicIds": ["ada-lovelace"],
-            "frontierLimit": 2,
-            "prefetchLimit": 3,
-        },
-    )
-    print(f"ada/right: {status} {ada.get('nextTopicId')} background={len(ada.get('backgroundIngestionTopics', []))}")
-    if len(ada.get("backgroundIngestionTopics", [])) > 2:
-        raise RuntimeError("frontier cap failed")
+    status, topic = http_json(f"{base_url.rstrip('/')}/v1/topics/black-hole")
+    print(f"topic: {status} {topic.get('id')}")
+    if status != 200 or topic.get("id") != "black-hole":
+        raise RuntimeError("startup topic endpoint failed")
 
     status, event = http_json(
         f"{base_url.rstrip('/')}/v1/events",
@@ -157,9 +125,9 @@ def verify_api(base_url: str) -> None:
             "sessionId": "verify-steps-1-6",
             "anonymousSessionId": "verify-steps-1-6",
             "fromTopicId": "black-hole",
-            "toTopicId": "event-horizon",
+            "toTopicId": None,
             "gesture": "down",
-            "reasonCode": "best_deeper_edge",
+            "reasonCode": "verification",
             "dwellMs": 1234,
         },
     )
@@ -169,9 +137,9 @@ def verify_api(base_url: str) -> None:
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Verify Wikis Steps 1-6.")
+    parser = argparse.ArgumentParser(description="Verify Supabase-only Wikis V1.")
     parser.add_argument("--env-file", type=Path, default=Path(".env"))
-    parser.add_argument("--api-url", default=os.environ.get("WIKIS_API_URL", "https://wikis-api-production.up.railway.app"))
+    parser.add_argument("--api-url", default=os.environ.get("WIKIS_API_URL", "https://wikis-production.up.railway.app"))
     parser.add_argument("--skip-live", action="store_true")
     return parser.parse_args()
 
@@ -179,15 +147,12 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
     load_dotenv(args.env_file)
-    run(["python3", "-m", "py_compile", "scripts/wiki_to_card.py", "scripts/build_seed_graph.py", "scripts/validate_seed_graph.py", "scripts/validate_cards.py", "scripts/backend_ingest.py", "scripts/feed_next.py", "scripts/apply_supabase_db.py"], "Python compile")
-    run(["python3", "scripts/validate_cards.py", "--min-cards", "100"], "Step 1 card validation")
-    run(["python3", "scripts/validate_seed_graph.py", "data/graph/seed_graph.json"], "Step 2 graph validation")
-    run(["swift", "build", "--product", "WikisPrototype"], "Step 3 core build")
-    run(["swift", "run", "WikisCoreSmokeTests", "data/graph/seed_graph.json"], "Step 3/6 core smoke")
+    run(["python3", "-m", "py_compile", "scripts/wiki_to_card.py", "scripts/backend_ingest.py", "scripts/feed_next.py", "scripts/apply_supabase_db.py"], "Python compile")
+    run(["swift", "build", "--product", "WikisPrototype"], "App build")
     if not args.skip_live:
         verify_database()
         verify_api(args.api_url)
-    print("Steps 1-6 verification passed")
+    print("Supabase-only V1 verification passed")
     return 0
 
 

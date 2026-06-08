@@ -10,8 +10,7 @@ let package = Package(
     ],
     products: [
         .library(name: "WikisCore", targets: ["WikisCore"]),
-        .executable(name: "WikisPrototype", targets: ["WikisPrototype"]),
-        .executable(name: "WikisCoreSmokeTests", targets: ["WikisCoreSmokeTests"])
+        .executable(name: "WikisPrototype", targets: ["WikisPrototype"])
     ],
     targets: [
         .target(name: "WikisCore"),
@@ -19,11 +18,7 @@ let package = Package(
             name: "WikisPrototype",
             dependencies: ["WikisCore"],
             path: "App/Wikis",
-            sources: ["Sources"],
-            resources: [
-                .copy("Resources/seed_graph.json")
-            ]
-        ),
-        .executableTarget(name: "WikisCoreSmokeTests", dependencies: ["WikisCore"])
+            sources: ["Sources"]
+        )
     ]
 )

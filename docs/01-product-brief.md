@@ -8,7 +8,7 @@ Wikis is a curiosity engine that turns Wikipedia's knowledge graph into a swipea
 
 Wikis helps someone learn one idea quickly, then follow curiosity through related, deeper, or unexpected topics.
 
-The product's unique mechanism is not manual content authoring. Wikis pulls source material from the Wikipedia API, condenses each topic with an LLM, chooses an image from the Wikipedia page when it is good enough, and uses Wikipedia link mapping to power related-topic traversal.
+The product's unique mechanism is not manual content authoring. Wikis pulls source material from the Wikipedia API, condenses each topic with an LLM, chooses an image from the Wikipedia page when it is good enough, and stores the result in Supabase.
 
 The app should feel like opening a window into knowledge for 30 seconds, not starting a course or performing a search.
 

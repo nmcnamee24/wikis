@@ -1,272 +1,67 @@
 # Traversal Engine
 
-## Product Role
+## V1 Rule
 
-The traversal engine is the real product.
+V1 traversal is Supabase-only.
 
-The UI is a beautiful shell. The engine decides what the user sees next and whether the app feels magical or random.
+The app must not use bundled JSON, generated local card files, local graph smoke tests, or a client-side fallback graph. If Supabase cannot provide a topic or route, the app should show a bounded error instead of inventing a card or silently falling back.
 
-In V1, the engine is powered primarily by Wikipedia:
-
-- Wikipedia page links provide candidate related topics.
-- First-paragraph links provide high-relevance candidates.
-- Wikipedia images provide topic media when they are visually suitable.
-- LLM-condensed summaries turn raw encyclopedia material into 30-second curiosity cards.
-
-The engine should feel instant even when the graph is incomplete. First render must not depend on full LLM generation. A ready topic should be returned immediately; a missing topic can be represented by an acceptable provisional card while full node and edge generation runs in the background.
-
-## Inputs
-
-The engine receives:
-
-- current topic
-- current gesture
-- user's explored topics
-- user's saved topics
-- recent swipe behavior
-- pillar distribution
-- graph edge types
-- topic popularity
-- novelty score
-- difficulty score
-- quality score
-- source confidence
-- image quality
-
-## Wikipedia-Derived Graph
-
-The external `controversial/wikipedia-map` project is useful because it demonstrates the core map behavior Wikis needs behind the scenes. Its key move is to expand a Wikipedia article by parsing the first body paragraph and extracting the linked article titles.
-
-That is a good V1 candidate-source strategy because first-paragraph links are usually:
-
-- few enough to rank
-- more central than links buried later in the article
-- grounded in actual Wikipedia editorial structure
-- useful for creating a starting graph without hand-authoring every edge
-
-For Wikis, these links are a primary source for related-topic traversal. They should still be typed, scored, filtered, and rewritten into the Wikis graph model before reaching the feed.
-
-Recommended pipeline:
+## Runtime Path
 
 ```text
-Wikipedia page
-  -> parse lead section / first meaningful paragraph
-  -> extract main-namespace article links
-  -> normalize titles and follow redirects
-  -> create candidate edges
-  -> fetch/score image candidates
-  -> condense topic with LLM
-  -> classify edge type
-  -> score relevance, novelty, quality, and safety
-  -> accept into Wikis traversal graph
+iOS FeedStore
+  -> Railway API
+  -> Supabase Postgres
+  -> explicit topic_edges rows
+  -> next topic response
 ```
 
-## Progressive Generation Behavior
+`GET /v1/topics/{topic_id}` loads a topic from Supabase.
 
-The traversal engine should distinguish node availability from edge availability.
+`POST /v1/feed/next` receives:
 
-Nodes control what the user reads. Edges control where the world can go next. Both need their own state, rank, confidence, and generation version.
+- current topic id
+- gesture
+- explored topic ids
+- saved topic ids
+- prototype-content flag
 
-Traversal rules:
+The API loads approved topics and approved edges from Supabase, scores eligible edges, and returns the selected topic. If no edge exists for the gesture, the endpoint fails. It does not return pending cards and does not queue background generation from feed traffic.
 
-- Prefer ready nodes with ready edges.
-- Use provisional nodes only when they meet the minimum content standard.
-- Generate visible next hops before broader candidate expansion.
-- Keep background expansion to the immediate frontier.
-- Store refined node and edge chunks without changing the current visible page mid-read.
-- Apply polished replacements on next visit or after explicit refresh.
+## Edge Source
 
-For cost control, "generate frontier" should usually mean the current node, at most two visible neighbors, and metadata for other candidates. It should not mean recursively generating every plausible neighbor.
+Edges are explicit product data in `topic_edges`.
 
-## Outputs
+An edge should exist only when it has an intentional product reason:
 
-The engine returns:
+- `deeper`: a more specific mechanism, component, or subtopic
+- `prerequisite`: a concept that helps the current topic make sense
+- `neighbor`: a nearby idea in the same area
+- `contrast`: a comparison or counterpoint
+- `person`: a relevant person
+- `place`: a relevant place
+- `teleport`: a deliberate jump to a different area
 
-- next topic ID
-- reason code
-- fallback candidates
-- prefetch candidates
-- explanation of route for internal logs
+## Reset State
 
-Example:
+After a graph reset, `topic_edges` may be empty while topics remain available. In that state:
 
-```json
-{
-  "nextTopicId": "event_horizon",
-  "reasonCode": "best_deeper_edge",
-  "gesture": "down",
-  "fallbackTopicIds": ["spacetime", "general_relativity"],
-  "prefetchTopicIds": ["hawking_radiation", "neutron_stars", "the_silk_road"]
-}
-```
+- the feed can load the startup topic from Supabase
+- swiping will fail until explicit edges are rebuilt
+- the map shows only the user's explored path
+- no local data is used to mask missing graph data
 
-## Current V1 Implementation
+## Scoring
 
-`Sources/WikisCore/GraphNavigator.swift` implements the V1 traversal engine as a deterministic rules scorer over the seed graph.
+The current backend scorer is a simple deterministic ranker over existing Supabase edges. It considers edge strength, confidence, topic quality, source confidence, novelty, visual strength, saved affinity, repetition, and sensitivity. This is acceptable for V1 only after the edge set itself is intentionally rebuilt.
 
-It returns:
+## Non-Goals
 
-- selected next topic
-- reason code
-- selected edge when one was used
-- fallback topic IDs
-- prefetch topic IDs
-- capped background-ingestion candidate topics
-- fallback-used flag
-- debug summary
+V1 should not include:
 
-The same model is now available through the hosted FastAPI backend:
-
-```text
-https://wikis-api-production.up.railway.app/v1/feed/next
-```
-
-`FeedStore` still calls the local Swift engine for the prototype, with explored topic IDs and saved topic IDs so the prototype benefits from repeat penalties without requiring a network service. The Railway API loads the graph from Supabase and returns the same backend-shaped traversal response.
-
-For backend dry runs, use:
-
-```bash
-python3 scripts/feed_next.py \
-  --current-topic black-hole \
-  --gesture down \
-  --explored-topic-ids black-hole
-```
-
-After the Supabase migrations and seed data are applied, run the same resolver against Postgres:
-
-```bash
-python3 scripts/feed_next.py \
-  --use-database \
-  --current-topic black-hole \
-  --gesture down \
-  --explored-topic-ids black-hole
-```
-
-Hosted API check:
-
-```bash
-curl -sS -X POST https://wikis-api-production.up.railway.app/v1/feed/next \
-  -H 'Content-Type: application/json' \
-  -d '{"currentTopicId":"black-hole","gesture":"down","exploredTopicIds":["black-hole"],"frontierLimit":2,"prefetchLimit":3}'
-```
-
-## Gesture Resolution
-
-### Swipe Down
-
-Goal:
-
-Continue the rabbit hole.
-
-Ranking preference:
-
-1. Direct deeper edge from current topic
-2. Prerequisite edge that unlocks a deeper idea
-3. Strong causal or conceptual next step
-4. Popular continuation with high quality
-
-### Swipe Right
-
-Goal:
-
-Stay in the neighborhood.
-
-Ranking preference:
-
-1. Neighbor edge
-2. Contrast edge
-3. Same pillar, adjacent subtopic
-4. Person/place connected to current topic
-
-### Swipe Left
-
-Goal:
-
-Teleport.
-
-Ranking preference:
-
-1. Different pillar
-2. High novelty
-3. High standalone interest
-4. Not recently shown
-5. Strong image or pillar background
-6. Not jarringly sensitive after a light topic
-
-## Scoring Model
-
-Initial V1 can use a weighted rules model before machine learning.
-
-```text
-score =
-  edge_relevance * 0.30
-  + user_interest_match * 0.20
-  + novelty * 0.15
-  + topic_quality * 0.15
-  + source_confidence * 0.10
-  + visual_strength * 0.05
-  + popularity * 0.05
-  - repetition_penalty
-  - sensitivity_penalty
-```
-
-Weights should differ by gesture.
-
-For teleport, novelty should be much higher. For continue, edge relevance should dominate.
-
-## Cold Start
-
-On first app open:
-
-- choose from an editorially curated starter pool
-- avoid sensitive or dry topics
-- prioritize visual strength and broad fascination
-- rotate across pillars
-
-Starter pool examples:
-
-- Black Holes
-- Octopus Intelligence
-- Pompeii
-- The Silk Road
-- The Fermi Paradox
-- The Epic of Gilgamesh
-- The Library of Alexandria
-- Plate Tectonics
-
-## Exploration Memory
-
-The engine should avoid showing the same topic again too soon, but revisiting should be possible when it creates a meaningful loop.
-
-Track:
-
-- seen topic IDs
-- saved topic IDs
-- full path sequences
-- longest path
-- pillar balance
-- repeated teleports
-- abandoned topics
-- read completion estimate
-
-## Quality Gates
-
-Never return a topic if:
-
-- content quality is below threshold
-- source confidence is below threshold
-- image is broken and no fallback exists
-- topic is high-risk and unreviewed
-- topic has no valid outgoing candidates unless explicitly allowed
-- provisional content is too rough to stand as the product experience
-
-## V1 Implementation Strategy
-
-Build in three phases:
-
-1. Static graph with curated JSON
-2. Wikipedia/Wikidata candidate-edge ingestion
-3. Server-side traversal scorer
-4. Personalization from exploration history
-
-Do not start with a complex ML recommender. A good graph plus transparent scoring will be better for V1 and easier to debug.
+- local seed graph loading
+- checked-in generated card JSON
+- checked-in generated graph JSON or HTML
+- automatic Wikipedia-link edge creation
+- feed-triggered graph generation
+- client-side traversal fallback

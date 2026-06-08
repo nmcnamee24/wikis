@@ -14,7 +14,6 @@ struct KnowledgeMapView: View {
             GeometryReader { geometry in
                 let layout = KnowledgeMapLayout.make(
                     exploredTopics: store.exploredTopics,
-                    graph: store.graph,
                     size: geometry.size,
                     focusedTopicId: selectedTopic?.id
                 )
@@ -29,12 +28,12 @@ struct KnowledgeMapView: View {
                                 .stroke(
                                     link.color,
                                     style: StrokeStyle(
-                                        lineWidth: link.isFrontier ? 1.1 : 2.1,
+                                        lineWidth: link.isContext ? 1.1 : 2.1,
                                         lineCap: .round,
-                                        dash: link.isFrontier ? [6, 7] : []
+                                        dash: link.isContext ? [6, 7] : []
                                     )
                                 )
-                                .opacity(link.isFrontier ? 0.32 : 0.78)
+                                .opacity(link.isContext ? 0.32 : 0.78)
                         }
 
                         ForEach(layout.nodes) { node in
@@ -60,7 +59,7 @@ struct KnowledgeMapView: View {
                     VStack(alignment: .leading, spacing: 0) {
                         MapHeader(
                             exploredCount: store.exploredTopics.count,
-                            frontierCount: layout.frontierCount,
+                            contextCount: layout.contextCount,
                             currentTitle: store.currentTopic?.title ?? "No topic"
                         )
                         .padding(.horizontal, 18)
@@ -139,7 +138,7 @@ private extension View {
 
 private struct MapHeader: View {
     let exploredCount: Int
-    let frontierCount: Int
+    let contextCount: Int
     let currentTitle: String
 
     var body: some View {
@@ -172,7 +171,7 @@ private struct MapHeader: View {
             HStack(spacing: 16) {
                 MapLegendDot(color: .wikisGold, label: "Path")
                 MapLegendDot(color: .wikisBlue, label: "Neighbor")
-                MapLegendDot(color: .white.opacity(0.34), label: "\(frontierCount) nearby")
+                MapLegendDot(color: .white.opacity(0.34), label: "\(contextCount) context")
             }
         }
         .padding(16)
@@ -328,7 +327,7 @@ private struct MapNodeView: View {
                     .shadow(color: node.glow, radius: node.isCurrent ? 16 : 8)
 
                 Circle()
-                    .stroke(isSelected ? Color.wikisGold : node.stroke, lineWidth: isSelected ? 2.4 : node.isFrontier ? 1 : 1.6)
+                    .stroke(isSelected ? Color.wikisGold : node.stroke, lineWidth: isSelected ? 2.4 : node.isContext ? 1 : 1.6)
                     .frame(width: node.diameter + 5, height: node.diameter + 5)
 
                 if node.isCurrent || isSelected {
@@ -339,11 +338,11 @@ private struct MapNodeView: View {
             }
 
             Text(node.title)
-                .font(.system(size: node.isFrontier ? 10 : 12, weight: node.isFrontier ? .medium : .semibold))
+                .font(.system(size: node.isContext ? 10 : 12, weight: node.isContext ? .medium : .semibold))
                 .lineLimit(2)
                 .multilineTextAlignment(.center)
-                .foregroundStyle(node.isFrontier ? .white.opacity(0.44) : .white.opacity(0.88))
-                .frame(width: node.isFrontier ? 86 : 112)
+                .foregroundStyle(node.isContext ? .white.opacity(0.44) : .white.opacity(0.88))
+                .frame(width: node.isContext ? 86 : 112)
                 .fixedSize(horizontal: false, vertical: true)
         }
         .contentShape(Rectangle())
@@ -421,19 +420,18 @@ private struct MapLinkShape: Shape {
 private struct KnowledgeMapLayout {
     let nodes: [KnowledgeMapNode]
     let links: [KnowledgeMapLink]
-    let frontierCount: Int
+    let contextCount: Int
     let accessibleCount: Int
 
-    static func make(exploredTopics: [Topic], graph: WikisGraph?, size: CGSize, focusedTopicId: String?) -> KnowledgeMapLayout {
+    static func make(exploredTopics: [Topic], size: CGSize, focusedTopicId: String?) -> KnowledgeMapLayout {
         guard !exploredTopics.isEmpty else {
-            return KnowledgeMapLayout(nodes: [], links: [], frontierCount: 0, accessibleCount: 0)
+            return KnowledgeMapLayout(nodes: [], links: [], contextCount: 0, accessibleCount: 0)
         }
 
         let safeSize = CGSize(width: max(size.width, 1), height: max(size.height, 1))
         let exploredIds = Set(exploredTopics.map(\.id))
-        let graphTopics = graph?.topicsById ?? [:]
         let focusedTopic = focusedTopicId.flatMap { topicId in
-            exploredTopics.first { $0.id == topicId } ?? graphTopics[topicId]
+            exploredTopics.first { $0.id == topicId }
         }
 
         if let focusedTopic {
@@ -441,13 +439,11 @@ private struct KnowledgeMapLayout {
                 topic: focusedTopic,
                 exploredTopics: exploredTopics,
                 exploredIds: exploredIds,
-                graph: graph,
-                graphTopics: graphTopics,
                 size: safeSize
             )
         }
 
-        var nodes: [KnowledgeMapNode] = exploredTopics.enumerated().map { index, topic in
+        let nodes: [KnowledgeMapNode] = exploredTopics.enumerated().map { index, topic in
             KnowledgeMapNode(
                 id: topic.id,
                 topic: topic,
@@ -467,81 +463,16 @@ private struct KnowledgeMapLayout {
                     id: "\(pair.0.id)-path-\(pair.1.id)",
                     from: from.position,
                     to: to.position,
-                    edgeType: .deeper,
-                    isFrontier: false
+                    isContext: false
                 )
             )
         }
 
-        guard let graph else {
-            return KnowledgeMapLayout(nodes: nodes, links: links, frontierCount: 0, accessibleCount: 0)
-        }
-
-        let exploredNodePositions = Dictionary(uniqueKeysWithValues: nodes.map { ($0.id, $0.position) })
-        var frontierIds = Set<String>()
-        var frontierNodes: [KnowledgeMapNode] = []
-        var frontierLinks: [KnowledgeMapLink] = []
-
-        for source in exploredTopics.suffix(4) {
-            let sourceEdges = graph.edges
-                .filter { edge in
-                    edge.from == source.id
-                        && !exploredIds.contains(edge.to)
-                        && edge.generationStatus != .failed
-                        && graphTopics[edge.to] != nil
-                }
-                .sorted { lhs, rhs in
-                    let leftRank = lhs.rank ?? Int.max
-                    let rightRank = rhs.rank ?? Int.max
-                    if leftRank == rightRank {
-                        return lhs.strength > rhs.strength
-                    }
-                    return leftRank < rightRank
-                }
-                .prefix(3)
-
-            for edge in sourceEdges where frontierIds.count < 12 {
-                guard !frontierIds.contains(edge.to),
-                      let topic = graphTopics[edge.to],
-                      let sourcePosition = exploredNodePositions[source.id]
-                else { continue }
-
-                frontierIds.insert(edge.to)
-                let position = frontierPosition(
-                    sourcePosition: sourcePosition,
-                    edge: edge,
-                    ordinal: frontierIds.count - 1,
-                    size: safeSize
-                )
-                let node = KnowledgeMapNode(
-                    id: edge.to,
-                    topic: topic,
-                    title: topic.title,
-                    pillar: topic.pillar,
-                    position: position,
-                    kind: .frontier
-                )
-                frontierNodes.append(node)
-                frontierLinks.append(
-                    KnowledgeMapLink(
-                        id: edge.id,
-                        from: sourcePosition,
-                        to: position,
-                        edgeType: edge.type,
-                        isFrontier: true
-                    )
-                )
-            }
-        }
-
-        nodes.append(contentsOf: frontierNodes)
-        links.append(contentsOf: frontierLinks)
-
         return KnowledgeMapLayout(
             nodes: nodes,
             links: links,
-            frontierCount: frontierNodes.count,
-            accessibleCount: frontierNodes.count
+            contextCount: 0,
+            accessibleCount: 0
         )
     }
 
@@ -549,8 +480,6 @@ private struct KnowledgeMapLayout {
         topic: Topic,
         exploredTopics: [Topic],
         exploredIds: Set<String>,
-        graph: WikisGraph?,
-        graphTopics: [String: Topic],
         size: CGSize
     ) -> KnowledgeMapLayout {
         let center = CGPoint(x: size.width * 0.5, y: size.height * 0.46)
@@ -559,7 +488,7 @@ private struct KnowledgeMapLayout {
         } else if exploredIds.contains(topic.id) {
             .explored
         } else {
-            .frontier
+            .context
         }
         var nodes = [
             KnowledgeMapNode(
@@ -572,58 +501,6 @@ private struct KnowledgeMapLayout {
             )
         ]
         var links: [KnowledgeMapLink] = []
-
-        guard let graph else {
-            return KnowledgeMapLayout(nodes: nodes, links: links, frontierCount: 0, accessibleCount: 0)
-        }
-
-        let sourceEdges = graph.edges
-            .filter { edge in
-                edge.from == topic.id
-                    && edge.to != topic.id
-                    && edge.generationStatus != .failed
-                    && graphTopics[edge.to] != nil
-            }
-            .sorted { lhs, rhs in
-                let leftRank = lhs.rank ?? Int.max
-                let rightRank = rhs.rank ?? Int.max
-                if leftRank == rightRank {
-                    return lhs.strength > rhs.strength
-                }
-                return leftRank < rightRank
-            }
-            .prefix(8)
-
-        for (index, edge) in sourceEdges.enumerated() {
-            guard let target = graphTopics[edge.to] else { continue }
-            let targetKind: KnowledgeMapNodeKind = if target.id == exploredTopics.last?.id {
-                .current
-            } else if exploredIds.contains(target.id) {
-                .explored
-            } else {
-                .frontier
-            }
-            let position = focusedNeighborPosition(index: index, count: sourceEdges.count, size: size)
-            nodes.append(
-                KnowledgeMapNode(
-                    id: target.id,
-                    topic: target,
-                    title: target.title,
-                    pillar: target.pillar,
-                    position: position,
-                    kind: targetKind
-                )
-            )
-            links.append(
-                KnowledgeMapLink(
-                    id: edge.id,
-                    from: center,
-                    to: position,
-                    edgeType: edge.type,
-                    isFrontier: targetKind == .frontier
-                )
-            )
-        }
 
         let contextTopics = exploredTopics
             .suffix(5)
@@ -647,8 +524,7 @@ private struct KnowledgeMapLayout {
                     id: "\(topic.id)-context-\(contextTopic.id)",
                     from: center,
                     to: position,
-                    edgeType: .teleport,
-                    isFrontier: true
+                    isContext: true
                 )
             )
         }
@@ -656,8 +532,8 @@ private struct KnowledgeMapLayout {
         return KnowledgeMapLayout(
             nodes: nodes,
             links: links,
-            frontierCount: nodes.filter(\.isFrontier).count,
-            accessibleCount: sourceEdges.count
+            contextCount: nodes.filter(\.isContext).count,
+            accessibleCount: 0
         )
     }
 
@@ -674,37 +550,6 @@ private struct KnowledgeMapLayout {
             y: center.y + sin(angle) * radius * 0.78
         )
         return clamped(point, in: size, margin: 72)
-    }
-
-    private static func frontierPosition(sourcePosition: CGPoint, edge: TopicEdge, ordinal: Int, size: CGSize) -> CGPoint {
-        let baseAngle: CGFloat
-        switch edge.type {
-        case .deeper, .prerequisite:
-            baseAngle = -CGFloat.pi / 2
-        case .neighbor, .contrast, .person, .place:
-            baseAngle = 0
-        case .teleport:
-            baseAngle = CGFloat.pi
-        }
-        let rank = CGFloat(edge.rank ?? ordinal)
-        let spread = (rank - 1) * 0.42 + CGFloat(ordinal % 3) * 0.18
-        let distance = CGFloat(72 + min(ordinal, 5) * 9)
-        let point = CGPoint(
-            x: sourcePosition.x + cos(baseAngle + spread) * distance,
-            y: sourcePosition.y + sin(baseAngle + spread) * distance * 0.82
-        )
-        return clamped(point, in: size, margin: 56)
-    }
-
-    private static func focusedNeighborPosition(index: Int, count: Int, size: CGSize) -> CGPoint {
-        let center = CGPoint(x: size.width * 0.5, y: size.height * 0.46)
-        let radius = min(min(size.width, size.height) * 0.31, CGFloat(126))
-        let angle = -CGFloat.pi / 2 + CGFloat(index) / CGFloat(max(count, 1)) * CGFloat.pi * 2
-        let point = CGPoint(
-            x: center.x + cos(angle) * radius,
-            y: center.y + sin(angle) * radius * 0.78
-        )
-        return clamped(point, in: size, margin: 58)
     }
 
     private static func routeContextPosition(index: Int, count: Int, size: CGSize) -> CGPoint {
@@ -734,15 +579,15 @@ private struct KnowledgeMapNode: Identifiable {
         kind == .current
     }
 
-    var isFrontier: Bool {
-        kind == .frontier
+    var isContext: Bool {
+        kind == .context
     }
 
     var diameter: CGFloat {
         switch kind {
         case .current: 24
         case .explored: 17
-        case .frontier: 9
+        case .context: 9
         }
     }
 
@@ -750,7 +595,7 @@ private struct KnowledgeMapNode: Identifiable {
         switch kind {
         case .current: .wikisGold
         case .explored: pillar.accentColor
-        case .frontier: .white.opacity(0.22)
+        case .context: .white.opacity(0.22)
         }
     }
 
@@ -758,7 +603,7 @@ private struct KnowledgeMapNode: Identifiable {
         switch kind {
         case .current: .white.opacity(0.86)
         case .explored: .white.opacity(0.54)
-        case .frontier: .white.opacity(0.28)
+        case .context: .white.opacity(0.28)
         }
     }
 
@@ -766,7 +611,7 @@ private struct KnowledgeMapNode: Identifiable {
         switch kind {
         case .current: .wikisGold.opacity(0.42)
         case .explored: pillar.accentColor.opacity(0.26)
-        case .frontier: .clear
+        case .context: .clear
         }
     }
 
@@ -776,8 +621,8 @@ private struct KnowledgeMapNode: Identifiable {
             "Current topic, \(title)"
         case .explored:
             "Explored topic, \(title)"
-        case .frontier:
-            "Nearby unrevealed topic, \(title)"
+        case .context:
+            "Route context topic, \(title)"
         }
     }
 }
@@ -785,28 +630,19 @@ private struct KnowledgeMapNode: Identifiable {
 private enum KnowledgeMapNodeKind {
     case explored
     case current
-    case frontier
+    case context
 }
 
 private struct KnowledgeMapLink: Identifiable {
     let id: String
     let from: CGPoint
     let to: CGPoint
-    let edgeType: EdgeType
-    let isFrontier: Bool
+    let isContext: Bool
 
     var color: Color {
-        if !isFrontier {
+        if !isContext {
             return .wikisGold
         }
-
-        switch edgeType {
-        case .deeper, .prerequisite:
-            return .wikisCream
-        case .neighbor, .contrast, .person, .place:
-            return .wikisBlue
-        case .teleport:
-            return .wikisViolet
-        }
+        return .white.opacity(0.34)
     }
 }

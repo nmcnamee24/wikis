@@ -6,39 +6,24 @@ import WikisCore
 
 @MainActor
 final class FeedStore: ObservableObject {
-    @Published private(set) var graph: WikisGraph?
     @Published private(set) var currentTopic: Topic?
     @Published private(set) var exploredTopics: [Topic] = []
     @Published private(set) var savedTopicIds: Set<String> = []
     @Published var lastGestureLabel: String?
     @Published var loadingError: String?
-    @Published private(set) var liveGenerationStatus: String?
     @Published private(set) var navigationRevision = 0
 
-    private var navigator: GraphNavigator?
     private let apiBaseURL = URL(string: "https://wikis-production.up.railway.app")!
-    private let useLiveAPI = true
     private let sessionId = UUID().uuidString
+    private let startupTopicId = "black-hole"
 
     init() {
-        loadGraph()
+        loadInitialTopic()
     }
 
-    func loadGraph() {
-        do {
-            let graph = try GraphLoader.loadBundled()
-            let navigator = GraphNavigator(graph: graph)
-            self.graph = graph
-            self.navigator = navigator
-            let seedTopic = graph.topic(id: "black-hole") ?? navigator.initialTopic
-            currentTopic = seedTopic
-            exploredTopics = [seedTopic]
-            loadingError = nil
-            Task {
-                await loadInitialTopicFromLiveAPI(topicId: seedTopic.id)
-            }
-        } catch {
-            loadingError = "Seed graph could not be loaded."
+    func loadInitialTopic() {
+        Task {
+            await loadTopicFromAPI(topicId: startupTopicId)
         }
     }
 
@@ -60,34 +45,12 @@ final class FeedStore: ObservableObject {
         return true
     }
 
-    private func localDecision(from currentTopic: Topic, gesture: NavigationGesture) -> TraversalDecision? {
-        let context = TraversalContext(
-            exploredTopicIds: exploredTopics.map(\.id),
-            savedTopicIds: savedTopicIds,
-            allowPrototypeContent: true,
-            frontierLimit: 2,
-            prefetchLimit: 3
-        )
-        return navigator?.decision(from: currentTopic.id, gesture: gesture, context: context)
-    }
-
-    private func apply(topic: Topic, gesture: NavigationGesture, liveGeneration: LiveGenerationStatus? = nil) {
+    private func apply(topic: Topic, gesture: NavigationGesture) {
         withAnimation(.spring(response: 0.42, dampingFraction: 0.86)) {
             self.currentTopic = topic
             self.exploredTopics.append(topic)
             self.lastGestureLabel = gesture.label
             self.navigationRevision += 1
-        }
-        if topic.isPendingCandidate {
-            liveGenerationStatus = "Generating \(topic.title)..."
-        } else if let liveGeneration {
-            switch liveGeneration.status {
-            case "scheduled":
-                let titleList = liveGeneration.candidateTitles.compactMap { $0 }.joined(separator: ", ")
-                liveGenerationStatus = titleList.isEmpty ? "Live expansion scheduled" : "Live expansion scheduled: \(titleList)"
-            default:
-                liveGenerationStatus = nil
-            }
         }
     }
 
@@ -100,7 +63,6 @@ final class FeedStore: ObservableObject {
             }
             currentTopic = topic
             lastGestureLabel = "Map"
-            liveGenerationStatus = topic.isPendingCandidate ? "Generating \(topic.title)..." : nil
             loadingError = nil
             navigationRevision += 1
         }
@@ -112,13 +74,6 @@ final class FeedStore: ObservableObject {
         exploredTopicIds: [String],
         savedTopicIds: Set<String>
     ) async {
-        guard useLiveAPI else {
-            if let decision = localDecision(from: currentTopic, gesture: gesture) {
-                apply(topic: decision.nextTopic, gesture: gesture)
-            }
-            return
-        }
-
         do {
             let response = try await requestNextTopic(
                 currentTopicId: currentTopic.id,
@@ -126,7 +81,7 @@ final class FeedStore: ObservableObject {
                 exploredTopicIds: exploredTopicIds,
                 savedTopicIds: Array(savedTopicIds)
             )
-            apply(topic: response.nextTopic, gesture: gesture, liveGeneration: response.liveGeneration)
+            apply(topic: response.nextTopic, gesture: gesture)
             Task {
                 await recordExplorationEvent(
                     fromTopicId: currentTopic.id,
@@ -135,22 +90,23 @@ final class FeedStore: ObservableObject {
                     reasonCode: response.reasonCode
                 )
             }
-            if response.nextTopic.isPendingCandidate {
-                await pollPendingTopic(topicId: response.nextTopic.id)
-            }
             loadingError = nil
         } catch {
-            loadingError = "Live API unavailable. Could not load the next Supabase topic."
+            loadingError = "No Supabase route is available for this gesture."
         }
     }
 
-    private func loadInitialTopicFromLiveAPI(topicId: String) async {
+    private func loadTopicFromAPI(topicId: String) async {
         do {
             let topic = try await requestTopic(topicId: topicId)
-            replaceCurrentTopic(with: topic)
+            withAnimation(.easeInOut(duration: 0.24)) {
+                currentTopic = topic
+                exploredTopics = [topic]
+                navigationRevision += 1
+            }
             loadingError = nil
         } catch {
-            loadingError = "Live API unavailable. Showing startup topic until Supabase responds."
+            loadingError = "Supabase topic could not be loaded."
         }
     }
 
@@ -170,12 +126,7 @@ final class FeedStore: ObservableObject {
                 gesture: gesture.apiValue,
                 exploredTopicIds: exploredTopicIds,
                 savedTopicIds: savedTopicIds,
-                frontierLimit: 2,
-                prefetchLimit: 3,
-                allowPrototypeContent: true,
-                allowPendingCandidateCards: true,
-                liveGenerationEnabled: true,
-                liveGenerationLimit: 1
+                allowPrototypeContent: true
             )
         )
 
@@ -200,34 +151,6 @@ final class FeedStore: ObservableObject {
             throw URLError(.badServerResponse)
         }
         return try JSONDecoder().decode(Topic.self, from: data)
-    }
-
-    private func pollPendingTopic(topicId: String) async {
-        let delays: [UInt64] = [2, 4, 6, 8, 10]
-        for delay in delays {
-            try? await Task.sleep(nanoseconds: delay * 1_000_000_000)
-            guard currentTopic?.id == topicId else { return }
-            do {
-                let topic = try await requestTopic(topicId: topicId)
-                guard !topic.isPendingCandidate, currentTopic?.id == topicId else { return }
-                replaceCurrentTopic(with: topic)
-                return
-            } catch {
-                continue
-            }
-        }
-    }
-
-    private func replaceCurrentTopic(with topic: Topic) {
-        withAnimation(.easeInOut(duration: 0.24)) {
-            currentTopic = topic
-            if let lastIndex = exploredTopics.lastIndex(where: { $0.id == topic.id }) {
-                exploredTopics[lastIndex] = topic
-            }
-            if liveGenerationStatus != nil {
-                liveGenerationStatus = nil
-            }
-        }
     }
 
     private func recordExplorationEvent(
@@ -309,12 +232,7 @@ private struct FeedNextAPIRequest: Encodable {
     let gesture: String
     let exploredTopicIds: [String]
     let savedTopicIds: [String]
-    let frontierLimit: Int
-    let prefetchLimit: Int
     let allowPrototypeContent: Bool
-    let allowPendingCandidateCards: Bool
-    let liveGenerationEnabled: Bool
-    let liveGenerationLimit: Int
 }
 
 private struct ExplorationEventAPIRequest: Encodable {
@@ -334,17 +252,4 @@ private struct FeedNextResponse: Decodable {
     let nextTopic: Topic
     let reasonCode: String
     let gesture: String
-    let liveGeneration: LiveGenerationStatus?
-}
-
-private struct LiveGenerationStatus: Decodable {
-    let status: String
-    let limit: Int
-    let candidateTitles: [String?]
-}
-
-private extension Topic {
-    var isPendingCandidate: Bool {
-        qualityStatus == "pending_candidate"
-    }
 }

@@ -61,7 +61,7 @@ Prefer:
 
 The experience should feel premium and efficient.
 
-Cards should load instantly or appear instant through prefetching. Typography should carry the product. Images should support the topic without making the app dependent on unreliable source media.
+Cards should load quickly from Supabase. Typography should carry the product. Images should support the topic without making the app dependent on unreliable source media.
 
 ## 6. Trust Is A Feature
 
@@ -88,4 +88,3 @@ Progression should feel reflective:
 Not performative:
 
 - "Keep your streak or lose progress."
-

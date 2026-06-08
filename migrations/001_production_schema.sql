@@ -50,9 +50,7 @@ create table if not exists topic_source_snapshots (
   wikipedia_page_id bigint,
   wikipedia_revision_id bigint,
   raw_extract text,
-  first_paragraph text,
   lead_html text,
-  link_candidates_json jsonb not null default '[]'::jsonb,
   image_candidates_json jsonb not null default '[]'::jsonb,
   fetched_at timestamptz,
   source_hash text not null,
@@ -72,7 +70,6 @@ create table if not exists llm_card_generations (
   generated_explanation text not null,
   generated_hook_type text not null,
   generated_hook_text text not null,
-  related_candidates_json jsonb not null default '[]'::jsonb,
   confidence_notes_json jsonb not null default '[]'::jsonb,
   grounding_status text not null default 'unchecked' check (
     grounding_status in ('unchecked', 'passed', 'flagged', 'failed')
@@ -151,27 +148,6 @@ create table if not exists topic_edges (
   unique (from_topic_id, to_topic_id, edge_type)
 );
 
-create table if not exists candidate_edges (
-  id uuid primary key default gen_random_uuid(),
-  source text not null,
-  source_page_id bigint,
-  from_topic_id text references topics(id) on delete set null,
-  from_title text,
-  to_topic_id text references topics(id) on delete set null,
-  to_title text not null,
-  normalized_to_title text not null,
-  raw_position integer,
-  extraction_method text not null,
-  candidate_strength numeric(4, 3) check (candidate_strength is null or candidate_strength between 0 and 1),
-  proposed_edge_type text check (
-    proposed_edge_type is null or proposed_edge_type in ('deeper', 'neighbor', 'teleport', 'prerequisite', 'contrast', 'person', 'place')
-  ),
-  status text not null default 'pending' check (status in ('pending', 'approved', 'rejected', 'promoted')),
-  rejection_reason text,
-  created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now()
-);
-
 create table if not exists app_users (
   id uuid primary key default gen_random_uuid(),
   identity_kind text not null default 'anonymous' check (identity_kind in ('anonymous', 'account')),
@@ -216,9 +192,6 @@ create index if not exists image_candidates_topic_selected_idx on image_candidat
 create index if not exists topic_assets_topic_idx on topic_assets(topic_id);
 create index if not exists topic_edges_from_type_idx on topic_edges(from_topic_id, edge_type, strength desc);
 create index if not exists topic_edges_to_idx on topic_edges(to_topic_id);
-create index if not exists candidate_edges_status_idx on candidate_edges(status, candidate_strength desc);
-create unique index if not exists candidate_edges_identity_idx
-  on candidate_edges(source, coalesce(from_topic_id, ''), normalized_to_title, extraction_method);
 create index if not exists exploration_events_user_created_idx on exploration_events(user_id, created_at desc);
 create index if not exists exploration_events_session_created_idx on exploration_events(session_id, created_at desc);
 create index if not exists saved_topics_topic_idx on saved_topics(topic_id);
@@ -233,10 +206,6 @@ for each row execute function set_updated_at();
 
 drop trigger if exists topic_edges_set_updated_at on topic_edges;
 create trigger topic_edges_set_updated_at before update on topic_edges
-for each row execute function set_updated_at();
-
-drop trigger if exists candidate_edges_set_updated_at on candidate_edges;
-create trigger candidate_edges_set_updated_at before update on candidate_edges
 for each row execute function set_updated_at();
 
 drop trigger if exists app_users_set_updated_at on app_users;

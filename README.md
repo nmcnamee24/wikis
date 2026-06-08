@@ -13,12 +13,11 @@ Wikis is a Wikipedia-powered knowledge graph disguised as a swipe feed.
 The core loop is:
 
 ```text
-Wikipedia topic
-  -> Wikipedia API fetch
-  -> LLM condensation into a short explanation
-  -> Wikipedia image or pillar fallback
-  -> related topics from mapped Wikipedia links
+Supabase topic
+  -> Railway API
   -> swipeable curiosity card
+  -> explicit Supabase edge
+  -> next Supabase topic
 ```
 
 Every topic belongs to one of four navigation anchors:
@@ -54,15 +53,12 @@ No search. No friends. No comments. No public follower metrics. No onboarding. N
 - [Analytics And Quality](docs/10-analytics-and-quality.md)
 - [Roadmap](docs/11-roadmap.md)
 - [Launch Checklist](docs/12-launch-checklist.md)
-- [Wikipedia Map Inspiration](docs/13-wikipedia-map-inspiration.md)
 
 ## Implementation Plan
 
 Build Wikis in order. Each step has its own execution doc:
 
 - [Step 01: Prove The Wikipedia-To-Card Pipeline](docs/implementation-plan/01-prove-wikipedia-to-card-pipeline.md)
-- [Step 02: Build The Seed Knowledge Graph](docs/implementation-plan/02-build-seed-knowledge-graph.md)
-- [Step 03: Prototype The Swipe Feed](docs/implementation-plan/03-prototype-swipe-feed.md)
 - [Step 04: Design The Production Data Model](docs/implementation-plan/04-design-production-data-model.md)
 - [Step 05: Build The Backend Ingestion System](docs/implementation-plan/05-build-backend-ingestion-system.md)
 - [Step 06: Build The Traversal Engine](docs/implementation-plan/06-build-traversal-engine.md)
@@ -76,6 +72,4 @@ Build Wikis in order. Each step has its own execution doc:
 ## Usage Docs
 
 - [Step 01 Pipeline Usage](docs/step-01-pipeline-usage.md)
-- [Step 02 Seed Graph Usage](docs/step-02-seed-graph-usage.md)
-- [Step 03 SwiftUI Prototype Usage](docs/step-03-swiftui-prototype-usage.md)
 - [Step 05 Backend Ingestion Usage](docs/step-05-backend-ingestion-usage.md)

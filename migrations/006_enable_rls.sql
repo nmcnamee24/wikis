@@ -13,7 +13,6 @@ alter table llm_card_generations enable row level security;
 alter table image_candidates enable row level security;
 alter table topic_assets enable row level security;
 alter table topic_edges enable row level security;
-alter table candidate_edges enable row level security;
 alter table app_users enable row level security;
 alter table exploration_events enable row level security;
 alter table saved_topics enable row level security;

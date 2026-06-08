@@ -6,9 +6,6 @@ public struct WikisGraph: Codable, Sendable {
     public let description: String
     public let topics: [Topic]
     public let edges: [TopicEdge]
-    public let gestureIndex: [String: GestureTargets]
-    public let starterPool: [String]
-    public let candidateQueue: [CandidateTopic]
     public let stats: GraphStats
 
     public var topicsById: [String: Topic] {
@@ -175,38 +172,15 @@ public enum EdgeType: String, Codable, Sendable {
     case place
 }
 
-public struct GestureTargets: Codable, Equatable, Sendable {
-    public let down: [String]
-    public let right: [String]
-    public let left: [String]
-
-    public func targets(for gesture: NavigationGesture) -> [String] {
-        switch gesture {
-        case .down: down
-        case .right: right
-        case .left: left
-        }
-    }
-}
-
 public enum NavigationGesture: Sendable, Equatable, Codable {
     case down
     case right
     case left
 }
 
-public struct CandidateTopic: Codable, Identifiable, Equatable, Sendable {
-    public let id: String
-    public let title: String
-    public let source: String
-    public let seenFrom: [String]
-    public let priority: Int
-}
-
 public struct GraphStats: Codable, Equatable, Sendable {
     public let topicCount: Int
     public let edgeCount: Int
-    public let candidateQueueCount: Int
     public let pillarCounts: [String: Int]
     public let validationIssues: [String]
 }

@@ -1,4 +1,4 @@
--- Wikis Step 05 node/edge generation state, idempotency, locks, and frontier caps.
+-- Wikis Step 05 generation state, idempotency, and locks.
 -- Apply with: psql "$DATABASE_URL" -f migrations/005_ingestion_generation_state.sql
 
 begin;
@@ -29,32 +29,14 @@ alter table topic_edges
     check (generation_status in ('missing', 'provisional', 'generating', 'ready', 'failed'));
 
 alter table ingestion_jobs
-  add column if not exists job_kind text not null default 'node',
   add column if not exists lock_owner text,
   add column if not exists locked_until timestamptz,
-  add column if not exists frontier_depth integer not null default 0,
-  add column if not exists frontier_limit integer not null default 2,
   add column if not exists generation_version text,
   add column if not exists generation_hash text;
 
-alter table ingestion_jobs
-  drop constraint if exists ingestion_jobs_job_kind_check,
-  add constraint ingestion_jobs_job_kind_check
-    check (job_kind in ('node', 'edge', 'frontier'));
-
-alter table ingestion_jobs
-  drop constraint if exists ingestion_jobs_frontier_depth_check,
-  add constraint ingestion_jobs_frontier_depth_check
-    check (frontier_depth >= 0);
-
-alter table ingestion_jobs
-  drop constraint if exists ingestion_jobs_frontier_limit_check,
-  add constraint ingestion_jobs_frontier_limit_check
-    check (frontier_limit between 0 and 20);
-
 create table if not exists generation_locks (
   lock_key text primary key,
-  target_kind text not null check (target_kind in ('node', 'edge', 'frontier')),
+  target_kind text not null check (target_kind in ('node', 'topic')),
   target_id text not null,
   lock_owner text not null,
   locked_until timestamptz not null,

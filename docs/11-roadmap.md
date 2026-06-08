@@ -38,7 +38,7 @@ Build:
 - traversal scorer
 - event ingestion
 - remote content updates
-- lazy ingestion queue for missing related topics
+- explicit edge rebuild pipeline based on the chosen map behavior
 - cached approved cards for instant feed loading
 - image CDN
 - TestFlight distribution

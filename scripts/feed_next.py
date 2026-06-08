@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
-"""Resolve the next Wikis feed topic from a graph JSON request.
-
-This is the Step 06 backend-shaped traversal entrypoint. It mirrors the V1
-rules scorer used by WikisCore and returns the response shape used by the
-hosted POST /v1/feed/next endpoint.
-"""
+"""Resolve the next Wikis feed topic from explicit Supabase edges."""
 
 from __future__ import annotations
 
@@ -46,8 +41,6 @@ def load_request(args: argparse.Namespace) -> dict[str, Any]:
         "gesture": args.gesture,
         "exploredTopicIds": args.explored_topic_ids or [],
         "savedTopicIds": args.saved_topic_ids or [],
-        "frontierLimit": args.frontier_limit,
-        "prefetchLimit": args.prefetch_limit,
         "allowPrototypeContent": args.allow_prototype_content,
     }
 
@@ -137,28 +130,6 @@ edge_rows as (
   where e.status = 'approved'
     and t.quality_status in ('approved', 'prototype_pass', 'needs_review')
     and t.generation_status <> 'failed'
-),
-candidate_rows as (
-  select jsonb_build_object(
-    'id', ce.normalized_to_title,
-    'title', ce.to_title,
-    'source', ce.source,
-    'seenFrom', jsonb_agg(distinct ce.from_topic_id) filter (where ce.from_topic_id is not null),
-    'priority', greatest(1, coalesce(max((ce.candidate_strength * 100)::integer), 1))
-  ) as item
-  from candidate_edges ce
-  left join topics existing_topic
-    on existing_topic.id = ce.normalized_to_title
-   and existing_topic.quality_status in ('approved', 'prototype_pass', 'needs_review')
-   and existing_topic.generation_status <> 'failed'
-  where ce.status = 'pending'
-    and existing_topic.id is null
-  group by ce.normalized_to_title, ce.to_title, ce.source
-),
-starter_rows as (
-  select coalesce(jsonb_agg(id order by pillar, id), '[]'::jsonb) as items
-  from topics
-  where quality_status in ('approved', 'prototype_pass')
 )
 select jsonb_build_object(
   'schemaVersion', 1,
@@ -166,13 +137,9 @@ select jsonb_build_object(
   'description', 'Wikis graph loaded from Supabase Postgres.',
   'topics', coalesce((select jsonb_agg(item) from topic_rows), '[]'::jsonb),
   'edges', coalesce((select jsonb_agg(item) from edge_rows), '[]'::jsonb),
-  'gestureIndex', '{}'::jsonb,
-  'starterPool', (select items from starter_rows),
-  'candidateQueue', coalesce((select jsonb_agg(item) from candidate_rows), '[]'::jsonb),
   'stats', jsonb_build_object(
     'topicCount', (select count(*) from topic_rows),
     'edgeCount', (select count(*) from edge_rows),
-    'candidateQueueCount', (select count(*) from candidate_rows),
     'pillarCounts', '{}',
     'validationIssues', '[]'::jsonb
   )
@@ -225,7 +192,6 @@ def quality_score(topic: dict[str, Any]) -> float:
         "approved": 1.0,
         "prototype_pass": 0.86,
         "needs_review": 0.58,
-        "pending_candidate": 0.30,
     }.get(topic.get("qualityStatus"), 0.0)
 
 
@@ -299,8 +265,6 @@ def resolve_next(graph: dict[str, Any], request: dict[str, Any]) -> dict[str, An
     explored = list(request.get("exploredTopicIds") or [])
     saved = set(request.get("savedTopicIds") or [])
     allow_prototype = bool(request.get("allowPrototypeContent", True))
-    frontier_limit = max(0, int(request.get("frontierLimit", 2)))
-    prefetch_limit = max(0, int(request.get("prefetchLimit", 3)))
     current = topics.get(current_id)
 
     candidates: list[dict[str, Any]] = []
@@ -323,25 +287,12 @@ def resolve_next(graph: dict[str, Any], request: dict[str, Any]) -> dict[str, An
         )
     candidates.sort(key=lambda item: (-item["score"], item["topic"]["title"]))
 
-    selected = candidates[0] if candidates else pending_candidate(
-        graph,
-        current,
-        current_id,
-        gesture,
-        explored,
-        bool(request.get("allowPendingCandidateCards", True)),
-    )
+    selected = candidates[0] if candidates else None
     if not selected:
-        raise RuntimeError(f"No Wikipedia-linked traversal candidate from {current_id}")
+        raise RuntimeError(f"No approved traversal edge from {current_id} for {gesture}")
 
     selected_topic = selected["topic"]
     selected_edge = selected.get("edge")
-    excluded = set(explored + [current_id, selected_topic["id"]])
-    prefetch = prefetch_topics(graph, topics, selected_topic["id"], excluded, prefetch_limit, allow_prototype)
-    background = background_topics(graph, current_id, frontier_limit)
-    if selected.get("pendingCandidate"):
-        selected_candidate = selected["pendingCandidate"]
-        background = [selected_candidate, *[candidate for candidate in background if candidate.get("id") != selected_candidate.get("id")]]
     fallback_ids = [item["topic"]["id"] for item in candidates[1:4]]
 
     return {
@@ -352,106 +303,16 @@ def resolve_next(graph: dict[str, Any], request: dict[str, Any]) -> dict[str, An
         "score": round(selected["score"], 4),
         "selectedEdgeId": selected_edge["id"] if selected_edge else None,
         "fallbackTopicIds": fallback_ids,
-        "prefetchTopicIds": prefetch,
-        "prefetchTopics": [topics[topic_id] for topic_id in prefetch if topic_id in topics],
-        "backgroundIngestionTopics": background,
         "fallbackWasUsed": False,
         "debug": {
             "currentTopicId": current_id,
             "candidateCount": len(candidates),
-            "frontierLimit": frontier_limit,
-            "pendingCandidateUsed": bool(selected.get("pendingCandidate")),
         },
     }
-
-
-def pending_candidate(
-    graph: dict[str, Any],
-    current: dict[str, Any] | None,
-    current_id: str,
-    gesture: str,
-    explored: list[str],
-    allow_pending: bool,
-) -> dict[str, Any] | None:
-    if not allow_pending or gesture == "left":
-        return None
-    explored_set = set(explored)
-    candidates = [
-        candidate for candidate in graph.get("candidateQueue", [])
-        if current_id in (candidate.get("seenFrom") or []) and candidate.get("id") not in explored_set
-    ]
-    candidates.sort(key=lambda item: (-int(item.get("priority") or 0), item["title"]))
-    if not candidates:
-        return None
-    candidate = candidates[0]
-    topic = pending_topic_card(candidate, current)
-    return {
-        "topic": topic,
-        "edge": None,
-        "score": 0.36,
-        "reasonCode": "pending_candidate_card",
-        "pendingCandidate": candidate,
-    }
-
-
-def pending_topic_card(candidate: dict[str, Any], current: dict[str, Any] | None) -> dict[str, Any]:
-    pillar = (current or {}).get("pillar") or "science"
-    title = candidate.get("title") or candidate.get("id") or "Pending topic"
-    return {
-        "id": candidate.get("id") or title.lower().replace(" ", "-"),
-        "title": title,
-        "pillar": pillar,
-        "explanation": "This card is being generated from Wikipedia. Stay here for a moment and Wikis will replace it with the full version when it is ready.",
-        "hookType": "why_it_matters",
-        "hook": "Wikis found this as a nearby path and is building the card now.",
-        "readingSeconds": 8,
-        "qualityStatus": "pending_candidate",
-        "wikipedia": {
-            "title": title,
-            "pageId": 0,
-            "revisionId": None,
-        },
-        "image": {
-            "strategy": "pillar_background",
-            "selected": None,
-            "fallbackPillar": pillar,
-            "reason": "pending_generation",
-        },
-    }
-
-
-def prefetch_topics(
-    graph: dict[str, Any],
-    topics: dict[str, dict[str, Any]],
-    topic_id: str,
-    excluded: set[str],
-    limit: int,
-    allow_prototype: bool,
-) -> list[str]:
-    out: list[str] = []
-    for edge in sorted((edge for edge in graph["edges"] if edge["from"] == topic_id), key=lambda item: item["strength"], reverse=True):
-        target_id = edge["to"]
-        topic = topics.get(target_id)
-        if target_id not in excluded and topic and is_visible(topic, allow_prototype) and target_id not in out:
-            out.append(target_id)
-        if len(out) >= limit:
-            break
-    return out
-
-
-def background_topics(graph: dict[str, Any], current_id: str, limit: int) -> list[dict[str, Any]]:
-    candidates = [
-        candidate for candidate in graph.get("candidateQueue", [])
-        if current_id in (candidate.get("seenFrom") or [])
-    ]
-    candidates.sort(key=lambda item: (-int(item.get("priority") or 0), item["title"]))
-    return candidates[:limit]
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Resolve the next Wikis feed topic.")
-    parser.add_argument("--graph", type=Path, default=Path("data/graph/seed_graph.json"))
-    parser.add_argument("--use-database", action="store_true", help="Load topics and edges from DATABASE_URL instead of --graph JSON.")
     parser.add_argument("--database-url", default=os.environ.get("DATABASE_URL"))
     parser.add_argument("--env-file", type=Path, default=Path(".env"))
     parser.add_argument("--request-json")
@@ -460,8 +321,6 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--gesture", choices=["down", "right", "left"])
     parser.add_argument("--explored-topic-ids", nargs="*")
     parser.add_argument("--saved-topic-ids", nargs="*")
-    parser.add_argument("--frontier-limit", type=int, default=2)
-    parser.add_argument("--prefetch-limit", type=int, default=3)
     parser.add_argument("--allow-prototype-content", action=argparse.BooleanOptionalAction, default=True)
     return parser.parse_args()
 
@@ -473,14 +332,11 @@ def main() -> int:
     if not request.get("currentTopicId") or request.get("gesture") not in GESTURE_EDGE_TYPES:
         print("ERROR: provide currentTopicId and gesture", file=sys.stderr)
         return 2
-    if args.use_database:
-        database_url = args.database_url or os.environ.get("DATABASE_URL")
-        if not database_url:
-            print("ERROR: --use-database requires --database-url or DATABASE_URL", file=sys.stderr)
-            return 2
-        graph = load_graph_from_database(database_url)
-    else:
-        graph = json.loads(args.graph.read_text(encoding="utf-8"))
+    database_url = args.database_url or os.environ.get("DATABASE_URL")
+    if not database_url:
+        print("ERROR: DATABASE_URL is required", file=sys.stderr)
+        return 2
+    graph = load_graph_from_database(database_url)
     response = resolve_next(graph, request)
     print(json.dumps(response, indent=2, ensure_ascii=False))
     return 0

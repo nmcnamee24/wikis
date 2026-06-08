@@ -19,7 +19,7 @@ import time
 from pathlib import Path
 from typing import Any
 
-import seed_production_db as seed_sql
+import sql_helpers as seed_sql
 from wiki_to_card import DEFAULT_OPENAI_MODEL, build_card_output, slugify, write_card
 
 
@@ -27,9 +27,6 @@ LOCAL_PROMPT_VERSION = "step-05-local-v1"
 LOCAL_PROVIDER = "local"
 LOCAL_MODEL = "deterministic-wikipedia-condenser"
 NODE_GENERATION_VERSION = "step-05-node-v1"
-EDGE_SOURCE = "wikipedia_first_paragraph_link"
-EDGE_EXTRACTION_METHOD = "wikipedia_parse_section_0"
-EDGE_GENERATION_VERSION = "wikipedia-edge-reset-v1"
 DEFAULT_LOCK_OWNER = "backend_ingest_cli"
 DEFAULT_LOCK_TTL_MINUTES = 15
 
@@ -39,8 +36,6 @@ def source_hash(card_output: dict[str, Any]) -> str:
         "pageId": card_output["source"].get("pageId"),
         "revisionId": card_output["source"].get("revisionId"),
         "extract": card_output["source"].get("extract"),
-        "firstParagraph": card_output["source"].get("firstParagraph"),
-        "links": card_output["mapping"].get("leadOrFallbackLinks", []),
         "images": card_output["image"].get("selected"),
     }
     return hashlib.sha256(json.dumps(payload, ensure_ascii=False, sort_keys=True).encode("utf-8")).hexdigest()
@@ -58,18 +53,6 @@ def node_generation_hash(card_output: dict[str, Any]) -> str:
             "card": card_output.get("card", {}),
             "quality": card_output.get("quality", {}),
             "version": NODE_GENERATION_VERSION,
-        }
-    )
-
-
-def edge_generation_hash(topic_id: str, link: dict[str, Any], index: int) -> str:
-    return stable_hash(
-        {
-            "source": EDGE_SOURCE,
-            "topic_id": topic_id,
-            "link": link,
-            "index": index,
-            "version": EDGE_GENERATION_VERSION,
         }
     )
 
@@ -168,7 +151,6 @@ def draft_topic_insert(topic_id: str, card_output: dict[str, Any]) -> str:
 
 def snapshot_insert(topic_id: str, card_output: dict[str, Any]) -> tuple[str, str]:
     source = card_output["source"]
-    mapping = card_output["mapping"]
     image_candidates = card_output["image"].get("candidates", [])
     hash_value = source_hash(card_output)
     snapshot_id = seed_sql.stable_uuid("topic_source_snapshot", topic_id, hash_value)
@@ -176,7 +158,7 @@ def snapshot_insert(topic_id: str, card_output: dict[str, Any]) -> tuple[str, st
         [
             "insert into topic_source_snapshots (",
             "  id, topic_id, source_kind, wikipedia_title, wikipedia_page_id, wikipedia_revision_id,",
-            "  raw_extract, first_paragraph, lead_html, link_candidates_json, image_candidates_json,",
+            "  raw_extract, lead_html, image_candidates_json,",
             "  fetched_at, source_hash",
             ") values (",
             f"  {seed_sql.uuid_literal(snapshot_id)},",
@@ -186,9 +168,7 @@ def snapshot_insert(topic_id: str, card_output: dict[str, Any]) -> tuple[str, st
             f"  {seed_sql.sql_literal(source.get('pageId'))},",
             f"  {seed_sql.sql_literal(source.get('revisionId'))},",
             f"  {seed_sql.sql_literal(source.get('extract'))},",
-            f"  {seed_sql.sql_literal(source.get('firstParagraph'))},",
             f"  {seed_sql.sql_literal(source.get('leadHtml'))},",
-            f"  {seed_sql.jsonb_literal(mapping.get('leadOrFallbackLinks', []))},",
             f"  {seed_sql.jsonb_literal(image_candidates)},",
             f"  {seed_sql.timestamptz_literal(source.get('fetchedAt'))},",
             f"  {seed_sql.sql_literal(hash_value)}",
@@ -197,8 +177,7 @@ def snapshot_insert(topic_id: str, card_output: dict[str, Any]) -> tuple[str, st
             "  wikipedia_page_id = excluded.wikipedia_page_id,",
             "  wikipedia_revision_id = excluded.wikipedia_revision_id,",
             "  raw_extract = excluded.raw_extract,",
-            "  first_paragraph = excluded.first_paragraph,",
-            "  link_candidates_json = excluded.link_candidates_json,",
+            "  lead_html = excluded.lead_html,",
             "  image_candidates_json = excluded.image_candidates_json,",
             "  fetched_at = excluded.fetched_at;",
         ]
@@ -220,7 +199,7 @@ def generation_insert(topic_id: str, snapshot_id: str, card_output: dict[str, An
             "insert into llm_card_generations (",
             "  id, topic_id, source_snapshot_id, provider, model, prompt_version,",
             "  generated_title, generated_pillar, generated_explanation, generated_hook_type,",
-            "  generated_hook_text, related_candidates_json, confidence_notes_json,",
+            "  generated_hook_text, confidence_notes_json,",
             "  grounding_status, quality_status, reviewer_notes",
             ") values (",
             f"  {seed_sql.uuid_literal(generation_id)},",
@@ -234,7 +213,6 @@ def generation_insert(topic_id: str, snapshot_id: str, card_output: dict[str, An
             f"  {seed_sql.sql_literal(card['explanation'])},",
             f"  {seed_sql.sql_literal(card['hookType'])},",
             f"  {seed_sql.sql_literal(card['hook'])},",
-            f"  {seed_sql.jsonb_literal(card.get('relatedCandidates', []))},",
             f"  {seed_sql.jsonb_literal(card.get('confidenceNotes', []))},",
             f"  {seed_sql.sql_literal(grounding_status)},",
             f"  {seed_sql.sql_literal(generation_quality_status)},",
@@ -245,7 +223,6 @@ def generation_insert(topic_id: str, snapshot_id: str, card_output: dict[str, An
             "  generated_explanation = excluded.generated_explanation,",
             "  generated_hook_type = excluded.generated_hook_type,",
             "  generated_hook_text = excluded.generated_hook_text,",
-            "  related_candidates_json = excluded.related_candidates_json,",
             "  confidence_notes_json = excluded.confidence_notes_json,",
             "  grounding_status = excluded.grounding_status,",
             "  quality_status = excluded.quality_status,",
@@ -353,142 +330,6 @@ def image_statements(topic_id: str, card_output: dict[str, Any]) -> list[str]:
     return output
 
 
-def candidate_edge_statements(topic_id: str, card_output: dict[str, Any]) -> list[str]:
-    output: list[str] = [
-        statement(
-            [
-                f"delete from topic_edges where from_topic_id = {seed_sql.sql_literal(topic_id)} and reason <> {seed_sql.sql_literal(EDGE_SOURCE)};",
-                f"delete from candidate_edges where from_topic_id = {seed_sql.sql_literal(topic_id)} and source <> {seed_sql.sql_literal(EDGE_SOURCE)};",
-                f"delete from candidate_edges where from_topic_id = {seed_sql.sql_literal(topic_id)} and source = {seed_sql.sql_literal(EDGE_SOURCE)};",
-            ]
-        )
-    ]
-    source = card_output["source"]
-    for index, link in enumerate(card_output["mapping"].get("firstParagraphLinks", [])[:6]):
-        normalized = slugify(link["title"])
-        candidate_id = seed_sql.stable_uuid("candidate_edge", EDGE_SOURCE, topic_id, normalized, EDGE_EXTRACTION_METHOD)
-        strength = round(max(0.2, 0.82 - (index * 0.03)), 3)
-        generation_hash = edge_generation_hash(topic_id, link, index)
-        output.append(
-            statement(
-                [
-                    "insert into candidate_edges (",
-                    "  id, source, source_page_id, from_topic_id, from_title, to_title, normalized_to_title,",
-                    "  raw_position, extraction_method, candidate_strength, proposed_edge_type, status",
-                    ") values (",
-                    f"  {seed_sql.uuid_literal(candidate_id)},",
-                    f"  {seed_sql.sql_literal(EDGE_SOURCE)},",
-                    f"  {seed_sql.sql_literal(source.get('pageId'))},",
-                    f"  {seed_sql.sql_literal(topic_id)},",
-                    f"  {seed_sql.sql_literal(source.get('wikipediaTitle'))},",
-                    f"  {seed_sql.sql_literal(link['title'])},",
-                    f"  {seed_sql.sql_literal(normalized)},",
-                    f"  {seed_sql.sql_literal(index + 1)},",
-                    f"  {seed_sql.sql_literal(EDGE_EXTRACTION_METHOD)},",
-                    f"  {seed_sql.sql_literal(strength)},",
-                    "  'neighbor',",
-                    "  'pending'",
-                    ") on conflict (source, (coalesce(from_topic_id, ''::text)), normalized_to_title, extraction_method) do update set",
-                    "  source_page_id = excluded.source_page_id,",
-                    "  from_title = excluded.from_title,",
-                    "  to_title = excluded.to_title,",
-                    "  raw_position = excluded.raw_position,",
-                    "  candidate_strength = excluded.candidate_strength;",
-                ]
-            )
-        )
-        output.append(
-            job_statement(
-                link["title"],
-                "background_expansion",
-                "queued",
-                job_kind="node",
-                topic_id=None,
-                generation_version=EDGE_GENERATION_VERSION,
-                generation_hash=generation_hash,
-                frontier_depth=1,
-                frontier_limit=0,
-            )
-        )
-    output.append(promote_wikipedia_candidate_edges_statement(topic_id))
-    return output
-
-
-def promote_wikipedia_candidate_edges_statement(topic_id: str) -> str:
-    edge_id_sql = (
-        "md5('topic_edge:' || ce.source || ':' || ce.from_topic_id || ':' || target.id || ':' || "
-        "coalesce(ce.proposed_edge_type, 'neighbor'))::uuid"
-    )
-    generation_hash_sql = (
-        "md5('edge_hash:' || ce.source || ':' || ce.from_topic_id || ':' || target.id || ':' || "
-        "coalesce(ce.raw_position::text, '0'))"
-    )
-    return statement(
-        [
-            "with promotable as (",
-            "  select",
-            "    ce.*,",
-            "    target.id as target_topic_id,",
-            "    coalesce(ce.proposed_edge_type, 'neighbor') as resolved_edge_type,",
-            "    row_number() over (partition by ce.from_topic_id order by ce.raw_position nulls last, ce.created_at) as source_rank",
-            "  from candidate_edges ce",
-            "  join topics target on target.id = ce.normalized_to_title",
-            f"  where ce.source = {seed_sql.sql_literal(EDGE_SOURCE)}",
-            "    and ce.raw_position between 1 and 6",
-            "    and ce.from_topic_id is not null",
-            "    and ce.from_topic_id <> target.id",
-            f"    and (ce.from_topic_id = {seed_sql.sql_literal(topic_id)} or ce.normalized_to_title = {seed_sql.sql_literal(topic_id)})",
-            "    and target.quality_status in ('approved', 'prototype_pass')",
-            "    and target.generation_status = 'ready'",
-            "), inserted_edges as (",
-            "  insert into topic_edges (",
-            "    id, from_topic_id, to_topic_id, edge_type, strength, reason, status,",
-            "    rank, confidence, source_evidence, generation_status, generation_version, generation_hash",
-            "  )",
-            "  select",
-            f"    {edge_id_sql},",
-            "    from_topic_id,",
-            "    target_topic_id,",
-            "    resolved_edge_type,",
-            "    candidate_strength,",
-            f"    {seed_sql.sql_literal(EDGE_SOURCE)},",
-            "    'approved',",
-            "    raw_position,",
-            "    candidate_strength,",
-            "    jsonb_build_object(",
-            "      'fromTitle', from_title,",
-            "      'toTitle', to_title,",
-            "      'label', to_title,",
-            "      'rank', raw_position,",
-            f"      'source', {seed_sql.sql_literal(EDGE_SOURCE)}",
-            "    ),",
-            "    'ready',",
-            f"    {seed_sql.sql_literal(EDGE_GENERATION_VERSION)},",
-            f"    {generation_hash_sql}",
-            "  from promotable",
-            "  where source_rank <= 6",
-            "  on conflict (from_topic_id, to_topic_id, edge_type) do update set",
-            "    strength = excluded.strength,",
-            "    reason = excluded.reason,",
-            "    status = excluded.status,",
-            "    rank = excluded.rank,",
-            "    confidence = excluded.confidence,",
-            "    source_evidence = excluded.source_evidence,",
-            "    generation_status = excluded.generation_status,",
-            "    generation_version = excluded.generation_version,",
-            "    generation_hash = excluded.generation_hash",
-            "  returning from_topic_id, to_topic_id",
-            ")",
-            "update candidate_edges ce",
-            "set status = 'accepted'",
-            "from inserted_edges ie",
-            "where ce.from_topic_id = ie.from_topic_id",
-            "  and ce.normalized_to_title = ie.to_topic_id",
-            f"  and ce.source = {seed_sql.sql_literal(EDGE_SOURCE)};",
-        ]
-    )
-
-
 def job_statement(
     title: str,
     source: str,
@@ -496,21 +337,17 @@ def job_statement(
     *,
     topic_id: str | None = None,
     error: str | None = None,
-    job_kind: str = "node",
     lock_owner: str | None = None,
     ttl_minutes: int | None = None,
     generation_version: str | None = None,
     generation_hash: str | None = None,
-    frontier_depth: int = 0,
-    frontier_limit: int = 2,
 ) -> str:
     locked_until = f"now() + interval '{int(ttl_minutes)} minutes'" if lock_owner and ttl_minutes else "null"
     return statement(
         [
             "insert into ingestion_jobs (",
             "  requested_title, normalized_title, topic_id, source, status, attempts, last_error,",
-            "  started_at, finished_at, job_kind, lock_owner, locked_until, frontier_depth,",
-            "  frontier_limit, generation_version, generation_hash",
+            "  started_at, finished_at, lock_owner, locked_until, generation_version, generation_hash",
             ")",
             "values (",
             f"  {seed_sql.sql_literal(title)},",
@@ -522,11 +359,8 @@ def job_statement(
             f"  {seed_sql.sql_literal(error)},",
             "  now(),",
             "  now(),",
-            f"  {seed_sql.sql_literal(job_kind)},",
             f"  {seed_sql.sql_literal(lock_owner)},",
             f"  {locked_until},",
-            f"  {seed_sql.sql_literal(frontier_depth)},",
-            f"  {seed_sql.sql_literal(frontier_limit)},",
             f"  {seed_sql.sql_literal(generation_version)},",
             f"  {seed_sql.sql_literal(generation_hash)}",
             ") on conflict (requested_title, source) do update set",
@@ -537,11 +371,8 @@ def job_statement(
             "  last_error = excluded.last_error,",
             "  started_at = excluded.started_at,",
             "  finished_at = excluded.finished_at,",
-            "  job_kind = excluded.job_kind,",
             "  lock_owner = excluded.lock_owner,",
             "  locked_until = excluded.locked_until,",
-            "  frontier_depth = excluded.frontier_depth,",
-            "  frontier_limit = excluded.frontier_limit,",
             "  generation_version = excluded.generation_version,",
             "  generation_hash = excluded.generation_hash;",
         ]
@@ -587,7 +418,6 @@ def ingest_sql(
         snapshot_sql,
         generation_insert(topic_id, snapshot_id, card_output),
         *image_statements(topic_id, card_output),
-        *candidate_edge_statements(topic_id, card_output),
         job_statement(
             title,
             source,
@@ -627,62 +457,6 @@ def skipped_sql(title: str, source: str, cards_out: Path | None) -> tuple[str, s
         ]
     ) + "\n"
     return topic_id, sql
-
-
-def frontier_sql(frontier_limit: int, max_jobs: int, lock_owner: str, lock_ttl_minutes: int) -> str:
-    return statement(
-        [
-            "begin;",
-            "with ranked_candidates as (",
-            "  select",
-            "    ce.*,",
-            "    row_number() over (partition by ce.from_topic_id order by ce.candidate_strength desc nulls last, ce.created_at) as frontier_rank",
-            "  from candidate_edges ce",
-            "  join topics t on t.id = ce.from_topic_id",
-            "  where ce.status = 'pending'",
-            "    and t.quality_status = 'approved'",
-            "    and t.generation_status = 'ready'",
-            "), capped_candidates as (",
-            "  select *",
-            "  from ranked_candidates",
-            f"  where frontier_rank <= {seed_sql.sql_literal(frontier_limit)}",
-            "  order by candidate_strength desc nulls last, created_at",
-            f"  limit {seed_sql.sql_literal(max_jobs)}",
-            "), inserted_jobs as (",
-            "  insert into ingestion_jobs (",
-            "    requested_title, normalized_title, source, priority, status, job_kind, lock_owner,",
-            "    locked_until, frontier_depth, frontier_limit, generation_version, generation_hash",
-            "  )",
-            "  select",
-            "    to_title,",
-            "    normalized_to_title,",
-            "    'background_expansion',",
-            "    coalesce((candidate_strength * 1000)::integer, 100),",
-            "    'queued',",
-            "    'frontier',",
-            f"    {seed_sql.sql_literal(lock_owner)},",
-            f"    now() + interval '{int(lock_ttl_minutes)} minutes',",
-            "    1,",
-            f"    {seed_sql.sql_literal(frontier_limit)},",
-            f"    {seed_sql.sql_literal(NODE_GENERATION_VERSION)},",
-            "    md5(source || ':' || coalesce(from_topic_id, '') || ':' || normalized_to_title || ':' || extraction_method)",
-            "  from capped_candidates",
-            "  on conflict (requested_title, source) do update set",
-            "    priority = excluded.priority,",
-            "    status = 'queued',",
-            "    job_kind = excluded.job_kind,",
-            "    lock_owner = excluded.lock_owner,",
-            "    locked_until = excluded.locked_until,",
-            "    frontier_depth = excluded.frontier_depth,",
-            "    frontier_limit = excluded.frontier_limit,",
-            "    generation_version = excluded.generation_version,",
-            "    generation_hash = excluded.generation_hash",
-            "  returning requested_title",
-            ")",
-            "select count(*) as queued_frontier_jobs from inserted_jobs;",
-            "commit;",
-        ]
-    )
 
 
 def review_sql(topic_id: str, action: str, reviewer: str | None, notes: str | None) -> str:
@@ -766,11 +540,11 @@ def parse_args() -> argparse.Namespace:
     ingest = subparsers.add_parser("ingest", help="Ingest one or more Wikipedia titles into draft review SQL.")
     ingest.add_argument("titles", nargs="*")
     ingest.add_argument("--titles-file", type=Path)
-    ingest.add_argument("--cards-out", type=Path, default=Path("data/cards"))
+    ingest.add_argument("--cards-out", type=Path)
     ingest.add_argument("--sql-out", type=Path)
     ingest.add_argument("--database-url", default=os.environ.get("DATABASE_URL"))
     ingest.add_argument("--execute", action="store_true")
-    ingest.add_argument("--source", choices=["manual", "batch", "candidate_queue", "background_expansion"], default="manual")
+    ingest.add_argument("--source", choices=["manual", "batch"], default="manual")
     ingest.add_argument("--delay", type=float, default=1.0)
     ingest.add_argument("--condenser", choices=["local", "openai"], default="local")
     ingest.add_argument("--openai-model", default=os.environ.get("WIKIS_OPENAI_MODEL", DEFAULT_OPENAI_MODEL))
@@ -787,14 +561,6 @@ def parse_args() -> argparse.Namespace:
     review.add_argument("--database-url", default=os.environ.get("DATABASE_URL"))
     review.add_argument("--execute", action="store_true")
 
-    frontier = subparsers.add_parser("enqueue-frontier", help="Generate SQL that queues capped background expansion jobs.")
-    frontier.add_argument("--frontier-limit", type=int, default=2, help="Maximum pending candidates to queue per approved ready topic.")
-    frontier.add_argument("--max-jobs", type=int, default=100, help="Maximum jobs to queue in this SQL block.")
-    frontier.add_argument("--lock-owner", default=os.environ.get("WIKIS_INGEST_LOCK_OWNER", DEFAULT_LOCK_OWNER))
-    frontier.add_argument("--lock-ttl-minutes", type=int, default=DEFAULT_LOCK_TTL_MINUTES)
-    frontier.add_argument("--sql-out", type=Path)
-    frontier.add_argument("--database-url", default=os.environ.get("DATABASE_URL"))
-    frontier.add_argument("--execute", action="store_true")
     return parser.parse_args()
 
 
@@ -805,12 +571,6 @@ def main() -> int:
         write_or_execute(sql, args.sql_out, args.database_url, args.execute)
         print(f"{args.action} SQL ready for {args.topic_id}")
         return 0
-    if args.command == "enqueue-frontier":
-        sql = frontier_sql(args.frontier_limit, args.max_jobs, args.lock_owner, args.lock_ttl_minutes)
-        write_or_execute(sql, args.sql_out, args.database_url, args.execute)
-        print(f"frontier enqueue SQL ready (limit {args.frontier_limit} per topic, max {args.max_jobs})")
-        return 0
-
     titles = titles_from_args(args)
     if not titles:
         print("ERROR: provide at least one title or --titles-file", file=sys.stderr)

@@ -35,7 +35,7 @@ Use:
 
 - App launches directly into feed.
 - App works with backend topics.
-- App continues through prefetched/cached topics during bad network.
+- App surfaces bounded network and missing-route errors during bad network.
 - Swipe transitions feel smooth on real devices.
 - Accessibility basics pass.
 - Crash reporting works.
@@ -48,4 +48,3 @@ Use:
 - Comments
 - Likes
 - Search, unless needed for internal debugging
-

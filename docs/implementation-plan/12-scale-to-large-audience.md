@@ -45,7 +45,7 @@ Good community contributions:
 - suggest better curiosity hooks
 - rate whether a transition made sense
 - classify an edge as deeper, neighbor, prerequisite, person, place, or teleport
-- suggest missing related topics
+- rebuild and audit explicit graph edges
 - build optional public rabbit holes
 
 Avoid community mechanics that turn Wikis into social media:

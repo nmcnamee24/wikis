@@ -19,7 +19,6 @@ struct ProfileView: View {
                     HStack(spacing: 14) {
                         ProfileMetric(title: "Topics", value: "\(store.exploredTopics.count)")
                         ProfileMetric(title: "Saved", value: "\(store.savedTopicIds.count)")
-                        ProfileMetric(title: "Graph", value: "\(store.graph?.topics.count ?? 0)")
                     }
 
                     VStack(alignment: .leading, spacing: 12) {

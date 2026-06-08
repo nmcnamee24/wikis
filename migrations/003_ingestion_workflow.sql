@@ -8,7 +8,7 @@ create table if not exists ingestion_jobs (
   requested_title text not null,
   normalized_title text,
   topic_id text references topics(id) on delete set null,
-  source text not null default 'manual' check (source in ('manual', 'batch', 'candidate_queue', 'background_expansion')),
+  source text not null default 'manual' check (source in ('manual', 'batch')),
   priority integer not null default 100,
   status text not null default 'queued' check (
     status in ('queued', 'running', 'succeeded', 'failed', 'skipped', 'retryable')

@@ -2,7 +2,7 @@
 """Generate Wikis topic-card JSON from Wikipedia.
 
 This is Step 01 of the Wikis implementation plan. It proves the source pipeline:
-Wikipedia API -> source snapshot -> related links -> image decision -> card JSON.
+Wikipedia API -> source snapshot -> image decision -> card JSON.
 
 The default condenser is deterministic so the pipeline works without API keys.
 Replace or extend `condense_with_heuristic` with an LLM provider once prompts are
@@ -23,7 +23,6 @@ import time
 import urllib.parse
 import urllib.request
 from dataclasses import dataclass
-from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any
 
@@ -95,17 +94,13 @@ PILLAR_KEYWORDS = {
     ],
 }
 
-WIKIS_CONTENT_SYSTEM_PROMPT = """You are the content-generation engine for Wikis, an app that lets users explore knowledge by moving deeper into a topic or branching into an adjacent idea.
-
-You will receive a Wikipedia article for the current topic and a list of possible connected nodes.
+WIKIS_CONTENT_SYSTEM_PROMPT = """You are the content-generation engine for Wikis.
 
 Your task is to generate the exact content needed for one Wikis topic page.
 
 Return:
 The text displayed on the topic page.
 The single pillar the topic belongs under.
-One node that goes deeper into the current topic.
-One node that branches to an adjacent topic.
 
 Page Text:
 Write 90-130 words explaining the topic.
@@ -115,44 +110,19 @@ Pillar Classification:
 Assign exactly one pillar: science, history, society, or culture.
 Choose the pillar that best represents the topic's primary meaning.
 
-Node Selection:
-Select exactly two nodes from candidate_nodes.
-The deeper node should explain a component, mechanism, subtopic, or more specific idea within the current topic.
-The adjacent node should be closely related but not merely a component; it should move sideways into a new but meaningfully connected idea.
-Do not classify a direct subcomponent as adjacent. Do not classify a broad parent category as deeper.
-
 Quality checks before output:
 The page text is between 90 and 130 words.
 The explanation teaches more than a surface-level definition.
-The deeper and adjacent nodes are different.
-Every factual statement is supported by the supplied article or node context.
+Every factual statement is supported by the supplied article.
 Return only valid JSON matching the schema."""
 
 WIKIS_CONTENT_SCHEMA: dict[str, Any] = {
     "type": "object",
     "additionalProperties": False,
-    "required": ["page_text", "pillar", "deeper_node", "adjacent_node"],
+    "required": ["page_text", "pillar"],
     "properties": {
         "page_text": {"type": "string"},
         "pillar": {"type": "string", "enum": ["science", "history", "society", "culture"]},
-        "deeper_node": {
-            "type": "object",
-            "additionalProperties": False,
-            "required": ["name", "connection"],
-            "properties": {
-                "name": {"type": "string"},
-                "connection": {"type": "string"},
-            },
-        },
-        "adjacent_node": {
-            "type": "object",
-            "additionalProperties": False,
-            "required": ["name", "connection"],
-            "properties": {
-                "name": {"type": "string"},
-                "connection": {"type": "string"},
-            },
-        },
     },
 }
 
@@ -160,91 +130,6 @@ BAD_IMAGE_PATTERNS = re.compile(
     r"(logo|flag|seal|coat[_ ]of[_ ]arms|icon|symbol|map|emblem|badge)",
     re.IGNORECASE,
 )
-
-
-class WikiLinkParser(HTMLParser):
-    """Extract article links from the first meaningful paragraph."""
-
-    def __init__(self) -> None:
-        super().__init__()
-        self.in_paragraph = False
-        self.current_href: str | None = None
-        self.current_text: list[str] = []
-        self.paragraph_text: list[str] = []
-        self.links: list[dict[str, str]] = []
-        self.finished = False
-        self.skip_depth = 0
-
-    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
-        attrs_dict = dict(attrs)
-        if tag == "p" and not self.finished and not self.in_paragraph:
-            classes = attrs_dict.get("class", "")
-            if "mw-empty-elt" not in classes:
-                self.in_paragraph = True
-        elif self.in_paragraph and tag in {"sup", "style", "script", "table"}:
-            self.skip_depth += 1
-        elif self.in_paragraph and self.skip_depth == 0 and tag == "a":
-            self.current_href = attrs_dict.get("href")
-            self.current_text = []
-
-    def handle_endtag(self, tag: str) -> None:
-        if self.in_paragraph and tag in {"sup", "style", "script", "table"} and self.skip_depth:
-            self.skip_depth -= 1
-            return
-        if self.in_paragraph and self.skip_depth == 0 and tag == "a" and self.current_href:
-            text = clean_text("".join(self.current_text))
-            title = title_from_wiki_href(self.current_href)
-            if title and text:
-                self.links.append({"title": title, "label": text})
-            self.current_href = None
-            self.current_text = []
-        elif tag == "p" and self.in_paragraph:
-            paragraph = clean_text("".join(self.paragraph_text))
-            if paragraph:
-                self.finished = True
-            self.in_paragraph = False
-
-    def handle_data(self, data: str) -> None:
-        if not self.in_paragraph or self.skip_depth:
-            return
-        self.paragraph_text.append(data)
-        if self.current_href is not None:
-            self.current_text.append(data)
-
-
-class AllWikiLinkParser(HTMLParser):
-    """Extract all article links from a parsed HTML fragment."""
-
-    def __init__(self) -> None:
-        super().__init__()
-        self.current_href: str | None = None
-        self.current_text: list[str] = []
-        self.links: list[dict[str, str]] = []
-        self.skip_depth = 0
-
-    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
-        attrs_dict = dict(attrs)
-        if tag in {"sup", "style", "script", "table"}:
-            self.skip_depth += 1
-        elif self.skip_depth == 0 and tag == "a":
-            self.current_href = attrs_dict.get("href")
-            self.current_text = []
-
-    def handle_endtag(self, tag: str) -> None:
-        if tag in {"sup", "style", "script", "table"} and self.skip_depth:
-            self.skip_depth -= 1
-            return
-        if self.skip_depth == 0 and tag == "a" and self.current_href:
-            text = clean_text("".join(self.current_text))
-            title = title_from_wiki_href(self.current_href)
-            if title and text:
-                self.links.append({"title": title, "label": text})
-            self.current_href = None
-            self.current_text = []
-
-    def handle_data(self, data: str) -> None:
-        if self.skip_depth == 0 and self.current_href is not None:
-            self.current_text.append(data)
 
 
 @dataclass
@@ -255,10 +140,6 @@ class SourcePacket:
     revision_id: int | None
     extract: str
     lead_html: str
-    first_paragraph: str
-    first_paragraph_links: list[dict[str, str]]
-    links: list[dict[str, str]]
-    link_strategy: str
     image_candidates: list[dict[str, Any]]
     fetched_at: str
 
@@ -274,18 +155,6 @@ def slugify(value: str) -> str:
     value = value.lower().replace("&", " and ")
     value = re.sub(r"[^a-z0-9]+", "-", value)
     return value.strip("-") or "topic"
-
-
-def title_from_wiki_href(href: str) -> str | None:
-    if not href.startswith("/wiki/"):
-        return None
-    title = urllib.parse.unquote(href.removeprefix("/wiki/").split("#", 1)[0])
-    if not title:
-        return None
-    title = title.replace("_", " ")
-    if ":" in title.rstrip(":"):
-        return None
-    return title
 
 
 def wiki_api(params: dict[str, Any], *, retries: int = 5) -> dict[str, Any]:
@@ -309,35 +178,6 @@ def wiki_api(params: dict[str, Any], *, retries: int = 5) -> dict[str, Any]:
     raise RuntimeError(f"Wikipedia API request failed: {last_error}") from last_error
 
 
-def parse_lead_html(page_title: str) -> tuple[str, list[dict[str, str]], list[dict[str, str]]]:
-    data = wiki_api(
-        {
-            "action": "parse",
-            "page": page_title,
-            "prop": "text",
-            "section": 0,
-            "redirects": 1,
-        }
-    )
-    lead_html = data["parse"]["text"]
-    first_parser = WikiLinkParser()
-    first_parser.feed(lead_html)
-    lead_parser = AllWikiLinkParser()
-    lead_parser.feed(lead_html)
-    return lead_html, unique_links(first_parser.links), unique_links(lead_parser.links)
-
-
-def unique_links(links: list[dict[str, str]]) -> list[dict[str, str]]:
-    seen: set[str] = set()
-    out: list[dict[str, str]] = []
-    for link in links:
-        key = slugify(link["title"])
-        if key not in seen:
-            seen.add(key)
-            out.append(link)
-    return out
-
-
 def fetch_source_packet(title: str) -> SourcePacket:
     page_data = wiki_api(
         {
@@ -359,10 +199,6 @@ def fetch_source_packet(title: str) -> SourcePacket:
     page = pages[0]
     normalized_title = page["title"]
     extract = clean_text(page.get("extract", ""))
-    lead_html, first_paragraph_links, lead_links = parse_lead_html(normalized_title)
-    links = first_paragraph_links if len(first_paragraph_links) >= 3 else lead_links
-    link_strategy = "first_paragraph" if len(first_paragraph_links) >= 3 else "lead_section_fallback"
-    first_paragraph = first_sentence_group(extract, max_sentences=3)
     images = image_candidates_from_page(page)
 
     return SourcePacket(
@@ -371,11 +207,7 @@ def fetch_source_packet(title: str) -> SourcePacket:
         page_id=int(page["pageid"]),
         revision_id=page.get("lastrevid"),
         extract=extract,
-        lead_html=lead_html,
-        first_paragraph=first_paragraph,
-        first_paragraph_links=first_paragraph_links,
-        links=links,
-        link_strategy=link_strategy,
+        lead_html="",
         image_candidates=images,
         fetched_at=dt.datetime.now(dt.UTC).replace(microsecond=0).isoformat(),
     )
@@ -487,8 +319,8 @@ def select_image(packet: SourcePacket, pillar: str) -> dict[str, Any]:
     }
 
 
-def classify_pillar(title: str, extract: str, links: list[dict[str, str]]) -> str:
-    text = " ".join([title, extract[:1200], " ".join(link["title"] for link in links)]).lower()
+def classify_pillar(title: str, extract: str) -> str:
+    text = " ".join([title, extract[:1200]]).lower()
     scores = {
         pillar: sum(1 for keyword in keywords if keyword in text)
         for pillar, keywords in PILLAR_KEYWORDS.items()
@@ -499,11 +331,6 @@ def classify_pillar(title: str, extract: str, links: list[dict[str, str]]) -> st
 def split_sentences(text: str) -> list[str]:
     sentences = re.split(r"(?<=[.!?])\s+", text)
     return [sentence.strip() for sentence in sentences if sentence.strip()]
-
-
-def first_sentence_group(text: str, max_sentences: int = 4) -> str:
-    sentences = split_sentences(text)
-    return " ".join(sentences[:max_sentences])
 
 
 def trim_to_word_count(text: str, max_words: int) -> str:
@@ -527,11 +354,7 @@ def condense_with_heuristic(packet: SourcePacket, pillar: str) -> dict[str, Any]
     explanation = clean_text(f"{opening} {followup}")
     explanation = trim_to_word_count(explanation, 105)
 
-    links = [link["title"] for link in packet.links[:8]]
-    if links:
-        hook = f"It connects quickly to {links[0]}, which is why one topic can open into a much larger rabbit hole."
-    else:
-        hook = "Its deeper story comes from how many different fields use it to explain something bigger."
+    hook = "Its deeper story comes from how many different fields use it to explain something bigger."
 
     return {
         "title": title,
@@ -539,7 +362,6 @@ def condense_with_heuristic(packet: SourcePacket, pillar: str) -> dict[str, Any]
         "explanation": explanation,
         "hookType": "why_it_matters",
         "hook": hook,
-        "relatedCandidates": links,
         "readingSeconds": estimate_reading_seconds(f"{explanation} {hook}"),
         "confidenceNotes": ["Generated by deterministic local condenser from Wikipedia extract."],
     }
@@ -549,13 +371,6 @@ def condense_with_openai(packet: SourcePacket, model: str | None = None) -> dict
     api_key = os.environ.get("OPENAI_API_KEY")
     if not api_key:
         raise RuntimeError("OPENAI_API_KEY is required for --condenser openai")
-
-    candidate_nodes = [
-        {"name": link["title"], "context": link.get("label", "")}
-        for link in packet.links[:16]
-    ]
-    if len(candidate_nodes) < 2:
-        raise RuntimeError("OpenAI condenser requires at least two candidate nodes")
 
     request_payload = {
         "model": model or os.environ.get("WIKIS_OPENAI_MODEL") or DEFAULT_OPENAI_MODEL,
@@ -570,7 +385,6 @@ def condense_with_openai(packet: SourcePacket, model: str | None = None) -> dict
                     {
                         "topic": packet.normalized_title,
                         "wikipedia_article": packet.extract,
-                        "candidate_nodes": candidate_nodes,
                     },
                     ensure_ascii=False,
                 ),
@@ -603,27 +417,16 @@ def condense_with_openai(packet: SourcePacket, model: str | None = None) -> dict
 
     content = extract_response_text(response_payload)
     generated = json.loads(content)
-    validation_issues = validate_llm_topic_page(generated, candidate_nodes)
+    validation_issues = validate_llm_topic_page(generated)
     if validation_issues:
         raise RuntimeError(f"OpenAI condenser returned invalid topic page: {', '.join(validation_issues)}")
 
-    deeper = generated["deeper_node"]
-    adjacent = generated["adjacent_node"]
-    related_candidates: list[str] = []
-    for name in [deeper["name"], adjacent["name"], *[candidate["name"] for candidate in candidate_nodes]]:
-        if name not in related_candidates:
-            related_candidates.append(name)
     return {
         "title": packet.normalized_title,
         "pillar": generated["pillar"],
         "explanation": generated["page_text"],
         "hookType": "why_it_matters",
-        "hook": adjacent["connection"],
-        "relatedCandidates": related_candidates[:8],
-        "navigationNodes": {
-            "deeper": deeper,
-            "adjacent": adjacent,
-        },
+        "hook": "This topic is worth following because it changes how the surrounding subject fits together.",
         "readingSeconds": estimate_reading_seconds(generated["page_text"]),
         "confidenceNotes": [
             f"Generated with OpenAI Responses API model {request_payload['model']}.",
@@ -648,7 +451,7 @@ def extract_response_text(response_payload: dict[str, Any]) -> str:
     return "".join(chunks)
 
 
-def validate_llm_topic_page(page: dict[str, Any], candidate_nodes: list[dict[str, str]]) -> list[str]:
+def validate_llm_topic_page(page: dict[str, Any]) -> list[str]:
     issues: list[str] = []
     page_text = page.get("page_text", "")
     word_count = len(page_text.split())
@@ -658,15 +461,6 @@ def validate_llm_topic_page(page: dict[str, Any], candidate_nodes: list[dict[str
         issues.append("page_text_too_long")
     if page.get("pillar") not in VALID_PILLARS:
         issues.append("invalid_pillar")
-    candidate_names = {candidate["name"] for candidate in candidate_nodes}
-    deeper_name = page.get("deeper_node", {}).get("name")
-    adjacent_name = page.get("adjacent_node", {}).get("name")
-    if deeper_name not in candidate_names:
-        issues.append("deeper_node_not_in_candidates")
-    if adjacent_name not in candidate_names:
-        issues.append("adjacent_node_not_in_candidates")
-    if deeper_name == adjacent_name:
-        issues.append("duplicate_navigation_nodes")
     return issues
 
 
@@ -687,8 +481,6 @@ def validate_card(card: dict[str, Any], packet: SourcePacket, image_decision: di
         issues.append("invalid_hook_type")
     if not card["hook"]:
         issues.append("missing_hook")
-    if len(packet.links) < 3:
-        issues.append("few_related_candidates")
     if image_decision["strategy"] == "wikipedia_image":
         selected = image_decision["selected"]
         if selected and selected.get("rejectionReasons"):
@@ -699,15 +491,12 @@ def validate_card(card: dict[str, Any], packet: SourcePacket, image_decision: di
             issues.append("llm_page_text_too_short")
         if word_count > 130:
             issues.append("llm_page_text_too_long")
-        navigation_nodes = card.get("navigationNodes", {})
-        if not navigation_nodes.get("deeper") or not navigation_nodes.get("adjacent"):
-            issues.append("missing_navigation_nodes")
     return issues
 
 
 def build_card_output(title: str, condenser: str = "local", model: str | None = None) -> dict[str, Any]:
     packet = fetch_source_packet(title)
-    pillar = classify_pillar(packet.normalized_title, packet.extract, packet.links)
+    pillar = classify_pillar(packet.normalized_title, packet.extract)
     if condenser == "openai":
         card = condense_with_openai(packet, model)
         pillar = card["pillar"]
@@ -731,16 +520,9 @@ def build_card_output(title: str, condenser: str = "local", model: str | None = 
             "revisionId": packet.revision_id,
             "fetchedAt": packet.fetched_at,
             "extract": packet.extract,
-            "firstParagraph": packet.first_paragraph,
             "leadHtml": packet.lead_html,
         },
         "card": card,
-        "mapping": {
-            "linkStrategy": packet.link_strategy,
-            "firstParagraphLinks": packet.first_paragraph_links,
-            "leadOrFallbackLinks": packet.links,
-            "relatedTopicCandidates": card["relatedCandidates"],
-        },
         "image": image_decision,
         "quality": {
             "status": "needs_review" if validation_issues else "prototype_pass",
@@ -768,8 +550,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--out",
         type=Path,
-        default=Path("data/cards"),
-        help="Output directory for generated card JSON.",
+        required=True,
+        help="Output directory for generated card JSON. No repo-local default is provided.",
     )
     parser.add_argument(
         "--delay",

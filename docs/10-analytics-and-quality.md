@@ -148,7 +148,7 @@ Backend tests:
 - traversal scorer respects gesture intent
 - high-risk unreviewed topics are excluded
 - repeated topics are penalized
-- fallback candidates are returned
+- missing routes are reported clearly
 - event ingestion is idempotent
 
 ## Production Monitoring
@@ -162,4 +162,3 @@ Track:
 - traversal empty-result rate
 - content report rate
 - cache hit rate
-
