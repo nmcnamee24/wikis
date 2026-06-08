@@ -302,6 +302,24 @@ def random_topic_candidate(
     return max(pool, key=random_weight)
 
 
+def weighted_connected_candidate(candidates: list[dict[str, Any]]) -> dict[str, Any] | None:
+    if not candidates:
+        return None
+    sorted_candidates = sorted(candidates, key=lambda item: (-item["score"], item["topic"]["title"]))
+    score_floor = min(item["score"] for item in sorted_candidates)
+    weighted_items = [
+        (item, max(0.04, (item["score"] - score_floor) + 0.16))
+        for item in sorted_candidates
+    ]
+    total_weight = sum(weight for _, weight in weighted_items)
+    cursor = random.random() * total_weight
+    for item, weight in weighted_items:
+        cursor -= weight
+        if cursor <= 0:
+            return item
+    return weighted_items[-1][0]
+
+
 def resolve_next(graph: dict[str, Any], request: dict[str, Any]) -> dict[str, Any]:
     topics = topic_by_id(graph)
     current_id = request["currentTopicId"]
@@ -347,14 +365,17 @@ def resolve_next(graph: dict[str, Any], request: dict[str, Any]) -> dict[str, An
             }
         )
     candidates.sort(key=lambda item: (-item["score"], item["topic"]["title"]))
-
-    selected = candidates[0] if candidates else None
+    selected = weighted_connected_candidate(candidates)
     if not selected:
         raise RuntimeError(f"No approved traversal edge from {current_id} for {gesture}")
 
     selected_topic = selected["topic"]
     selected_edge = selected.get("edge")
-    fallback_ids = [item["topic"]["id"] for item in candidates[1:4]]
+    fallback_ids = [
+        item["topic"]["id"]
+        for item in candidates
+        if item["topic"]["id"] != selected_topic["id"]
+    ][:3]
 
     return {
         "nextTopicId": selected_topic["id"],
