@@ -18,7 +18,8 @@ let package = Package(
             name: "WikisPrototype",
             dependencies: ["WikisCore"],
             path: "App/Wikis",
-            sources: ["Sources"]
+            sources: ["Sources"],
+            resources: [.process("Resources")]
         )
     ]
 )

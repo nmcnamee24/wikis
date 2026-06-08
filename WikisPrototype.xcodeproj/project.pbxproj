@@ -16,6 +16,7 @@
 		A00000000000000000000007 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000107 /* ProfileView.swift */; };
 		A00000000000000000000008 /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000108 /* DesignSystem.swift */; };
 		A00000000000000000000009 /* WikisGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000109 /* WikisGraph.swift */; };
+		A0000000000000000000000A /* current-supabase-map.json in Resources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000010A /* current-supabase-map.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		A00000000000000000000107 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		A00000000000000000000108 /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
 		A00000000000000000000109 /* WikisGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikisGraph.swift; sourceTree = "<group>"; };
+		A0000000000000000000010A /* current-supabase-map.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "current-supabase-map.json"; sourceTree = "<group>"; };
 		A0000000000000000000010C /* WikisPrototype.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WikisPrototype.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -55,6 +57,7 @@
 			isa = PBXGroup;
 			children = (
 				A00000000000000000000305 /* Sources */,
+				A00000000000000000000306 /* Resources */,
 			);
 			path = App/Wikis;
 			sourceTree = "<group>";
@@ -88,6 +91,14 @@
 				A00000000000000000000108 /* DesignSystem.swift */,
 			);
 			path = Sources;
+			sourceTree = "<group>";
+		};
+		A00000000000000000000306 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A0000000000000000000010A /* current-supabase-map.json */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -148,6 +159,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A0000000000000000000000A /* current-supabase-map.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
