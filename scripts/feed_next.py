@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import random
 import subprocess
 import sys
 from pathlib import Path
@@ -13,19 +14,23 @@ from typing import Any
 
 
 GESTURE_EDGE_TYPES = {
-    "down": ["deeper", "prerequisite"],
+    "down": ["neighbor", "deeper", "prerequisite", "contrast", "person", "place", "teleport"],
     "right": ["neighbor", "contrast", "person", "place"],
-    "left": ["teleport"],
+    "left": [],
 }
 
 REASON_CODES = {
+    ("down", "neighbor"): "connected_node",
     ("down", "deeper"): "best_deeper_edge",
     ("down", "prerequisite"): "best_prerequisite_edge",
+    ("down", "contrast"): "connected_node",
+    ("down", "person"): "connected_node",
+    ("down", "place"): "connected_node",
+    ("down", "teleport"): "connected_node",
     ("right", "neighbor"): "best_neighbor_edge",
     ("right", "person"): "best_neighbor_edge",
     ("right", "place"): "best_neighbor_edge",
     ("right", "contrast"): "best_contrast_edge",
-    ("left", "teleport"): "best_teleport_edge",
 }
 
 SENSITIVE_TERMS = {"assassination", "war", "disease", "death", "violence"}
@@ -223,7 +228,7 @@ def sensitivity_penalty(topic: dict[str, Any]) -> float:
 
 
 def edge_type_bonus(edge_type: str, gesture: str) -> float:
-    if (gesture, edge_type) in {("down", "deeper"), ("right", "neighbor"), ("left", "teleport")}:
+    if (gesture, edge_type) in {("down", "neighbor"), ("down", "deeper"), ("right", "neighbor")}:
         return 0.08
     if (gesture, edge_type) in {("down", "prerequisite"), ("right", "contrast")}:
         return 0.04
@@ -258,6 +263,45 @@ def score_candidate(
     return edge_relevance * 0.24 + confidence * 0.10 + topic_quality * 0.14 + source * 0.10 + novelty * 0.30 + visual * 0.07 + bonus + saved_affinity - penalty
 
 
+def random_topic_candidate(
+    topics: dict[str, dict[str, Any]],
+    current_id: str,
+    explored_ordered: list[str],
+    saved: set[str],
+    allow_prototype: bool,
+) -> dict[str, Any]:
+    recent = set(explored_ordered[-8:])
+    pool = [
+        topic
+        for topic in topics.values()
+        if topic["id"] != current_id
+        and topic["id"] not in recent
+        and is_visible(topic, allow_prototype)
+        and source_confidence(topic) >= 0.55
+    ]
+    if not pool:
+        pool = [
+            topic
+            for topic in topics.values()
+            if topic["id"] != current_id
+            and is_visible(topic, allow_prototype)
+            and source_confidence(topic) >= 0.55
+        ]
+    if not pool:
+        raise RuntimeError("No visible random topic is available")
+
+    def random_weight(topic: dict[str, Any]) -> float:
+        return (
+            quality_score(topic) * 0.42
+            + source_confidence(topic) * 0.22
+            + visual_strength(topic) * 0.10
+            + novelty_score(topic, topics.get(current_id), set(explored_ordered), saved) * 0.18
+            + random.random() * 0.18
+        )
+
+    return max(pool, key=random_weight)
+
+
 def resolve_next(graph: dict[str, Any], request: dict[str, Any]) -> dict[str, Any]:
     topics = topic_by_id(graph)
     current_id = request["currentTopicId"]
@@ -267,14 +311,37 @@ def resolve_next(graph: dict[str, Any], request: dict[str, Any]) -> dict[str, An
     allow_prototype = bool(request.get("allowPrototypeContent", True))
     current = topics.get(current_id)
 
+    if gesture == "left":
+        selected_topic = random_topic_candidate(topics, current_id, explored, saved, allow_prototype)
+        return {
+            "nextTopicId": selected_topic["id"],
+            "nextTopic": selected_topic,
+            "reasonCode": "random_topic",
+            "gesture": gesture,
+            "score": None,
+            "selectedEdgeId": None,
+            "fallbackTopicIds": [],
+            "fallbackWasUsed": False,
+            "debug": {
+                "currentTopicId": current_id,
+                "candidateCount": len(topics) - 1,
+            },
+        }
+
     candidates: list[dict[str, Any]] = []
     allowed_edge_types = set(GESTURE_EDGE_TYPES[gesture])
     for edge in graph["edges"]:
-        if edge["from"] != current_id or edge["type"] not in allowed_edge_types:
+        if edge["type"] not in allowed_edge_types:
+            continue
+        if edge["from"] == current_id:
+            target_id = edge["to"]
+        elif edge["to"] == current_id:
+            target_id = edge["from"]
+        else:
             continue
         if edge.get("generationStatus") == "failed":
             continue
-        topic = topics.get(edge["to"])
+        topic = topics.get(target_id)
         if not topic or not is_visible(topic, allow_prototype) or source_confidence(topic) < 0.55:
             continue
         candidates.append(

@@ -214,7 +214,7 @@ extension NavigationGesture {
         switch self {
         case .down: "Continue"
         case .right: "Explore"
-        case .left: "Teleport"
+        case .left: "Random"
         }
     }
 
