@@ -67,6 +67,12 @@ def validate_database_url(database_url: str) -> str:
     return database_url
 
 
+def connect_database(database_url: str) -> Any:
+    import psycopg  # type: ignore
+
+    return psycopg.connect(validate_database_url(database_url), prepare_threshold=None)
+
+
 def load_graph_from_database(database_url: str) -> dict[str, Any]:
     sql = r"""
 with topic_rows as (
@@ -151,9 +157,7 @@ select jsonb_build_object(
 )::text;
 """
     try:
-        import psycopg  # type: ignore
-
-        with psycopg.connect(validate_database_url(database_url)) as connection:
+        with connect_database(database_url) as connection:
             with connection.cursor() as cursor:
                 cursor.execute(sql)
                 row = cursor.fetchone()
@@ -169,6 +173,54 @@ select jsonb_build_object(
             text=True,
         )
         return json.loads(result.stdout)
+
+
+def expand_first_paragraph_edges_for_topic(database_url: str, topic_id: str, limit: int = 6) -> dict[str, Any]:
+    from sync_first_paragraph_edges import (  # noqa: PLC0415
+        TopicSeed,
+        existing_topic_ids,
+        fetch_first_paragraph_links,
+        replace_edges,
+        upsert_placeholder_topics,
+    )
+
+    with connect_database(database_url) as connection:
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                select id, title, coalesce(canonical_wikipedia_title, title) as wikipedia_title
+                from topics
+                where id = %s
+                  and generation_status <> 'failed'
+                  and quality_status in ('approved', 'prototype_pass', 'needs_review')
+                limit 1;
+                """,
+                (topic_id,),
+            )
+            row = cursor.fetchone()
+        if not row:
+            raise RuntimeError(f"Cannot expand missing topic: {topic_id}")
+
+        source = TopicSeed(id=row[0], title=row[1], wikipedia_title=row[2])
+        normalized_title, targets = fetch_first_paragraph_links(source.wikipedia_title)
+        limited_targets = targets[:limit]
+        known_ids = existing_topic_ids(connection)
+        placeholders_inserted = upsert_placeholder_topics(connection, limited_targets, known_ids)
+        edges_written = replace_edges(
+            connection,
+            TopicSeed(id=source.id, title=source.title, wikipedia_title=normalized_title),
+            limited_targets,
+        )
+        connection.commit()
+
+    return {
+        "sourceTopicId": topic_id,
+        "sourceTitle": normalized_title,
+        "linkCount": len(targets),
+        "linksUsed": len(limited_targets),
+        "placeholderTopicsInserted": placeholders_inserted,
+        "edgesWritten": edges_written,
+    }
 
 
 def topic_by_id(graph: dict[str, Any]) -> dict[str, dict[str, Any]]:
@@ -393,6 +445,24 @@ def resolve_next(graph: dict[str, Any], request: dict[str, Any]) -> dict[str, An
     }
 
 
+def resolve_next_from_database(database_url: str, request: dict[str, Any]) -> dict[str, Any]:
+    graph = load_graph_from_database(database_url)
+    try:
+        return resolve_next(graph, request)
+    except RuntimeError as exc:
+        gesture = request.get("gesture")
+        current_id = request.get("currentTopicId")
+        can_expand = gesture in {"down", "right"} and current_id and "No approved traversal edge" in str(exc)
+        if not can_expand:
+            raise
+
+    expansion = expand_first_paragraph_edges_for_topic(database_url, str(request["currentTopicId"]), limit=6)
+    graph = load_graph_from_database(database_url)
+    response = resolve_next(graph, request)
+    response.setdefault("debug", {})["liveExpansion"] = expansion
+    return response
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Resolve the next Wikis feed topic.")
     parser.add_argument("--database-url", default=os.environ.get("DATABASE_URL"))
@@ -418,8 +488,7 @@ def main() -> int:
     if not database_url:
         print("ERROR: DATABASE_URL is required", file=sys.stderr)
         return 2
-    graph = load_graph_from_database(database_url)
-    response = resolve_next(graph, request)
+    response = resolve_next_from_database(database_url, request)
     print(json.dumps(response, indent=2, ensure_ascii=False))
     return 0
 

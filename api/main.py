@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT / "scripts") not in sys.path:
     sys.path.insert(0, str(ROOT / "scripts"))
 
-from feed_next import load_graph_from_database, resolve_next  # noqa: E402
+from feed_next import load_graph_from_database, resolve_next_from_database  # noqa: E402
 
 
 app = FastAPI(title="Wikis API", version="0.1.0")
@@ -84,9 +84,7 @@ def health() -> dict[str, str]:
 @app.post("/v1/feed/next")
 def feed_next(request: FeedNextRequest) -> dict[str, Any]:
     try:
-        graph = load_graph_from_database(database_url())
-        response = resolve_next(graph, request.model_dump())
-        return response
+        return resolve_next_from_database(database_url(), request.model_dump())
     except HTTPException:
         raise
     except Exception as exc:  # noqa: BLE001 - keep API errors bounded.
