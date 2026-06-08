@@ -168,7 +168,7 @@ struct TopicCardView: View {
                 return "Continue"
             }
             if hintOffset.width > 50, abs(hintOffset.width) > abs(hintOffset.height) {
-                return "Teleport"
+                return "Random"
             }
             if hintOffset.width < -50, abs(hintOffset.width) > abs(hintOffset.height) {
                 return "Explore"

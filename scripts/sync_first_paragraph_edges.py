@@ -32,8 +32,8 @@ API_URL = "https://en.wikipedia.org/w/api.php"
 USER_AGENT = "WikisFirstParagraphEdges/0.1 (local development)"
 GENERATION_VERSION = "wikipedia-first-paragraph-links-v1"
 EDGE_REASON = "wikipedia_first_paragraph_link"
-PLACEHOLDER_EXPLANATION = "Placeholder text for this Wikipedia topic. Full Wikis writing has not been generated yet."
-PLACEHOLDER_HOOK = "This topic was added from a first-paragraph Wikipedia link."
+PLACEHOLDER_EXPLANATION = "Card not generated yet, check back soon!"
+PLACEHOLDER_HOOK = "Card not generated yet, check back soon!"
 
 
 @dataclass(frozen=True)

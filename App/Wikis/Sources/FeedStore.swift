@@ -92,7 +92,12 @@ final class FeedStore: ObservableObject {
             }
             loadingError = nil
         } catch {
-            loadingError = "No Supabase route is available for this gesture."
+            switch gesture {
+            case .down, .right:
+                loadingError = "That's the end of this chain. Swipe -> to find something new."
+            case .left:
+                loadingError = "Could not find a random topic. Try again."
+            }
         }
     }
 

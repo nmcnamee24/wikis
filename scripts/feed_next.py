@@ -331,17 +331,11 @@ def resolve_next(graph: dict[str, Any], request: dict[str, Any]) -> dict[str, An
     candidates: list[dict[str, Any]] = []
     allowed_edge_types = set(GESTURE_EDGE_TYPES[gesture])
     for edge in graph["edges"]:
-        if edge["type"] not in allowed_edge_types:
-            continue
-        if edge["from"] == current_id:
-            target_id = edge["to"]
-        elif edge["to"] == current_id:
-            target_id = edge["from"]
-        else:
+        if edge["from"] != current_id or edge["type"] not in allowed_edge_types:
             continue
         if edge.get("generationStatus") == "failed":
             continue
-        topic = topics.get(target_id)
+        topic = topics.get(edge["to"])
         if not topic or not is_visible(topic, allow_prototype) or source_confidence(topic) < 0.55:
             continue
         candidates.append(

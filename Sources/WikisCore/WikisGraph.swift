@@ -60,6 +60,7 @@ public enum HookType: String, Codable, Sendable {
     case scientistsStillDontKnow = "scientists_still_dont_know"
     case theTwist = "the_twist"
     case theSurprisingPart = "the_surprising_part"
+    case placeholder
 
     public var displayPrefix: String {
         switch self {
@@ -67,13 +68,14 @@ public enum HookType: String, Codable, Sendable {
         case .scientistsStillDontKnow: "Scientists still don't know:"
         case .theTwist: "The twist:"
         case .theSurprisingPart: "The surprising part:"
+        case .placeholder: ""
         }
     }
 }
 
 public struct WikipediaSource: Codable, Equatable, Sendable {
     public let title: String
-    public let pageId: Int
+    public let pageId: Int?
     public let revisionId: Int?
 }
 
