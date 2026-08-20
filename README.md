@@ -29,7 +29,21 @@ Every topic belongs to one of four navigation anchors:
 
 The feed can move between anchors freely, but the pillars give the experience a consistent mental model and visual identity.
 
-## Version 1
+## Web Graph Explorer
+
+The interactive web version lives in `web/`. It turns the current Supabase topic map into a cinematic graph explorer with search, pillar filters, topic reading panels, saved ideas, recent trails, and responsive desktop/mobile layouts.
+
+Run it locally:
+
+```bash
+cd web
+npm install
+npm run dev
+```
+
+Create a production build with `npm run build`.
+
+## Original App Prototype
 
 V1 has three screens:
 
