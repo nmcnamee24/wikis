@@ -6,6 +6,13 @@ xcuserdata/
 *.xcuserstate
 *.xcworkspace/xcuserdata/
 *.xcodeproj/xcuserdata/
+
+# Native iOS/mobile prototype (web app lives in /web)
+/App/Wikis/
+/Sources/WikisCore/
+/WikisPrototype.xcodeproj/
+/Package.swift
+
 __pycache__/
 *.pyc
 .DS_Store
